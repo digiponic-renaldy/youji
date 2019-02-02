@@ -1,4 +1,4 @@
-package com.npe.youji.model;
+package com.npe.youji.model.shop;
 
 import com.google.gson.annotations.SerializedName;
 

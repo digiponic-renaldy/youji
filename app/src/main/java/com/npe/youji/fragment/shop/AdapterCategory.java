@@ -11,16 +11,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.npe.youji.R;
-import com.npe.youji.model.shop.DataShopItemModel;
+import com.npe.youji.model.shop.menu.DataCategory;
 
 import java.util.List;
 
-public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder> {
-
+public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
     private Context context;
-    private List<DataShopItemModel> items;
+    private List<DataCategory> items;
 
-    public AdapterShopItem(Context context, List<DataShopItemModel> items) {
+    public AdapterCategory(Context context, List<DataCategory> items) {
         this.context = context;
         this.items = items;
     }
@@ -28,20 +27,19 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shop_item, viewGroup, false);
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shop_category, viewGroup, false);
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        DataShopItemModel data = items.get(i);
+        DataCategory data = items.get(i);
 
         Glide.with(context)
-                .load(data.image)
-                .into(viewHolder.imageView);
+                .load(data.getImage())
+                .into(viewHolder.image);
 
         viewHolder.nama.setText(data.getName());
-        viewHolder.harga.setText(String.valueOf(data.getSell_price()));
     }
 
     @Override
@@ -50,14 +48,12 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView imageView;
-        TextView nama, harga;
+        ImageView image;
+        TextView nama;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            imageView = itemView.findViewById(R.id.imgv_listItem_shop);
-            nama = itemView.findViewById(R.id.tv_namaBarangListItem_shop);
-            harga = itemView.findViewById(R.id.tv_hargaBarangListItem_shop);
+            image = itemView.findViewById(R.id.imgv_listMenu_shop);
+            nama = itemView.findViewById(R.id.tv_listMenu_shop);
         }
     }
 }
