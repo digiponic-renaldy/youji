@@ -7,11 +7,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.npe.youji.fragment.LoginFragment;
 import com.npe.youji.fragment.OrderFragment;
-import com.npe.youji.fragment.ShopFragment;
+import com.npe.youji.fragment.shop.ShopFragment;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -10,4 +10,7 @@
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
     <string name="app_version">App version 1.0</string>
+    <string name="nama_barang">Nama Barang</string>
+    <string name="harga_barang">Harga Barang</string>
+    <string name="beli">Beli</string>
 </resources>
