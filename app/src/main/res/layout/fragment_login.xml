@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.LoginFragment">
+
+    <ImageView
+        android:src="@drawable/logogalaksiorganik"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:justificationMode="inter_word"
+                android:text="@string/header_login"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <FrameLayout
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--<com.facebook.login.widget.LoginButton
+                    android:visibility="invisible"
+                    android:id="@+id/login_button_facebook"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>-->
+
+                <Button
+                    android:id="@+id/btn_login_facebook"
+                    android:paddingLeft="5dp"
+                    android:drawableLeft="@drawable/icon_facebook"
+                    android:background="@color/colorBlue"
+                    android:layout_width="match_parent"
+                    android:text="@string/facebook"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="@color/colorWhite"
+                    android:paddingRight="5dp"
+                    android:layout_height="40dp"/>
+
+            </FrameLayout>
+
+
+            <Button
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:drawableLeft="@drawable/icon_google"
+                android:textStyle="bold"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:background="@color/colorRed"
+                android:textColor="@color/colorWhite"
+                android:text="@string/google"
+                android:id="@+id/btn_login_google"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/app_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

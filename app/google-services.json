@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "373771685507",
+    "firebase_url": "https://youji-2d451.firebaseio.com",
+    "project_id": "youji-2d451",
+    "storage_bucket": "youji-2d451.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373771685507:android:739f2de6e698caa6",
+        "android_client_info": {
+          "package_name": "com.npe.youji"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373771685507-9vkbca1oiokogboqt8m6olu20vu516j7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.npe.youji",
+            "certificate_hash": "fb245e91f3d0d835706b7f668a0e36e5a6a4a8e2"
+          }
+        },
+        {
+          "client_id": "373771685507-j8ocv4u54sl62egmi3ekjdemf02416q9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8G1sfRuWjaF5F4TVU5WZVxe18v5g8GPg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373771685507-j8ocv4u54sl62egmi3ekjdemf02416q9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
