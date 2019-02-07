@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.DetailShop"
+    tools:showIn="@layout/activity_detail_shop">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:textColor="@color/colorGreenSoft"
+                android:layout_marginTop="10dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:text="@string/nama_barang"
+                android:id="@+id/tv_namaBarang_detailBarang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tv_hargaBarang_detailBarang"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:text="@string/harga_barang"
+                android:layout_below="@id/tv_namaBarang_detailBarang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btn_addToCart_detailItem"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/add_to_cart"
+                android:background="@color/colorGreenSoft"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="50dp"
+                android:layout_alignParentEnd="true"/>
+
+            <Button
+                android:visibility="gone"
+                android:id="@+id/btn_checkout"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:text="@string/checkout"
+                android:background="@color/colorGreenSoft"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@id/tv_category_detailBarang"
+                android:layout_alignParentEnd="true"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layout_addToCart_detailItem"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_alignParentEnd="true">
+
+                <ImageButton
+                    android:id="@+id/btn_minusCart_detailItem"
+                    android:src="@drawable/icon_rouded_minus"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+
+                <TextView
+                    android:id="@+id/tv_jumlahBarang_detailItem"
+                    android:textStyle="bold"
+                    android:text="0"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageButton
+                    android:id="@+id/btn_addCart_detailItem"
+                    android:src="@drawable/icon_rouded_add"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_category_detailBarang"
+                android:padding="10dp"
+                android:background="@color/colorDarkGrey"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:text="@string/category"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/tv_hargaBarang_detailBarang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:id="@+id/tv_desc_detailBarang"
+                android:text="@string/lorem"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/tv_category_detailBarang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</android.support.v4.widget.NestedScrollView>

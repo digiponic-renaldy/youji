@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.npe.youji.R;
 import com.npe.youji.model.shop.DataShopItemModel;
 
@@ -19,6 +21,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     private Context context;
     private List<DataShopItemModel> items;
+    private Gson gson;
+
 
     public AdapterShopItem(Context context, List<DataShopItemModel> items) {
         this.context = context;
@@ -35,14 +39,21 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         DataShopItemModel data = items.get(i);
-
         Glide.with(context)
                 .load(data.image)
                 .into(viewHolder.imageView);
 
+
         viewHolder.nama.setText(data.getName());
         viewHolder.harga.setText(String.valueOf(data.getSell_price()));
+        viewHolder.beli.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -52,12 +63,19 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView nama, harga;
+        Button beli;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imgv_listItem_shop);
             nama = itemView.findViewById(R.id.tv_namaBarangListItem_shop);
             harga = itemView.findViewById(R.id.tv_hargaBarangListItem_shop);
+            beli = itemView.findViewById(R.id.btn_beliItemShop);
         }
     }
+
+    public void refreshView(int position) {
+        notifyItemChanged(position);
+    }
+
 }
