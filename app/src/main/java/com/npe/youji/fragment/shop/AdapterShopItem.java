@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private Gson gson;
     private CartOperations cartOperations;
     private CartModel cartModel;
+    int quantity = 0;
 
     public AdapterShopItem(Context context, List<DataShopItemModel> items) {
         this.context = context;
@@ -48,21 +50,20 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final DataShopItemModel data = items.get(i);
         final int idProduct = data.id;
         final String namaProduct = data.name;
         final int stokProduct = data.stock;
-        final Button btnLihat = viewHolder.lihat;
-        final Button btnBeli = viewHolder.beli;
-        final RelativeLayout layoutCart = viewHolder.layoutCart;
+
+
         try{
             cartOperations.openDb();
             boolean check = cartOperations.checkRecordCart(idProduct);
             if(check){
-                layoutCart.setVisibility(View.VISIBLE);
-                btnBeli.setVisibility(View.GONE);
-                btnLihat.setVisibility(View.VISIBLE);
+                viewHolder.layoutCart.setVisibility(View.VISIBLE);
+                viewHolder.beli.setVisibility(View.GONE);
+                viewHolder.lihat.setVisibility(View.VISIBLE);
             }
             cartOperations.closeDb();
         }catch (SQLException e){
@@ -90,11 +91,50 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 } catch (SQLException e){
                     Log.d("SQL ERROR", "ERROR");
                 }*/
-                layoutCart.setVisibility(View.VISIBLE);
-                btnLihat.setVisibility(View.VISIBLE);
-                btnBeli.setVisibility(View.GONE);
+                showLayoutCart(viewHolder, stokProduct);
             }
         });
+    }
+
+    private void showLayoutCart(final ViewHolder viewHolder, final int stokProduct) {
+        viewHolder.layoutCart.setVisibility(View.VISIBLE);
+        viewHolder.beli.setVisibility(View.GONE);
+        viewHolder.lihat.setVisibility(View.VISIBLE);
+        if(viewHolder.layoutCart.getVisibility() == View.VISIBLE){
+            viewHolder.btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quantity = quantity + 1;
+                    if(quantity > stokProduct){
+                        viewHolder.btnAdd.setClickable(false);
+
+                    } else {
+                        TextView tvQuantity = viewHolder.textQuantity;
+                        displayQuantity(quantity,tvQuantity);
+                    }
+                }
+            });
+
+            viewHolder.btnMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quantity = quantity - 1;
+                    if(quantity <= 0){
+                        quantity = 0;
+                        viewHolder.layoutCart.setVisibility(View.GONE);
+                        viewHolder.beli.setVisibility(View.VISIBLE);
+                        viewHolder.lihat.setVisibility(View.GONE);
+                    } else {
+                        TextView tvQuantity = viewHolder.textQuantity;
+                        displayQuantity(quantity, tvQuantity);
+                    }
+                }
+            });
+        }
+    }
+
+    private void displayQuantity(int quantity, TextView textQuantity) {
+        textQuantity.setText(String.valueOf(quantity));
     }
 
     @Override
@@ -104,9 +144,10 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
-        TextView nama, harga;
+        TextView nama, harga, textQuantity;
         Button beli, lihat;
         RelativeLayout layoutCart;
+        ImageButton btnAdd, btnMinus;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -116,11 +157,10 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             beli = itemView.findViewById(R.id.btn_beliItemShop);
             lihat = itemView.findViewById(R.id.btnLihat);
             layoutCart = itemView.findViewById(R.id.layout_addToCart_adapter);
+            btnAdd = itemView.findViewById(R.id.btn_addCart_adapter);
+            btnMinus = itemView.findViewById(R.id.btn_minusCart_adapter);
+            textQuantity = itemView.findViewById(R.id.tv_jumlahBarang_adapter);
         }
-    }
-
-    public void refreshView(int position) {
-        notifyItemChanged(position);
     }
 
 }

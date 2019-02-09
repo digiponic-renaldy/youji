@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.npe.youji.R;
+import com.npe.youji.fragment.shop.AdapterShopItem;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.shop.CartModel;
 
@@ -80,6 +81,7 @@ public class DetailShop extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+
         onBackPressed();
         return true;
     }
