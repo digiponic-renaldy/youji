@@ -32,6 +32,7 @@ public class DetailShop extends AppCompatActivity {
         setContentView(R.layout.activity_detail_shop);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //inisialisasi
         btnAddtoCart = findViewById(R.id.btn_addToCart_detailItem);
         btnCheckout = findViewById(R.id.btn_checkout);
@@ -75,6 +76,12 @@ public class DetailShop extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
