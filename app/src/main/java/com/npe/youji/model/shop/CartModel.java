@@ -1,44 +1,38 @@
 package com.npe.youji.model.shop;
 
 public class CartModel {
-    public static final String TABLE_NAME = "carts";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_PRODUCT_ID = "idProduct";
-    public static final String COLUMN_PRODUCT_NAME = "nameProduct";
-
-    private int id;
-    private int idProduct;
+    private long idcart;
+    private long idProduct;
     private String nameProduct;
 
-    //create table sql query
-    public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABLE_NAME + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_PRODUCT_ID + " INTEGER,"
-                    + COLUMN_PRODUCT_NAME + "TEXT"
-                    + ")";
     public CartModel() {
     }
 
-    public CartModel(int id, int idProduct, String nameProduct) {
-        this.id = id;
+    public CartModel(long idProduct, String nameProduct) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
     }
 
-    public int getId() {
-        return id;
+    public CartModel(long idcart, long idProduct, String nameProduct) {
+        this.idcart = idcart;
+        this.idProduct = idProduct;
+        this.nameProduct = nameProduct;
     }
 
-    public void setId(int id) {
-        this.id = id;
+
+    public long getIdcart() {
+        return idcart;
     }
 
-    public int getIdProduct() {
+    public void setIdcart(long idcart) {
+        this.idcart = idcart;
+    }
+
+    public long getIdProduct() {
         return idProduct;
     }
 
-    public void setIdProduct(int idProduct) {
+    public void setIdProduct(long idProduct) {
         this.idProduct = idProduct;
     }
 
@@ -48,5 +42,13 @@ public class CartModel {
 
     public void setNameProduct(String nameProduct) {
         this.nameProduct = nameProduct;
+    }
+
+    public String toString(){
+        return "Cart id: "+getIdcart()+ "\n" +
+                "idProduct : "+getIdProduct() + "\n" +
+                "Nama Product : "+getNameProduct() + "\n";
+
+
     }
 }
