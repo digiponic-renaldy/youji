@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -56,8 +57,9 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             cartOperations.openDb();
             boolean check = cartOperations.checkRecordCart(idProduct);
             if(check){
+                viewHolder.layoutCart.setVisibility(View.VISIBLE);
                 viewHolder.beli.setVisibility(View.GONE);
-                viewHolder.coba.setVisibility(View.VISIBLE);
+                viewHolder.lihat.setVisibility(View.VISIBLE);
             }
             cartOperations.closeDb();
         }catch (SQLException e){
@@ -97,7 +99,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView nama, harga;
-        Button beli, coba;
+        Button beli, lihat;
+        RelativeLayout layoutCart;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -105,7 +108,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             nama = itemView.findViewById(R.id.tv_namaBarangListItem_shop);
             harga = itemView.findViewById(R.id.tv_hargaBarangListItem_shop);
             beli = itemView.findViewById(R.id.btn_beliItemShop);
-            coba = itemView.findViewById(R.id.btnCoba);
+            lihat = itemView.findViewById(R.id.btnLihat);
+            layoutCart = itemView.findViewById(R.id.layout_addToCart_adapter);
         }
     }
 
