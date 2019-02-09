@@ -48,14 +48,23 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final DataShopItemModel data = items.get(i);
+        final int idProduct = data.id;
+        final String namaProduct = data.name;
+        final int stokProduct = data.stock;
+        try{
+            cartOperations.openDb();
+            boolean check = cartOperations.checkRecordCart(idProduct);
+            if(check){
+                viewHolder.beli.setVisibility(View.GONE);
+                viewHolder.coba.setVisibility(View.VISIBLE);
+            }
+            cartOperations.closeDb();
+        }catch (SQLException e){
+            Log.d("SQL CHECK", "ERROR");
+        }
         Glide.with(context)
                 .load(data.image)
                 .into(viewHolder.imageView);
-
-
-        final int idProduct = data.id;
-        final String namaProduct = data.name;
-
         viewHolder.nama.setText(data.getName());
         viewHolder.harga.setText(String.valueOf(data.getSell_price()));
         viewHolder.beli.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +72,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             public void onClick(View v) {
                 try {
                     cartOperations.openDb();
-                    cartModel = cartOperations.insertCart(new CartModel(idProduct, namaProduct));
+                    cartModel = cartOperations.insertCart(new CartModel(idProduct, namaProduct, stokProduct));
                     Intent intent = new Intent(context, DetailShop.class);
                     long id = cartModel.getIdcart();
                     intent.putExtra("IDPRODUCT", id);
@@ -75,19 +84,9 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 } catch (SQLException e){
                     Log.d("SQL ERROR", "ERROR");
                 }
-                /*try{
-                    cartOperations.openDb();
-                    List<CartModel> listSQl = cartOperations.getAllCart();
-                    Log.d("SQL GET", String.valueOf(listSQl));
-                    cartOperations.closeDb();
-                    Log.d("SQL GET", "SUCCESS");
-                }catch (SQLException e){
-                    Log.d("SQL ERROR", "ERROR GET");
-                }*/
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -97,7 +96,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView nama, harga;
-        Button beli;
+        Button beli, coba;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -105,6 +104,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             nama = itemView.findViewById(R.id.tv_namaBarangListItem_shop);
             harga = itemView.findViewById(R.id.tv_hargaBarangListItem_shop);
             beli = itemView.findViewById(R.id.btn_beliItemShop);
+            coba = itemView.findViewById(R.id.btnCoba);
         }
     }
 

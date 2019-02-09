@@ -4,21 +4,31 @@ public class CartModel {
     private long idcart;
     private long idProduct;
     private String nameProduct;
+    private long stokProduct;
 
     public CartModel() {
     }
 
-    public CartModel(long idProduct, String nameProduct) {
+    public CartModel(long idProduct, String nameProduct, long stokProduct) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
+        this.stokProduct = stokProduct;
     }
 
-    public CartModel(long idcart, long idProduct, String nameProduct) {
+    public CartModel(long idcart, long idProduct, String nameProduct, long stokProduct) {
         this.idcart = idcart;
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
+        this.stokProduct = stokProduct;
     }
 
+    public long getStokProduct() {
+        return stokProduct;
+    }
+
+    public void setStokProduct(long stokProduct) {
+        this.stokProduct = stokProduct;
+    }
 
     public long getIdcart() {
         return idcart;
@@ -47,7 +57,8 @@ public class CartModel {
     public String toString(){
         return "Cart id: "+getIdcart()+ "\n" +
                 "idProduct : "+getIdProduct() + "\n" +
-                "Nama Product : "+getNameProduct() + "\n";
+                "Nama Product : "+getNameProduct() + "\n"+
+                "Stok Product : "+getStokProduct();
 
 
     }

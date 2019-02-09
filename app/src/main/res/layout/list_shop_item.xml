@@ -47,6 +47,13 @@
             android:background="@color/colorGreenSoft"
             android:layout_width="match_parent"
             android:layout_height="40dp"/>
+
+        <Button
+            android:visibility="gone"
+            android:text="coba"
+            android:id="@+id/btnCoba"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
