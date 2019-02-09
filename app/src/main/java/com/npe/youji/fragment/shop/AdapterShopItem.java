@@ -53,13 +53,16 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         final int idProduct = data.id;
         final String namaProduct = data.name;
         final int stokProduct = data.stock;
+        final Button btnLihat = viewHolder.lihat;
+        final Button btnBeli = viewHolder.beli;
+        final RelativeLayout layoutCart = viewHolder.layoutCart;
         try{
             cartOperations.openDb();
             boolean check = cartOperations.checkRecordCart(idProduct);
             if(check){
-                viewHolder.layoutCart.setVisibility(View.VISIBLE);
-                viewHolder.beli.setVisibility(View.GONE);
-                viewHolder.lihat.setVisibility(View.VISIBLE);
+                layoutCart.setVisibility(View.VISIBLE);
+                btnBeli.setVisibility(View.GONE);
+                btnLihat.setVisibility(View.VISIBLE);
             }
             cartOperations.closeDb();
         }catch (SQLException e){
@@ -73,7 +76,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         viewHolder.beli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+                /*try {
                     cartOperations.openDb();
                     cartModel = cartOperations.insertCart(new CartModel(idProduct, namaProduct, stokProduct));
                     Intent intent = new Intent(context, DetailShop.class);
@@ -86,7 +89,10 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                     Log.d("SQL INSERT", "SUCCESS");
                 } catch (SQLException e){
                     Log.d("SQL ERROR", "ERROR");
-                }
+                }*/
+                layoutCart.setVisibility(View.VISIBLE);
+                btnLihat.setVisibility(View.VISIBLE);
+                btnBeli.setVisibility(View.GONE);
             }
         });
     }
