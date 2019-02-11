@@ -30,4 +30,25 @@
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
+
+    <at.markushi.ui.CircleButton
+        android:visibility="gone"
+        android:id="@+id/floatBtn_checkout"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="35dp"
+        android:layout_marginBottom="42dp"
+        android:src="@drawable/ic_shopping_cart"
+        android:tint="@color/colorWhite"
+        app:cb_color="@color/colorGreenSoft"
+        app:cb_pressedRingWidth="5dp" />
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/bottom_sheet"/>
+    </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

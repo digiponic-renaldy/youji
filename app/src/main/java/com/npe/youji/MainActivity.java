@@ -21,16 +21,13 @@ import at.markushi.ui.CircleButton;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
-    BottomSheetBehavior botomSheet;
-    RelativeLayout layoutBottomSheet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //insialisasi
         bottomNavigation = findViewById(R.id.bottom_navigation);
-        layoutBottomSheet = findViewById(R.id.bottom_sheet);
-        botomSheet = BottomSheetBehavior.from(layoutBottomSheet);
+
 
         //bottom navigation
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,34 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //bottom sheet
-        botomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View view, int i) {
-                switch (i){
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED : {
 
-                    }
-                    break;
-                    case BottomSheetBehavior.STATE_COLLAPSED : {
-
-                    }
-                    break;
-                    case BottomSheetBehavior.STATE_DRAGGING :
-                        break;
-                    case BottomSheetBehavior.STATE_SETTLING :
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View view, float v) {
-
-            }
-        });
 
     }
 
