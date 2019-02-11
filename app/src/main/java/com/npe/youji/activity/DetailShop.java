@@ -1,20 +1,20 @@
 package com.npe.youji.activity;
 
-import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.npe.youji.R;
-import com.npe.youji.fragment.shop.AdapterShopItem;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.shop.CartModel;
+import com.npe.youji.model.shop.DataShopItemModel;
+
 
 public class DetailShop extends AppCompatActivity {
     private CartOperations cartOperations;
@@ -26,7 +26,9 @@ public class DetailShop extends AppCompatActivity {
     private LinearLayout layoutCart;
     private long stok;
     private long id;
-
+    private String jsonString;
+    private Gson gson;
+    private DataShopItemModel dataItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,7 @@ public class DetailShop extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         cartOperations = new CartOperations(getApplicationContext());
         if (extra != null) {
-            try {
+            /*try {
                 id = extra.getLong("IDPRODUCT");
                 Log.d("IDPRODUCT", String.valueOf(id));
                 cartOperations.openDb();
@@ -63,7 +65,10 @@ public class DetailShop extends AppCompatActivity {
                 Log.d("SQL GET", "SUCCESS");
             } catch (SQLException e) {
                 Log.d("SQL ERROR", "ERROR GET");
-            }
+            }*/
+            jsonString = extra.getString("DATA");
+            gson = new Gson();
+            dataItem = gson.fromJson(jsonString, DataShopItemModel.class);
         }
 
 
@@ -73,7 +78,7 @@ public class DetailShop extends AppCompatActivity {
         btnAddtoCart.setVisibility(View.GONE);
         layoutCart.setVisibility(View.VISIBLE);
         btnCheckout.setVisibility(View.VISIBLE);
-        if(layoutCart.getVisibility() == View.VISIBLE){
+        if (layoutCart.getVisibility() == View.VISIBLE) {
 
         }
 
@@ -81,7 +86,6 @@ public class DetailShop extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-
         onBackPressed();
         return true;
     }

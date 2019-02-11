@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,12 +95,27 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 showLayoutCart(viewHolder, stokProduct);
             }
         });
+
+        viewHolder.lihat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                detailItem(data);
+            }
+        });
+    }
+
+    private void detailItem(DataShopItemModel data) {
+        gson = new Gson();
+        String json =  gson.toJson(data);
+        Intent intent = new Intent(context, DetailShop.class);
+        intent.putExtra("DATA", json);
+        context.startActivity(intent);
+
     }
 
     private void showLayoutCart(final ViewHolder viewHolder, final int stokProduct) {
         viewHolder.layoutCart.setVisibility(View.VISIBLE);
         viewHolder.beli.setVisibility(View.GONE);
-        viewHolder.lihat.setVisibility(View.VISIBLE);
         if(viewHolder.layoutCart.getVisibility() == View.VISIBLE){
             viewHolder.btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -123,7 +139,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                         quantity = 0;
                         viewHolder.layoutCart.setVisibility(View.GONE);
                         viewHolder.beli.setVisibility(View.VISIBLE);
-                        viewHolder.lihat.setVisibility(View.GONE);
                     } else {
                         TextView tvQuantity = viewHolder.textQuantity;
                         displayQuantity(quantity, tvQuantity);
@@ -145,7 +160,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView nama, harga, textQuantity;
-        Button beli, lihat;
+        Button beli;
+        CardView lihat;
         RelativeLayout layoutCart;
         ImageButton btnAdd, btnMinus;
         public ViewHolder(@NonNull View itemView) {
