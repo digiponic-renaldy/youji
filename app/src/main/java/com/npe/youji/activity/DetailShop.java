@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -36,6 +35,7 @@ public class DetailShop extends AppCompatActivity {
     //show data
     private TextView namaBarang, hargaBarang, descBarang;
     private ImageView imgBarang;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,15 +87,17 @@ public class DetailShop extends AppCompatActivity {
     }
 
     private void initData(DataShopItemModel dataItem) {
-        namaBarang.setText(String.valueOf(dataItem.getName()));
-        hargaBarang.setText("Rp "+String.valueOf(dataItem.getSell_price()));
-        descBarang.setText(String.valueOf(dataItem.getDescription()));
-        this.stok = dataItem.getStock();
-        //toolbar
-        Glide.with(this)
-                .load(dataItem.getImage())
-                .into(imgBarang);
-        getSupportActionBar().setTitle(dataItem.getName());
+        if (dataItem != null) {
+            namaBarang.setText(String.valueOf(dataItem.getName()));
+            hargaBarang.setText("Rp " + String.valueOf(dataItem.getSell_price()));
+            descBarang.setText(String.valueOf(dataItem.getDescription()));
+            this.stok = dataItem.getStock();
+            //toolbar
+            Glide.with(this)
+                    .load(dataItem.getImage())
+                    .into(imgBarang);
+            getSupportActionBar().setTitle(dataItem.getName());
+        }
 
     }
 
@@ -123,12 +125,12 @@ public class DetailShop extends AppCompatActivity {
 
     private void minusQuantity() {
         this.quantity = this.quantity - 1;
-        if(this.quantity <= 0){
+        if (this.quantity <= 0) {
             this.quantity = 0;
             layoutCart.setVisibility(View.GONE);
             btnCheckout.setVisibility(View.GONE);
             btnAddtoCart.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             String textQuantity = String.valueOf(this.quantity);
             displayQuantity(textQuantity);
         }
@@ -140,7 +142,7 @@ public class DetailShop extends AppCompatActivity {
 
     private void addQuantity() {
         this.quantity = this.quantity + 1;
-        if(this.quantity > stok){
+        if (this.quantity > stok) {
             btnAdd.setClickable(false);
         } else {
             String textQuantity = String.valueOf(this.quantity);

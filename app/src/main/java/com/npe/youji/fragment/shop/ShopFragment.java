@@ -1,6 +1,7 @@
 package com.npe.youji.fragment.shop;
 
 
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -16,12 +17,15 @@ import android.widget.RelativeLayout;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
+import com.npe.youji.model.dbsqlite.CartOperations;
+import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.DataShopItemModel;
 import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.DataCategory;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import at.markushi.ui.CircleButton;
 import retrofit2.Call;
@@ -41,6 +45,9 @@ public class ShopFragment extends Fragment {
     private ArrayList<DataCategory> dataCategories;
     private Retrofit retrofit;
     private ApiService service;
+    private CartOperations cartOperations;
+    private CartModel cartModel;
+    private List<CartModel> listCartModel;
 
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
@@ -59,10 +66,19 @@ public class ShopFragment extends Fragment {
         recyclerItem = v.findViewById(R.id.recycler_all_list_shop);
         recyclerCategory = v.findViewById(R.id.recycler_menu_shop);
         layoutBottomSheet = v.findViewById(R.id.bottom_sheet);
+
+        //sqlite
+        cartOperations = new CartOperations(getContext());
+        checkSqliDb();
+
+        //bottom sheet
         botomSheet = BottomSheetBehavior.from(layoutBottomSheet);
+        botomSheet.setHideable(false);
         btnFloatCheckout = v.findViewById(R.id.floatBtn_checkout);
 
 
+
+        //retrofit
         retrofit = NetworkClient.getRetrofitClient();
         service = retrofit.create(ApiService.class);
         getCategory();
@@ -107,11 +123,27 @@ public class ShopFragment extends Fragment {
         return v;
     }
 
+    private void checkSqliDb() {
+        try{
+            cartOperations.openDb();
+            listCartModel = cartOperations.getAllCart();
+            Log.d("LIST_CART",String.valueOf(listCartModel));
+            if(listCartModel.isEmpty()){
+                layoutBottomSheet.setVisibility(View.GONE);
+            }else {
+                layoutBottomSheet.setVisibility(View.VISIBLE);
+            }
+            cartOperations.closeDb();
+        } catch (SQLException e){
+            Log.d("ERROR SHOP FRAGMENT", e.getMessage() + " ERROR");
+        }
+    }
+
     private void expandSheetCollapse() {
         if (botomSheet.getState() != BottomSheetBehavior.STATE_EXPANDED) {
             botomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
         } else {
-            botomSheet.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            botomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 
@@ -169,5 +201,12 @@ public class ShopFragment extends Fragment {
         adapterItem = new AdapterShopItem(getContext(), dataItem);
         recyclerItem.setAdapter(adapterItem);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkSqliDb();
+    }
+
 
 }

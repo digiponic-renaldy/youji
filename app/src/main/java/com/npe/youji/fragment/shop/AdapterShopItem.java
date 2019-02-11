@@ -78,7 +78,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         viewHolder.beli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*try {
+                try {
                     cartOperations.openDb();
                     cartModel = cartOperations.insertCart(new CartModel(idProduct, namaProduct, stokProduct));
                     Intent intent = new Intent(context, DetailShop.class);
@@ -91,7 +91,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                     Log.d("SQL INSERT", "SUCCESS");
                 } catch (SQLException e){
                     Log.d("SQL ERROR", "ERROR");
-                }*/
+                }
                 showLayoutCart(viewHolder, stokProduct);
             }
         });
