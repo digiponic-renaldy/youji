@@ -81,13 +81,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 try {
                     cartOperations.openDb();
                     cartModel = cartOperations.insertCart(new CartModel(idProduct, namaProduct, stokProduct));
-                    Intent intent = new Intent(context, DetailShop.class);
-                    long id = cartModel.getIdcart();
-                    intent.putExtra("IDPRODUCT", id);
-                    Log.d("IDADAPTER", String.valueOf(id));
-
                     cartOperations.closeDb();
-                    context.startActivity(intent);
                     Log.d("SQL INSERT", "SUCCESS");
                 } catch (SQLException e){
                     Log.d("SQL ERROR", "ERROR");
