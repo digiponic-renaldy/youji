@@ -13,13 +13,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_IDPRODUCT = "idProduct";
     public static final String COLUMN_NAMEPRODUCT = "nameProduct";
     public static final String COLUMN_STOKPRODUCT = "stokProduct";
+    public static final String COLUMN_QUANTITY = "quantity";
 
     private static final String CREATE_TABLE =
             "CREATE TABLE "+ TABLE_CART + " ( "+
                     COLUMN_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_IDPRODUCT + " INTEGER NOT NULL, "+
                     COLUMN_NAMEPRODUCT + " TEXT NOT NULL ,"+
-                    COLUMN_STOKPRODUCT + " INTEGER NOT NULL )";
+                    COLUMN_STOKPRODUCT + " INTEGER NOT NULL,"+
+                    COLUMN_QUANTITY + " INTEGER NOT NULL)";
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -23,7 +23,8 @@ public class CartOperations {
             DatabaseHelper.COLUMN_ID,
             DatabaseHelper.COLUMN_IDPRODUCT,
             DatabaseHelper.COLUMN_NAMEPRODUCT,
-            DatabaseHelper.COLUMN_STOKPRODUCT
+            DatabaseHelper.COLUMN_STOKPRODUCT,
+            DatabaseHelper.COLUMN_QUANTITY
     };
 
     public CartOperations(Context context) {
@@ -46,6 +47,7 @@ public class CartOperations {
         values.put(DatabaseHelper.COLUMN_IDPRODUCT, carts.getIdProduct());
         values.put(DatabaseHelper.COLUMN_NAMEPRODUCT, carts.getNameProduct());
         values.put(DatabaseHelper.COLUMN_STOKPRODUCT, carts.getStokProduct());
+        values.put(DatabaseHelper.COLUMN_QUANTITY , carts.getQuantity());
         long insertId = sqLiteDatabase.insert(DatabaseHelper.TABLE_CART, null, values);
         carts.setIdcart(insertId);
         return carts;
@@ -70,7 +72,7 @@ public class CartOperations {
 
     //get single data cart
     public CartModel getCart(long id) {
-        Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_CART, allColumns, DatabaseHelper.COLUMN_ID
+        Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_CART, allColumns, DatabaseHelper.COLUMN_IDPRODUCT
                 + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -79,7 +81,8 @@ public class CartOperations {
                 Long.parseLong(cursor.getString(0)),
                 Long.parseLong(cursor.getString(1)),
                 cursor.getString(2),
-                Long.parseLong(cursor.getString(3)));
+                Long.parseLong(cursor.getString(3)),
+                Long.parseLong(cursor.getString(4)));
         // return Cart
         return e;
     }
@@ -97,6 +100,7 @@ public class CartOperations {
                 cart.setIdProduct(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCT)));
                 cart.setNameProduct(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAMEPRODUCT)));
                 cart.setStokProduct(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_STOKPRODUCT)));
+                cart.setQuantity(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY)));
                 carts.add(cart);
             }
         }
@@ -111,10 +115,11 @@ public class CartOperations {
         values.put(DatabaseHelper.COLUMN_IDPRODUCT, cart.getIdProduct());
         values.put(DatabaseHelper.COLUMN_NAMEPRODUCT, cart.getNameProduct());
         values.put(DatabaseHelper.COLUMN_STOKPRODUCT, cart.getStokProduct());
+        values.put(DatabaseHelper.COLUMN_QUANTITY,cart.getQuantity());
 
         // updating row
         return sqLiteDatabase.update(DatabaseHelper.TABLE_CART, values,
-                DatabaseHelper.COLUMN_ID + "=?", new String[]{String.valueOf(cart.getIdcart())});
+                DatabaseHelper.COLUMN_IDPRODUCT + "=?", new String[]{String.valueOf(cart.getIdcart())});
     }
 
     // Deleting Cart
