@@ -63,6 +63,7 @@
 
             <LinearLayout
                 android:visibility="gone"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/layout_addToCart_detailItem"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -74,8 +75,8 @@
                 <ImageButton
                     android:id="@+id/btn_minusCart_detailItem"
                     android:src="@drawable/icon_rouded_minus"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
 
                 <TextView
                     android:id="@+id/tv_jumlahBarang_detailItem"
@@ -90,8 +91,8 @@
                 <ImageButton
                     android:id="@+id/btn_addCart_detailItem"
                     android:src="@drawable/icon_rouded_add"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
 
             </LinearLayout>
 

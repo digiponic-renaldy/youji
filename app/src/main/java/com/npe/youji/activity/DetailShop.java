@@ -26,6 +26,7 @@ public class DetailShop extends AppCompatActivity {
     private LinearLayout layoutCart;
     private long stok;
     private long id;
+    private int quantity = 0;
     private String jsonString;
     private Gson gson;
     private DataShopItemModel dataItem;
@@ -79,9 +80,48 @@ public class DetailShop extends AppCompatActivity {
         layoutCart.setVisibility(View.VISIBLE);
         btnCheckout.setVisibility(View.VISIBLE);
         if (layoutCart.getVisibility() == View.VISIBLE) {
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addQuantity();
+                }
+            });
 
+            btnMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    minusQuantity();
+                }
+            });
         }
 
+    }
+
+    private void minusQuantity() {
+        this.quantity = this.quantity - 1;
+        if(this.quantity <= 0){
+            this.quantity = 0;
+            layoutCart.setVisibility(View.GONE);
+            btnCheckout.setVisibility(View.GONE);
+            btnAddtoCart.setVisibility(View.VISIBLE);
+        }else {
+            String textQuantity = String.valueOf(this.quantity);
+            displayQuantity(textQuantity);
+        }
+    }
+
+    private void displayQuantity(String textQuantity) {
+
+    }
+
+    private void addQuantity() {
+        this.quantity = this.quantity + 1;
+        if(this.quantity > stok){
+            btnAdd.setClickable(false);
+        } else {
+            String textQuantity = String.valueOf(this.quantity);
+            displayQuantity(textQuantity);
+        }
     }
 
     @Override
