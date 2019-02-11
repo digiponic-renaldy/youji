@@ -1,6 +1,5 @@
 package com.npe.youji.fragment.shop;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
@@ -25,7 +24,6 @@ import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.DataShopItemModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder> {
@@ -58,16 +56,16 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         final int stokProduct = data.stock;
 
 
-        try{
+        try {
             cartOperations.openDb();
             boolean check = cartOperations.checkRecordCart(idProduct);
-            if(check){
+            if (check) {
                 viewHolder.layoutCart.setVisibility(View.VISIBLE);
                 viewHolder.beli.setVisibility(View.GONE);
                 viewHolder.lihat.setVisibility(View.VISIBLE);
             }
             cartOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.d("SQL CHECK", "ERROR");
         }
         Glide.with(context)
@@ -80,13 +78,15 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             public void onClick(View v) {
                 try {
                     cartOperations.openDb();
-                    cartModel = cartOperations.insertCart(new CartModel(idProduct, namaProduct, stokProduct));
+                    cartModel = cartOperations.insertCart(new CartModel(idProduct, namaProduct, stokProduct, quantity));
                     cartOperations.closeDb();
+                    //cart model
+                    cartModel = new CartModel(idProduct, namaProduct, stokProduct, quantity);
                     Log.d("SQL INSERT", "SUCCESS");
-                } catch (SQLException e){
+                } catch (SQLException e) {
                     Log.d("SQL ERROR", "ERROR");
                 }
-                showLayoutCart(viewHolder, stokProduct);
+                showLayoutCart(viewHolder, stokProduct, idProduct);
             }
         });
 
@@ -100,27 +100,27 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     private void detailItem(DataShopItemModel data) {
         gson = new Gson();
-        String json =  gson.toJson(data);
+        String json = gson.toJson(data);
         Intent intent = new Intent(context, DetailShop.class);
         intent.putExtra("DATA", json);
         context.startActivity(intent);
 
     }
 
-    private void showLayoutCart(final ViewHolder viewHolder, final int stokProduct) {
+    private void showLayoutCart(final ViewHolder viewHolder, final int stokProduct, final int idProduct) {
         viewHolder.layoutCart.setVisibility(View.VISIBLE);
         viewHolder.beli.setVisibility(View.GONE);
-        if(viewHolder.layoutCart.getVisibility() == View.VISIBLE){
+        if (viewHolder.layoutCart.getVisibility() == View.VISIBLE) {
             viewHolder.btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     quantity = quantity + 1;
-                    if(quantity > stokProduct){
+                    if (quantity > stokProduct) {
                         viewHolder.btnAdd.setClickable(false);
 
                     } else {
                         TextView tvQuantity = viewHolder.textQuantity;
-                        displayQuantity(quantity,tvQuantity);
+                        displayQuantity(quantity, tvQuantity);
                     }
                 }
             });
@@ -129,8 +129,16 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 @Override
                 public void onClick(View v) {
                     quantity = quantity - 1;
-                    if(quantity <= 0){
+                    if (quantity <= 0) {
                         quantity = 0;
+                        try {
+                            cartOperations.openDb();
+                            cartOperations.deleteRow(String.valueOf(idProduct));
+                            cartOperations.closeDb();
+                            Log.d("DELETE ROW","SUCCESS");
+                        } catch (SQLException e) {
+                            Log.d("DELETE ERROR", "ERROR " + e.getMessage());
+                        }
                         viewHolder.layoutCart.setVisibility(View.GONE);
                         viewHolder.beli.setVisibility(View.VISIBLE);
                     } else {
@@ -143,6 +151,14 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     private void displayQuantity(int quantity, TextView textQuantity) {
+        try {
+            cartOperations.openDb();
+            cartOperations.updateCart(new CartModel(cartModel.getIdProduct(), cartModel.getNameProduct(), cartModel.getStokProduct(), quantity));
+            cartOperations.closeDb();
+            Log.d("UPDATE SUCCES", "SUCCESS");
+        }catch (SQLException e){
+            Log.d("UPDATE ERROR", "ERROR "+e.getMessage());
+        }
         textQuantity.setText(String.valueOf(quantity));
     }
 
@@ -151,13 +167,14 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView nama, harga, textQuantity;
         Button beli;
         CardView lihat;
         RelativeLayout layoutCart;
         ImageButton btnAdd, btnMinus;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

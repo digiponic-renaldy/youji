@@ -125,7 +125,11 @@ public class CartOperations {
     // Deleting Cart
     public void removeCart(CartModel cartModel) {
 
-        sqLiteDatabase.delete(DatabaseHelper.TABLE_CART, DatabaseHelper.COLUMN_ID + "=" + cartModel.getIdcart(), null);
+        sqLiteDatabase.delete(DatabaseHelper.TABLE_CART, DatabaseHelper.COLUMN_IDPRODUCT + "=" + cartModel.getIdcart(), null);
     }
 
+    //deltering spesific row
+    public void deleteRow(String idProduct){
+        sqLiteDatabase.execSQL("DELETE FROM "+DatabaseHelper.TABLE_CART+" WHERE "+ DatabaseHelper.COLUMN_IDPRODUCT + "=" + idProduct);
+    }
 }
