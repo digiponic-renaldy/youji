@@ -6,9 +6,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.npe.youji.R;
 import com.npe.youji.model.dbsqlite.CartOperations;
@@ -30,6 +33,9 @@ public class DetailShop extends AppCompatActivity {
     private String jsonString;
     private Gson gson;
     private DataShopItemModel dataItem;
+    //show data
+    private TextView namaBarang, hargaBarang, descBarang;
+    private ImageView imgBarang;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,10 @@ public class DetailShop extends AppCompatActivity {
         btnAdd = findViewById(R.id.btn_addCart_detailItem);
         btnMinus = findViewById(R.id.btn_minusCart_detailItem);
         textQuantity = findViewById(R.id.tv_jumlahBarang_detailItem);
+        namaBarang = findViewById(R.id.tv_namaBarang_detailBarang);
+        hargaBarang = findViewById(R.id.tv_hargaBarang_detailBarang);
+        descBarang = findViewById(R.id.tv_desc_detailBarang);
+        imgBarang = findViewById(R.id.imgToolbar);
 
         btnAddtoCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +80,22 @@ public class DetailShop extends AppCompatActivity {
             jsonString = extra.getString("DATA");
             gson = new Gson();
             dataItem = gson.fromJson(jsonString, DataShopItemModel.class);
+            initData(dataItem);
         }
 
+
+    }
+
+    private void initData(DataShopItemModel dataItem) {
+        namaBarang.setText(String.valueOf(dataItem.getName()));
+        hargaBarang.setText("Rp "+String.valueOf(dataItem.getSell_price()));
+        descBarang.setText(String.valueOf(dataItem.getDescription()));
+        this.stok = dataItem.getStock();
+        //toolbar
+        Glide.with(this)
+                .load(dataItem.getImage())
+                .into(imgBarang);
+        getSupportActionBar().setTitle(dataItem.getName());
 
     }
 
@@ -110,8 +134,8 @@ public class DetailShop extends AppCompatActivity {
         }
     }
 
-    private void displayQuantity(String textQuantity) {
-
+    private void displayQuantity(String Quantity) {
+        textQuantity.setText(Quantity);
     }
 
     private void addQuantity() {

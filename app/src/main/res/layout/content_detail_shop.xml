@@ -35,6 +35,12 @@
                 android:layout_below="@id/tv_namaBarang_detailBarang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_below="@id/tv_hargaBarang_detailBarang"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:text="/ 1 pack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btn_addToCart_detailItem"
@@ -46,6 +52,7 @@
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="50dp"
+                android:layout_marginRight="20dp"
                 android:layout_alignParentEnd="true"/>
 
             <Button
@@ -58,11 +65,13 @@
                 android:background="@color/colorGreenSoft"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
+                android:layout_marginRight="20dp"
                 android:layout_alignBottom="@id/tv_category_detailBarang"
                 android:layout_alignParentEnd="true"/>
 
             <LinearLayout
                 android:visibility="gone"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/layout_addToCart_detailItem"
                 android:gravity="center_vertical"
@@ -75,8 +84,8 @@
                 <ImageButton
                     android:id="@+id/btn_minusCart_detailItem"
                     android:src="@drawable/icon_rouded_minus"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
 
                 <TextView
                     android:id="@+id/tv_jumlahBarang_detailItem"
@@ -91,8 +100,8 @@
                 <ImageButton
                     android:id="@+id/btn_addCart_detailItem"
                     android:src="@drawable/icon_rouded_add"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
 
             </LinearLayout>
 
@@ -104,7 +113,7 @@
                 android:textColor="@color/colorWhite"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:text="@string/category"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:layout_below="@id/tv_hargaBarang_detailBarang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
