@@ -57,12 +57,7 @@ public class DetailShop extends AppCompatActivity {
         descBarang = findViewById(R.id.tv_desc_detailBarang);
         imgBarang = findViewById(R.id.imgToolbar);
 
-        btnAddtoCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLayoutCart();
-            }
-        });
+
 
         Bundle extra = getIntent().getExtras();
         cartOperations = new CartOperations(getApplicationContext());
@@ -72,19 +67,37 @@ public class DetailShop extends AppCompatActivity {
             dataItem = gson.fromJson(jsonString, DataShopItemModel.class);
             //sql check
             if (chekSql(dataItem.id)) {
-                try {
-                    cartOperations.openDb();
-                    cartModel = cartOperations.getCart(dataItem.id);
-                    cartOperations.closeDb();
-                    Log.d("DATA_CART _MODEL", String.valueOf(cartModel));
-                    showLayoutCart();
-                    displayQuantity(String.valueOf(cartModel.getQuantity()));
-                } catch (SQLException e) {
-                    Log.d("ERROR_GET_QUANTITY", e.getMessage() + " ERROR");
-                }
+                cartModel = getDataCart(dataItem.getId());
             }
             initData(dataItem);
         }
+
+        btnAddtoCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLayoutCart();
+            }
+        });
+    }
+
+    private CartModel getDataCart(int id) {
+        CartModel carts = null;
+        try {
+            cartOperations.openDb();
+            carts = cartOperations.getCart(id);
+            cartOperations.closeDb();
+            Log.d("DATA_CART_MODEL", String.valueOf(carts));
+            //show layout & display quantity
+            showLayoutCart();
+            displayDataExist(carts.getQuantity());
+        } catch (SQLException e) {
+            Log.d("ERROR_GET_QUANTITY", e.getMessage() + " ERROR");
+        }
+        return carts;
+    }
+
+    private void displayDataExist(long quantity) {
+        textQuantity.setText(String.valueOf(quantity));
     }
 
     private Boolean chekSql(int id) {
@@ -118,6 +131,7 @@ public class DetailShop extends AppCompatActivity {
         btnAddtoCart.setVisibility(View.GONE);
         layoutCart.setVisibility(View.VISIBLE);
         btnCheckout.setVisibility(View.VISIBLE);
+        displayQuantity("1");
         if (layoutCart.getVisibility() == View.VISIBLE) {
             btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,6 +157,7 @@ public class DetailShop extends AppCompatActivity {
             layoutCart.setVisibility(View.GONE);
             btnCheckout.setVisibility(View.GONE);
             btnAddtoCart.setVisibility(View.VISIBLE);
+            //delete row
             deleteCart(cartModel.getIdProduct());
         } else {
             String textQuantity = String.valueOf(this.quantity);
@@ -163,31 +178,39 @@ public class DetailShop extends AppCompatActivity {
 
     private void displayQuantity(String Quantity) {
         if (chekSql(dataItem.getId())) {
-            updateRowCart();
+            Log.i("ID PRODUCT", String.valueOf(dataItem.getId()));
+            Log.i("UPDATE BARANG","MASUK");
+            Log.i("QUANTITY_ADD", Quantity);
+            //upudate
+            updateRowCart(Integer.parseInt(Quantity));
         } else {
-            insertRowCart(Quantity);
+            Log.i("INSERT BARANG","MASUK");
+            //insert
+            insertRowCart(Long.parseLong(Quantity));
         }
         textQuantity.setText(Quantity);
     }
 
-    private void insertRowCart(String quantity) {
-        try{
+    private void insertRowCart(Long quantity) {
+        try {
             cartOperations.openDb();
-            cartModel = new CartModel(dataItem.getId(), dataItem.getName(), dataItem.getStock(), Long.parseLong(quantity));
-            cartOperations.insertCart(cartModel);
+            //quantity 1
+            CartModel cart = new CartModel(dataItem.getId(), dataItem.getName(), dataItem.getStock(), quantity);
+            cartOperations.insertCart(cart);
             cartOperations.closeDb();
             Log.d("INSERT ROW CART DETAIL", "SUCCESS");
-        }catch (SQLException e){
-            Log.d("ERROR INSERT ROW CART", "ERROR "+e.getMessage());
+        } catch (SQLException e) {
+            Log.d("ERROR INSERT ROW CART", "ERROR " + e.getMessage());
         }
     }
 
-    private void updateRowCart() {
+    private void updateRowCart(int quantity) {
         try {
             cartOperations.openDb();
-            cartOperations.updateCart(cartModel);
+            CartModel carts = new CartModel(dataItem.getId(), dataItem.getName(), dataItem.getStock(), quantity);
+            cartOperations.updateCart(carts);
             cartOperations.closeDb();
-            Log.d("SUCCESS UPDATE","SUCCESS");
+            Log.d("SUCCESS UPDATE", "SUCCESS");
         } catch (SQLException e) {
             Log.d("ERROR UPDATE ROW CART", "ERROR " + e.getMessage());
         }
