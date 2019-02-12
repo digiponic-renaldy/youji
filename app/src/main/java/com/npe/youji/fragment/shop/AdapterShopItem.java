@@ -52,22 +52,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final DataShopItemModel data = items.get(i);
         final int idProduct = data.id;
-        final String namaProduct = data.name;
-        final int stokProduct = data.stock;
 
-
-        try {
-            cartOperations.openDb();
-            boolean check = cartOperations.checkRecordCart(idProduct);
-            if (check) {
-                viewHolder.layoutCart.setVisibility(View.VISIBLE);
-                viewHolder.beli.setVisibility(View.GONE);
-                viewHolder.lihat.setVisibility(View.VISIBLE);
-            }
-            cartOperations.closeDb();
-        } catch (SQLException e) {
-            Log.d("SQL CHECK", "ERROR");
+        if (checkRecordDb(idProduct)) {
+            showLayoutCart(viewHolder, data);
         }
+
         Glide.with(context)
                 .load(data.image)
                 .into(viewHolder.imageView);
@@ -76,17 +65,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         viewHolder.beli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    cartOperations.openDb();
-                    cartModel = cartOperations.insertCart(new CartModel(idProduct, namaProduct, stokProduct, quantity));
-                    cartOperations.closeDb();
-                    //cart model
-                    cartModel = new CartModel(idProduct, namaProduct, stokProduct, quantity);
-                    Log.d("SQL INSERT", "SUCCESS");
-                } catch (SQLException e) {
-                    Log.d("SQL ERROR", "ERROR");
-                }
-                showLayoutCart(viewHolder, stokProduct, idProduct);
+                showLayoutCart(viewHolder, data);
             }
         });
 
@@ -98,6 +77,19 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         });
     }
 
+    private Boolean checkRecordDb(int idProduct) {
+        boolean check = false;
+        try {
+            cartOperations.openDb();
+            check = cartOperations.checkRecordCart(idProduct);
+            cartOperations.closeDb();
+            Log.d("SQL CHECK ADAPTER", "SUCCESS");
+        } catch (SQLException e) {
+            Log.d("SQL CHECK", "ERROR");
+        }
+        return check;
+    }
+
     private void detailItem(DataShopItemModel data) {
         gson = new Gson();
         String json = gson.toJson(data);
@@ -107,7 +99,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     }
 
-    private void showLayoutCart(final ViewHolder viewHolder, final int stokProduct, final int idProduct) {
+    private void showLayoutCart(final ViewHolder viewHolder, final DataShopItemModel data) {
         viewHolder.layoutCart.setVisibility(View.VISIBLE);
         viewHolder.beli.setVisibility(View.GONE);
         if (viewHolder.layoutCart.getVisibility() == View.VISIBLE) {
@@ -115,12 +107,14 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 @Override
                 public void onClick(View v) {
                     quantity = quantity + 1;
-                    if (quantity > stokProduct) {
+                    if (quantity > data.getStock()) {
                         viewHolder.btnAdd.setClickable(false);
-
                     } else {
-                        TextView tvQuantity = viewHolder.textQuantity;
-                        displayQuantity(quantity, tvQuantity);
+                        if (checkRecordDb(data.getId())) {
+                            displayQuantityAndUpdate(quantity, viewHolder.textQuantity, data);
+                        } else {
+                            displayQuantityAndInsert(quantity, viewHolder.textQuantity, data);
+                        }
                     }
                 }
             });
@@ -131,33 +125,53 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                     quantity = quantity - 1;
                     if (quantity <= 0) {
                         quantity = 0;
-                        try {
-                            cartOperations.openDb();
-                            cartOperations.deleteRow(String.valueOf(idProduct));
-                            cartOperations.closeDb();
-                            Log.d("DELETE ROW","SUCCESS");
-                        } catch (SQLException e) {
-                            Log.d("DELETE ERROR", "ERROR " + e.getMessage());
-                        }
+                        deleteRowCart(data.getId());
                         viewHolder.layoutCart.setVisibility(View.GONE);
                         viewHolder.beli.setVisibility(View.VISIBLE);
                     } else {
-                        TextView tvQuantity = viewHolder.textQuantity;
-                        displayQuantity(quantity, tvQuantity);
+                        if (checkRecordDb(data.getId())) {
+                            displayQuantityAndUpdate(quantity, viewHolder.textQuantity, data);
+                        } else {
+                            displayQuantityAndInsert(quantity, viewHolder.textQuantity, data);
+                        }
                     }
                 }
             });
         }
     }
 
-    private void displayQuantity(int quantity, TextView textQuantity) {
+    private void deleteRowCart(int id) {
         try {
             cartOperations.openDb();
-            cartOperations.updateCart(new CartModel(cartModel.getIdProduct(), cartModel.getNameProduct(), cartModel.getStokProduct(), quantity));
+            cartOperations.deleteRow(String.valueOf(id));
             cartOperations.closeDb();
-            Log.d("UPDATE SUCCES", "SUCCESS");
-        }catch (SQLException e){
-            Log.d("UPDATE ERROR", "ERROR "+e.getMessage());
+            Log.d("DELETE_ROW_ADAPTER", "SUCCESS");
+        } catch (SQLException e) {
+            Log.d("DELETE_ERROR_ADAPTER", "ERROR " + e.getMessage());
+        }
+    }
+
+    private void displayQuantityAndUpdate(int quantity, TextView textQuantity, DataShopItemModel data) {
+        try {
+            cartOperations.openDb();
+            CartModel carts = new CartModel(data.getId(), data.getName(), data.getStock(), quantity);
+            cartOperations.updateCart(carts);
+            cartOperations.closeDb();
+            Log.d("SQL_UPDATE_ADAPTER", "SUCCESS");
+        } catch (SQLException e) {
+            Log.d("SQL UPDATE ADAPTER", "ERROR " + e.getMessage());
+        }
+        textQuantity.setText(String.valueOf(quantity));
+    }
+
+    private void displayQuantityAndInsert(int quantity, TextView textQuantity, DataShopItemModel data) {
+        try{
+            cartOperations.openDb();
+            CartModel carts = new CartModel(data.getId(), data.getName(), data.getStock(), quantity);
+            cartOperations.insertCart(carts);
+            cartOperations.closeDb();
+        } catch (SQLException e){
+            Log.d("ERROR_INSERT_ADAPTER", "ERROR "+e.getMessage());
         }
         textQuantity.setText(String.valueOf(quantity));
     }

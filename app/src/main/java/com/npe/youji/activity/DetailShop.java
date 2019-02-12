@@ -72,14 +72,15 @@ public class DetailShop extends AppCompatActivity {
             dataItem = gson.fromJson(jsonString, DataShopItemModel.class);
             //sql check
             if (chekSql(dataItem.id)) {
-                showLayoutCart();
                 try {
                     cartOperations.openDb();
                     cartModel = cartOperations.getCart(dataItem.id);
                     cartOperations.closeDb();
+                    Log.d("DATA_CART _MODEL", String.valueOf(cartModel));
+                    showLayoutCart();
                     displayQuantity(String.valueOf(cartModel.getQuantity()));
                 } catch (SQLException e) {
-                    Log.d("ERROR GET QUANTITY", e.getMessage() + " ERROR");
+                    Log.d("ERROR_GET_QUANTITY", e.getMessage() + " ERROR");
                 }
             }
             initData(dataItem);
@@ -163,8 +164,22 @@ public class DetailShop extends AppCompatActivity {
     private void displayQuantity(String Quantity) {
         if (chekSql(dataItem.getId())) {
             updateRowCart();
+        } else {
+            insertRowCart(Quantity);
         }
         textQuantity.setText(Quantity);
+    }
+
+    private void insertRowCart(String quantity) {
+        try{
+            cartOperations.openDb();
+            cartModel = new CartModel(dataItem.getId(), dataItem.getName(), dataItem.getStock(), Long.parseLong(quantity));
+            cartOperations.insertCart(cartModel);
+            cartOperations.closeDb();
+            Log.d("INSERT ROW CART DETAIL", "SUCCESS");
+        }catch (SQLException e){
+            Log.d("ERROR INSERT ROW CART", "ERROR "+e.getMessage());
+        }
     }
 
     private void updateRowCart() {
