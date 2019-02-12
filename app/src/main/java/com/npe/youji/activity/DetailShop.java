@@ -1,8 +1,10 @@
 package com.npe.youji.activity;
 
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -65,25 +67,35 @@ public class DetailShop extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         cartOperations = new CartOperations(getApplicationContext());
         if (extra != null) {
-            /*try {
-                id = extra.getLong("IDPRODUCT");
-                Log.d("IDPRODUCT", String.valueOf(id));
-                cartOperations.openDb();
-                cartModel = cartOperations.getCart(id);
-                Log.d("SQL GET", String.valueOf(cartModel));
-                stok = cartModel.getStokProduct();
-                cartOperations.closeDb();
-                Log.d("SQL GET", "SUCCESS");
-            } catch (SQLException e) {
-                Log.d("SQL ERROR", "ERROR GET");
-            }*/
             jsonString = extra.getString("DATA");
             gson = new Gson();
             dataItem = gson.fromJson(jsonString, DataShopItemModel.class);
+            //sql check
+            if (chekSql(dataItem.id)) {
+                showLayoutCart();
+                try {
+                    cartOperations.openDb();
+                    cartModel = cartOperations.getCart(dataItem.id);
+                    cartOperations.closeDb();
+                    displayQuantity(String.valueOf(cartModel.getQuantity()));
+                } catch (SQLException e) {
+                    Log.d("ERROR GET QUANTITY", e.getMessage() + " ERROR");
+                }
+            }
             initData(dataItem);
         }
+    }
 
-
+    private Boolean chekSql(int id) {
+        boolean hasRecord = false;
+        try {
+            cartOperations.openDb();
+            hasRecord = cartOperations.checkRecordCart(id);
+            cartOperations.closeDb();
+        } catch (SQLException e) {
+            Log.d("ERROR SQL", e.getMessage() + " ERROR");
+        }
+        return hasRecord;
     }
 
     private void initData(DataShopItemModel dataItem) {
@@ -130,14 +142,40 @@ public class DetailShop extends AppCompatActivity {
             layoutCart.setVisibility(View.GONE);
             btnCheckout.setVisibility(View.GONE);
             btnAddtoCart.setVisibility(View.VISIBLE);
+            deleteCart(cartModel.getIdProduct());
         } else {
             String textQuantity = String.valueOf(this.quantity);
             displayQuantity(textQuantity);
         }
     }
 
+    private void deleteCart(long idProduct) {
+        try {
+            cartOperations.openDb();
+            cartOperations.deleteRow(String.valueOf(idProduct));
+            cartOperations.closeDb();
+            Log.d("SUCCESS DELETE ROW CART", "SUCCESS");
+        } catch (SQLException e) {
+            Log.d("ERROR DELETE CART", "ERROR " + e.getMessage());
+        }
+    }
+
     private void displayQuantity(String Quantity) {
+        if (chekSql(dataItem.getId())) {
+            updateRowCart();
+        }
         textQuantity.setText(Quantity);
+    }
+
+    private void updateRowCart() {
+        try {
+            cartOperations.openDb();
+            cartOperations.updateCart(cartModel);
+            cartOperations.closeDb();
+            Log.d("SUCCESS UPDATE","SUCCESS");
+        } catch (SQLException e) {
+            Log.d("ERROR UPDATE ROW CART", "ERROR " + e.getMessage());
+        }
     }
 
     private void addQuantity() {
