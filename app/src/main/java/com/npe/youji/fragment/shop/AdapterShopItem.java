@@ -31,14 +31,13 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private Context context;
     private List<DataShopItemModel> items;
     private Gson gson;
-    private CartOperations cartOperations;
-    private CartModel cartModel;
-    int quantity = 0;
-
+    Button btnBeli;
+    RelativeLayout layoutCart;
+    CartOperations cartOperations;
     public AdapterShopItem(Context context, List<DataShopItemModel> items) {
         this.context = context;
         this.items = items;
-        this.cartOperations = new CartOperations(context);
+        cartOperations = new CartOperations(context);
     }
 
     @NonNull
@@ -52,22 +51,21 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final DataShopItemModel data = items.get(i);
         final int idProduct = data.id;
-
-        if (checkRecordDb(idProduct)) {
-            showLayoutCart(viewHolder, data);
-        }
-
+        btnBeli = viewHolder.beli;
+        layoutCart = viewHolder.layoutCart;
         Glide.with(context)
                 .load(data.image)
                 .into(viewHolder.imageView);
         viewHolder.nama.setText(data.getName());
         viewHolder.harga.setText(String.valueOf(data.getSell_price()));
-        viewHolder.beli.setOnClickListener(new View.OnClickListener() {
+
+
+        /*viewHolder.beli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLayoutCart(viewHolder, data);
+
             }
-        });
+        });*/
 
         viewHolder.lihat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,18 +75,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         });
     }
 
-    private Boolean checkRecordDb(int idProduct) {
-        boolean check = false;
-        try {
-            cartOperations.openDb();
-            check = cartOperations.checkRecordCart(idProduct);
-            cartOperations.closeDb();
-            Log.d("SQL CHECK ADAPTER", "SUCCESS");
-        } catch (SQLException e) {
-            Log.d("SQL CHECK", "ERROR");
-        }
-        return check;
-    }
+
 
     private void detailItem(DataShopItemModel data) {
         gson = new Gson();
@@ -99,82 +86,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     }
 
-    private void showLayoutCart(final ViewHolder viewHolder, final DataShopItemModel data) {
-        viewHolder.layoutCart.setVisibility(View.VISIBLE);
-        viewHolder.beli.setVisibility(View.GONE);
-        if (viewHolder.layoutCart.getVisibility() == View.VISIBLE) {
-            viewHolder.btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    quantity = quantity + 1;
-                    if (quantity > data.getStock()) {
-                        viewHolder.btnAdd.setClickable(false);
-                    } else {
-                        if (checkRecordDb(data.getId())) {
-                            displayQuantityAndUpdate(quantity, viewHolder.textQuantity, data);
-                        } else {
-                            displayQuantityAndInsert(quantity, viewHolder.textQuantity, data);
-                        }
-                    }
-                }
-            });
 
-            viewHolder.btnMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    quantity = quantity - 1;
-                    if (quantity <= 0) {
-                        quantity = 0;
-                        deleteRowCart(data.getId());
-                        viewHolder.layoutCart.setVisibility(View.GONE);
-                        viewHolder.beli.setVisibility(View.VISIBLE);
-                    } else {
-                        if (checkRecordDb(data.getId())) {
-                            displayQuantityAndUpdate(quantity, viewHolder.textQuantity, data);
-                        } else {
-                            displayQuantityAndInsert(quantity, viewHolder.textQuantity, data);
-                        }
-                    }
-                }
-            });
-        }
-    }
 
-    private void deleteRowCart(int id) {
-        try {
-            cartOperations.openDb();
-            cartOperations.deleteRow(String.valueOf(id));
-            cartOperations.closeDb();
-            Log.d("DELETE_ROW_ADAPTER", "SUCCESS");
-        } catch (SQLException e) {
-            Log.d("DELETE_ERROR_ADAPTER", "ERROR " + e.getMessage());
-        }
-    }
-
-    private void displayQuantityAndUpdate(int quantity, TextView textQuantity, DataShopItemModel data) {
-        try {
-            cartOperations.openDb();
-            CartModel carts = new CartModel(data.getId(), data.getName(), data.getStock(), quantity);
-            cartOperations.updateCart(carts);
-            cartOperations.closeDb();
-            Log.d("SQL_UPDATE_ADAPTER", "SUCCESS");
-        } catch (SQLException e) {
-            Log.d("SQL UPDATE ADAPTER", "ERROR " + e.getMessage());
-        }
-        textQuantity.setText(String.valueOf(quantity));
-    }
-
-    private void displayQuantityAndInsert(int quantity, TextView textQuantity, DataShopItemModel data) {
-        try{
-            cartOperations.openDb();
-            CartModel carts = new CartModel(data.getId(), data.getName(), data.getStock(), quantity);
-            cartOperations.insertCart(carts);
-            cartOperations.closeDb();
-        } catch (SQLException e){
-            Log.d("ERROR_INSERT_ADAPTER", "ERROR "+e.getMessage());
-        }
-        textQuantity.setText(String.valueOf(quantity));
-    }
 
     @Override
     public int getItemCount() {

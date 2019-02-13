@@ -60,7 +60,7 @@ public class DetailShop extends AppCompatActivity {
         btnAddtoCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLayoutCart();
+               // showLayoutCart();
             }
         });
 
@@ -71,7 +71,7 @@ public class DetailShop extends AppCompatActivity {
             gson = new Gson();
             dataItem = gson.fromJson(jsonString, DataShopItemModel.class);
             //sql check
-            if (chekSql(dataItem.id)) {
+            /*if (chekSql(dataItem.id)) {
                 try {
                     cartOperations.openDb();
                     cartModel = cartOperations.getCart(dataItem.id);
@@ -82,12 +82,12 @@ public class DetailShop extends AppCompatActivity {
                 } catch (SQLException e) {
                     Log.d("ERROR_GET_QUANTITY", e.getMessage() + " ERROR");
                 }
-            }
+            }*/
             initData(dataItem);
         }
     }
 
-    private Boolean chekSql(int id) {
+    /*private Boolean chekSql(int id) {
         boolean hasRecord = false;
         try {
             cartOperations.openDb();
@@ -97,7 +97,7 @@ public class DetailShop extends AppCompatActivity {
             Log.d("ERROR SQL", e.getMessage() + " ERROR");
         }
         return hasRecord;
-    }
+    }*/
 
     private void initData(DataShopItemModel dataItem) {
         if (dataItem != null) {
@@ -114,7 +114,7 @@ public class DetailShop extends AppCompatActivity {
 
     }
 
-    private void showLayoutCart() {
+    /*private void showLayoutCart() {
         btnAddtoCart.setVisibility(View.GONE);
         layoutCart.setVisibility(View.VISIBLE);
         btnCheckout.setVisibility(View.VISIBLE);
@@ -159,18 +159,18 @@ public class DetailShop extends AppCompatActivity {
         } catch (SQLException e) {
             Log.d("ERROR DELETE CART", "ERROR " + e.getMessage());
         }
-    }
+    }*/
 
-    private void displayQuantity(String Quantity) {
+    /*private void displayQuantity(String Quantity) {
         if (chekSql(dataItem.getId())) {
             updateRowCart();
         } else {
             insertRowCart(Quantity);
         }
         textQuantity.setText(Quantity);
-    }
+    }*/
 
-    private void insertRowCart(String quantity) {
+    /*private void insertRowCart(String quantity) {
         try{
             cartOperations.openDb();
             cartModel = new CartModel(dataItem.getId(), dataItem.getName(), dataItem.getStock(), Long.parseLong(quantity));
@@ -191,9 +191,9 @@ public class DetailShop extends AppCompatActivity {
         } catch (SQLException e) {
             Log.d("ERROR UPDATE ROW CART", "ERROR " + e.getMessage());
         }
-    }
+    }*/
 
-    private void addQuantity() {
+    /*private void addQuantity() {
         this.quantity = this.quantity + 1;
         if (this.quantity > stok) {
             btnAdd.setClickable(false);
@@ -201,7 +201,7 @@ public class DetailShop extends AppCompatActivity {
             String textQuantity = String.valueOf(this.quantity);
             displayQuantity(textQuantity);
         }
-    }
+    }*/
 
     @Override
     public boolean onSupportNavigateUp() {

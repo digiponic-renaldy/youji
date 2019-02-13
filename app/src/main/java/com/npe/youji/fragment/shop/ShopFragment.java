@@ -18,8 +18,10 @@ import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.CartOperations;
+import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.DataShopItemModel;
+import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.DataCategory;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
@@ -46,7 +48,10 @@ public class ShopFragment extends Fragment {
     private Retrofit retrofit;
     private ApiService service;
     private CartOperations cartOperations;
+    private ShopOperations shopOperations;
+    private DataShopModel dataShopModel;
     private CartModel cartModel;
+    private ArrayList<DataShopModel> dataItemSql;
     private List<CartModel> listCartModel;
 
     BottomSheetBehavior botomSheet;
@@ -66,10 +71,8 @@ public class ShopFragment extends Fragment {
         recyclerItem = v.findViewById(R.id.recycler_all_list_shop);
         recyclerCategory = v.findViewById(R.id.recycler_menu_shop);
         layoutBottomSheet = v.findViewById(R.id.bottom_sheet);
-
-        //sqlite
+        shopOperations = new ShopOperations(getContext());
         cartOperations = new CartOperations(getContext());
-        checkSqliDb();
 
         //bottom sheet
         botomSheet = BottomSheetBehavior.from(layoutBottomSheet);
@@ -77,12 +80,12 @@ public class ShopFragment extends Fragment {
         btnFloatCheckout = v.findViewById(R.id.floatBtn_checkout);
 
 
-
         //retrofit
         retrofit = NetworkClient.getRetrofitClient();
         service = retrofit.create(ApiService.class);
         getCategory();
         getItemProduct();
+
         //float sheet
         btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,19 +126,18 @@ public class ShopFragment extends Fragment {
         return v;
     }
 
-    private void checkSqliDb() {
-        try{
-            cartOperations.openDb();
-            listCartModel = cartOperations.getAllCart();
-            Log.d("LIST_CART",String.valueOf(listCartModel));
-            if(listCartModel.isEmpty()){
-                layoutBottomSheet.setVisibility(View.GONE);
-            }else {
-                layoutBottomSheet.setVisibility(View.VISIBLE);
+    private void insertAllData(ArrayList<DataShopItemModel> dataItem) {
+        for (int i = 0; i < dataItem.size(); i++) {
+            dataShopModel = new DataShopModel(dataItem.get(i).getId(), dataItem.get(i).getName(), dataItem.get(i).getSell_price(),
+                    dataItem.get(i).getImage(), dataItem.get(i).getStock());
+            try {
+                shopOperations.openDb();
+                shopOperations.insertShop(dataShopModel);
+                shopOperations.closeDb();
+                Log.i("INSERT SQL", "SUCCESS");
+            } catch (SQLException e) {
+                Log.i("ERROR INSERT", e.getMessage() + " ERROR");
             }
-            cartOperations.closeDb();
-        } catch (SQLException e){
-            Log.d("ERROR SHOP FRAGMENT", e.getMessage() + " ERROR");
         }
     }
 
@@ -183,7 +185,17 @@ public class ShopFragment extends Fragment {
                     RootShopItemModel data = response.body();
                     if (data.getApi_message().equalsIgnoreCase("success")) {
                         dataItem = (ArrayList<DataShopItemModel>) data.getData();
-                        listItemShop(dataItem);
+                        insertAllData(dataItem);
+                        Log.i("dataItemGetItem", String.valueOf(dataItem.get(1).id));
+                        try {
+                            shopOperations.openDb();
+                            shopOperations.getAllShop();
+                            Log.d("DATASQL", String.valueOf(shopOperations.getAllShop()));
+                            shopOperations.closeDb();
+                        } catch (SQLException e) {
+                            Log.d("ERRORGETDATA", e.getMessage());
+                        }
+                        joinData();
                     }
                 }
             }
@@ -193,6 +205,16 @@ public class ShopFragment extends Fragment {
                 Log.d("FAILURE_PRODUCT", t.getMessage());
             }
         });
+    }
+
+    private void joinData() {
+        try {
+            shopOperations.openDb();
+            shopOperations.joinData();
+            shopOperations.closeDb();
+        } catch (SQLException e) {
+            Log.d("ERROR JOIN", e.getMessage());
+        }
     }
 
     private void listItemShop(ArrayList<DataShopItemModel> dataItem) {
@@ -205,7 +227,7 @@ public class ShopFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        checkSqliDb();
+        //checkSqliDb();
     }
 
 
