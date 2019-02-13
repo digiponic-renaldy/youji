@@ -22,6 +22,7 @@ import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.DataShopItemModel;
 import com.npe.youji.model.shop.DataShopModel;
+import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.DataCategory;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
@@ -187,15 +188,12 @@ public class ShopFragment extends Fragment {
                         dataItem = (ArrayList<DataShopItemModel>) data.getData();
                         insertAllData(dataItem);
                         Log.i("dataItemGetItem", String.valueOf(dataItem.get(1).id));
-                        try {
-                            shopOperations.openDb();
-                            shopOperations.getAllShop();
-                            Log.d("DATASQL", String.valueOf(shopOperations.getAllShop()));
-                            shopOperations.closeDb();
-                        } catch (SQLException e) {
-                            Log.d("ERRORGETDATA", e.getMessage());
-                        }
                         joinData();
+                       /* if(cartOperations.checkRecordCart()){
+                            joinData();
+                        } else {
+                            alertColumn();
+                        }*/
                     }
                 }
             }
@@ -207,17 +205,28 @@ public class ShopFragment extends Fragment {
         });
     }
 
+    private void alertColumn() {
+        try{
+            shopOperations.openDb();
+            shopOperations.alterColumn();
+            shopOperations.closeDb();
+        }catch (SQLException e){
+            Log.d("ERROR ALTER", e.getMessage());
+        }
+    }
+
     private void joinData() {
         try {
             shopOperations.openDb();
             shopOperations.joinData();
+            listItemShop(shopOperations.joinData());
             shopOperations.closeDb();
         } catch (SQLException e) {
             Log.d("ERROR JOIN", e.getMessage());
         }
     }
 
-    private void listItemShop(ArrayList<DataShopItemModel> dataItem) {
+    private void listItemShop(ArrayList<JoinModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
         recyclerItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         adapterItem = new AdapterShopItem(getContext(), dataItem);

@@ -49,9 +49,9 @@ public class CartOperations {
     }
 
     //check data
-   /* public Boolean checkRecordCart(long id){
-        String checkRecord = "SELECT * FROM "+ DatabaseHelper.TABLE_CART + " WHERE " + DatabaseHelper.COLUMN_IDPRODUCT + "=?";
-        Cursor cursor = sqLiteDatabase.rawQuery(checkRecord, new String[]{String.valueOf(id)});
+    public Boolean checkRecordCart(){
+        String checkRecord = "SELECT * FROM "+ DatabaseHelper.TABLE_CART;
+        Cursor cursor = sqLiteDatabase.rawQuery(checkRecord, null);
         boolean hasRecord = false;
         if (cursor.moveToFirst()){
             hasRecord = true;
@@ -63,7 +63,7 @@ public class CartOperations {
 
         cursor.close();
         return hasRecord;
-    }*/
+    }
 
     //get single data cart
     public CartModel getCart(long id) {

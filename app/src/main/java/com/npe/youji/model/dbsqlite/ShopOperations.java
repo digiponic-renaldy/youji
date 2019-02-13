@@ -3,7 +3,6 @@ package com.npe.youji.model.dbsqlite;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -110,43 +109,44 @@ public class ShopOperations {
     }
 
     //join data
-    public void joinData() {
+    public ArrayList<JoinModel> joinData() {
         String query = "SELECT S." + DatabaseHelper.COLUMN_IDPRODUCTSHOP + ",S." + DatabaseHelper.COLUMN_NAMEPRODUCT +
                 ",S." + DatabaseHelper.COLUMN_HARGAPRODUCT + ",S." + DatabaseHelper.COLUMN_IMAGEPRODUCT + ",S." +
                 DatabaseHelper.COLUMN_STOKPRODUCT +
                 ",C." + DatabaseHelper.COLUMN_QUANTITY +
-                " FROM " + DatabaseHelper.TABLE_SHOP + " as S JOIN " + DatabaseHelper.TABLE_CART + " as C ON S." +
+                " FROM " + DatabaseHelper.TABLE_SHOP + " as S LEFT OUTER JOIN " + DatabaseHelper.TABLE_CART + " as C ON S." +
                 DatabaseHelper.COLUMN_IDPRODUCTSHOP +
                 "= C." + DatabaseHelper.COLUMN_IDPRODUCTCART;
-        String query1 = "SELECT * FROM " + DatabaseHelper.TABLE_SHOP + " as S JOIN " + DatabaseHelper.TABLE_CART + " as C ON S." +
+        /*String query1 = "SELECT * FROM " + DatabaseHelper.TABLE_SHOP + " as S JOIN " + DatabaseHelper.TABLE_CART + " as C ON S." +
                 DatabaseHelper.COLUMN_IDPRODUCTSHOP +
-                "= C." + DatabaseHelper.COLUMN_IDPRODUCTCART;
+                "= C." + DatabaseHelper.COLUMN_IDPRODUCTCART;*/
 
-        try {
-            Cursor c = sqLiteDatabase.rawQuery(query1, null);
-            c.moveToFirst();
-            Log.i("QUERYJOIN", String.valueOf(query));
-            Log.i("QUERYJOIN1", String.valueOf(query1));
-            List<JoinModel> shop = new ArrayList<>();
-            if (c.getCount() > 0) {
-                Log.i("IFMASUK", "MASUK");
-                while (c.moveToNext()) {
-                    JoinModel cart = new JoinModel();
-                    Log.i("JOINID", String.valueOf(c.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCTSHOP)));
-                    cart.setIdproduk(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCTSHOP)));
-                    cart.setName(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_NAMEPRODUCT)));
-                    cart.setSell_price(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_HARGAPRODUCT)));
-                    cart.setImage(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_IMAGEPRODUCT)));
-                    cart.setStock(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_STOKPRODUCT)));
-                    cart.setQuantity(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY)));
-                    shop.add(cart);
-                }
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        c.moveToFirst();
+        Log.i("QUERYJOIN", String.valueOf(query));
+        ArrayList<JoinModel> shop = new ArrayList<>();
+        if (c.getCount() > 0) {
+            Log.i("IFMASUK", "MASUK");
+            while (c.moveToNext()) {
+                JoinModel cart = new JoinModel();
+                Log.i("JOINID", String.valueOf(c.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCTSHOP)));
+                cart.setIdproduk(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCTSHOP)));
+                cart.setName(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_NAMEPRODUCT)));
+                cart.setSell_price(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_HARGAPRODUCT)));
+                cart.setImage(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_IMAGEPRODUCT)));
+                cart.setStock(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_STOKPRODUCT)));
+                cart.setQuantity(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY)));
+                shop.add(cart);
             }
-            Log.i("JOINKU", String.valueOf(shop));
-        } catch (SQLException e) {
-            Log.d("ERROR_JOIN", e.getMessage());
         }
+        Log.i("JOINKU", String.valueOf(shop));
+        return shop;
+    }
 
+    //alter data
+    public void alterColumn() {
+        String query = "ALTER TABLE " + DatabaseHelper.TABLE_SHOP + " ADD " + DatabaseHelper.COLUMN_QUANTITY + " INTEGER DEFAULT 0";
+        sqLiteDatabase.rawQuery(query, null);
     }
 
     // Deleting Cart

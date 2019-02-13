@@ -23,18 +23,20 @@ import com.npe.youji.activity.DetailShop;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.DataShopItemModel;
+import com.npe.youji.model.shop.DataShopModel;
+import com.npe.youji.model.shop.JoinModel;
 
 import java.util.List;
 
 public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder> {
 
     private Context context;
-    private List<DataShopItemModel> items;
+    private List<JoinModel> items;
     private Gson gson;
     Button btnBeli;
     RelativeLayout layoutCart;
     CartOperations cartOperations;
-    public AdapterShopItem(Context context, List<DataShopItemModel> items) {
+    public AdapterShopItem(Context context, List<JoinModel> items) {
         this.context = context;
         this.items = items;
         cartOperations = new CartOperations(context);
@@ -49,12 +51,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        final DataShopItemModel data = items.get(i);
-        final int idProduct = data.id;
+        final JoinModel data = items.get(i);
         btnBeli = viewHolder.beli;
         layoutCart = viewHolder.layoutCart;
         Glide.with(context)
-                .load(data.image)
+                .load(data.getImage())
                 .into(viewHolder.imageView);
         viewHolder.nama.setText(data.getName());
         viewHolder.harga.setText(String.valueOf(data.getSell_price()));
@@ -66,13 +67,13 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
             }
         });*/
-
+/*
         viewHolder.lihat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 detailItem(data);
             }
-        });
+        });*/
     }
 
 
