@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
@@ -48,6 +51,7 @@ public class ShopFragment extends Fragment {
     private CartOperations cartOperations;
     private CartModel cartModel;
     private List<CartModel> listCartModel;
+    private DataShopItemModel data;
 
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
@@ -172,7 +176,6 @@ public class ShopFragment extends Fragment {
         recyclerCategory.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapterCategory = new AdapterCategory(getContext(), dataCategories);
         recyclerCategory.setAdapter(adapterCategory);
-
     }
 
     private void getItemProduct() {
@@ -195,11 +198,33 @@ public class ShopFragment extends Fragment {
         });
     }
 
-    private void listItemShop(ArrayList<DataShopItemModel> dataItem) {
+    private void listItemShop(final ArrayList<DataShopItemModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
         recyclerItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         adapterItem = new AdapterShopItem(getContext(), dataItem);
         recyclerItem.setAdapter(adapterItem);
+        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                detailItem(position);
+            }
+
+            @Override
+            public void onBeliClick(int position, ImageButton btnAdd, ImageButton btnMinus, Button beli,
+                                    TextView textQuantity, RelativeLayout layoutCart) {
+                showLayoutCart(position,btnAdd, btnMinus, beli, textQuantity, layoutCart);
+            }
+        });
+    }
+
+    private void showLayoutCart(int position, ImageButton btnAdd, ImageButton btnMinus,
+                                Button beli, TextView textQuantity, RelativeLayout layoutCart) {
+        adapterItem.showLayoutCart(position,btnAdd, btnMinus, beli, textQuantity, layoutCart);
+    }
+
+    private void detailItem(int position) {
+        data = dataItem.get(position);
+        adapterItem.detailItem(data);
     }
 
     @Override
