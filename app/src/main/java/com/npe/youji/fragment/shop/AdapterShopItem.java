@@ -33,6 +33,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private List<DataShopItemModel> items;
     private Gson gson;
     private CartOperations cartOperations;
+    int quantity = 0;
 
     public AdapterShopItem(Context context, List<DataShopItemModel> items) {
         this.context = context;
@@ -48,14 +49,15 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         final DataShopItemModel data = items.get(i);
         final int idProduct = data.id;
 
         if (checkRecordDb(idProduct)) {
             if (getDataCart(idProduct) != null) {
                 CartModel carts = getDataCart(idProduct);
-                showLayoutCart(viewHolder, data);
+                //this.quantity = (int) carts.getQuantity();
+                showLayoutCart(viewHolder, data, i);
                 Log.i("DATA RECORD", String.valueOf(carts));
                 displayIfExist(carts.getQuantity(), viewHolder.textQuantity);
             }
@@ -69,7 +71,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         viewHolder.beli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLayoutCart(viewHolder, data);
+                showLayoutCart(viewHolder, data, i);
             }
         });
 
@@ -82,7 +84,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     private void displayIfExist(long quantity, TextView textQuantity) {
-        Log.d("IFEXIST", "MASUK");
+        Log.i("IFEXIST", String.valueOf(quantity));
         textQuantity.setText(String.valueOf(quantity));
     }
 
@@ -108,7 +110,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     }
 
-    private void showLayoutCart(final ViewHolder viewHolder, final DataShopItemModel data) {
+    private void showLayoutCart(final ViewHolder viewHolder, final DataShopItemModel data, final int position) {
         viewHolder.layoutCart.setVisibility(View.VISIBLE);
         viewHolder.beli.setVisibility(View.GONE);
 
@@ -117,18 +119,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "ADD", Toast.LENGTH_SHORT).show();
-                    int quantity = 1;
                     quantity = quantity + 1;
                     if (quantity > data.getStock()) {
                         viewHolder.btnAdd.setClickable(false);
                     } else {
-                        if (checkRecordDb(data.getId())) {
-                            Log.i("ADD_UPDATE", "MASUK");
-                            displayQuantityAndUpdate(quantity, viewHolder, data.getId());
-                        } else {
-                            Log.i("ADD_INSERT", "MASUK");
-                            displayQuantityAndInsert(quantity, viewHolder, data);
-                        }
+                        displayIfExist(quantity, viewHolder.textQuantity);
                     }
                 }
             });
@@ -137,7 +132,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "MINUS", Toast.LENGTH_SHORT).show();
-                    int quantity = 1;
+
                     quantity = quantity - 1;
                     if (quantity <= 0) {
                         quantity = 0;
@@ -145,11 +140,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                         viewHolder.layoutCart.setVisibility(View.GONE);
                         viewHolder.beli.setVisibility(View.VISIBLE);
                     } else {
-                        if (checkRecordDb(data.getId())) {
-                            displayQuantityAndUpdate(quantity, viewHolder, data.getId());
-                        } else {
-                            displayQuantityAndInsert(quantity, viewHolder, data);
-                        }
+                        displayIfExist(quantity, viewHolder.textQuantity);
                     }
                 }
             });
@@ -167,11 +158,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         }
     }
 
-    private void displayQuantityAndUpdate(int quantity, ViewHolder viewHolder, int id) {
-        CartModel carts = getDataCart(id);
-        updateCart(carts, quantity);
-        viewHolder.textQuantity.setText(String.valueOf(quantity));
-    }
+
 
     private CartModel getDataCart(int id) {
         CartModel carts = null;
@@ -197,10 +184,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         }
     }
 
-    private void displayQuantityAndInsert(int quantity, ViewHolder viewHolder, DataShopItemModel data) {
-        insertDataCart(data, quantity);
-        viewHolder.textQuantity.setText(String.valueOf(quantity));
-    }
+
 
     private void insertDataCart(DataShopItemModel data, int quantity) {
         try {
@@ -239,6 +223,10 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             btnMinus = itemView.findViewById(R.id.btn_minusCart_adapter);
             textQuantity = itemView.findViewById(R.id.tv_jumlahBarang_adapter);
         }
+    }
+
+    public void refreshView(int position) {
+        notifyItemChanged(position);
     }
 
 }
