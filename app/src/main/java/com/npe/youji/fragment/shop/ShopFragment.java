@@ -189,11 +189,6 @@ public class ShopFragment extends Fragment {
                         insertAllData(dataItem);
                         Log.i("dataItemGetItem", String.valueOf(dataItem.get(1).id));
                         joinData();
-                       /* if(cartOperations.checkRecordCart()){
-                            joinData();
-                        } else {
-                            alertColumn();
-                        }*/
                     }
                 }
             }
@@ -205,20 +200,13 @@ public class ShopFragment extends Fragment {
         });
     }
 
-    private void alertColumn() {
-        try{
-            shopOperations.openDb();
-            shopOperations.alterColumn();
-            shopOperations.closeDb();
-        }catch (SQLException e){
-            Log.d("ERROR ALTER", e.getMessage());
-        }
-    }
+
 
     private void joinData() {
         try {
             shopOperations.openDb();
             shopOperations.joinData();
+            //insert to adapter
             listItemShop(shopOperations.joinData());
             shopOperations.closeDb();
         } catch (SQLException e) {
@@ -231,6 +219,12 @@ public class ShopFragment extends Fragment {
         recyclerItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         adapterItem = new AdapterShopItem(getContext(), dataItem);
         recyclerItem.setAdapter(adapterItem);
+        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
+            @Override
+            public void onItemCick(int position, JoinModel data) {
+                adapterItem.detailItem(data);
+            }
+        });
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.npe.youji.R;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.DataShopItemModel;
+import com.npe.youji.model.shop.JoinModel;
 
 
 public class DetailShop extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class DetailShop extends AppCompatActivity {
     private int quantity = 0;
     private String jsonString;
     private Gson gson;
-    private DataShopItemModel dataItem;
+    private JoinModel dataItem;
     //show data
     private TextView namaBarang, hargaBarang, descBarang;
     private ImageView imgBarang;
@@ -69,7 +70,7 @@ public class DetailShop extends AppCompatActivity {
         if (extra != null) {
             jsonString = extra.getString("DATA");
             gson = new Gson();
-            dataItem = gson.fromJson(jsonString, DataShopItemModel.class);
+            dataItem = gson.fromJson(jsonString, JoinModel.class);
             //sql check
             /*if (chekSql(dataItem.id)) {
                 try {
@@ -99,11 +100,11 @@ public class DetailShop extends AppCompatActivity {
         return hasRecord;
     }*/
 
-    private void initData(DataShopItemModel dataItem) {
+    private void initData(JoinModel dataItem) {
         if (dataItem != null) {
             namaBarang.setText(String.valueOf(dataItem.getName()));
             hargaBarang.setText("Rp " + String.valueOf(dataItem.getSell_price()));
-            descBarang.setText(String.valueOf(dataItem.getDescription()));
+            //descBarang.setText(String.valueOf(dataItem.getDescription()));
             this.stok = dataItem.getStock();
             //toolbar
             Glide.with(this)
