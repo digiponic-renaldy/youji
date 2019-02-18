@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -23,9 +22,6 @@ import com.npe.youji.R;
 import com.npe.youji.activity.DetailShop;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
-import com.npe.youji.model.shop.CartModel;
-import com.npe.youji.model.shop.DataShopItemModel;
-import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
 
 import java.util.ArrayList;
@@ -83,25 +79,53 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         }*/
         if(checkQuantity(i) > 0){
             Log.i("QuantityBarang", "LebihDari0");
-            showLayoutCart(viewHolder);
-        } else if(checkQuantity(i) == 0){
-            layoutBeli(viewHolder, i, data);
+            showLayoutCart(viewHolder, data);
         }
-    }
 
-    private void layoutBeli(final ViewHolder viewHolder, int i, JoinModel data) {
         viewHolder.beli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLayoutCart(viewHolder);
+                showLayoutCart(viewHolder, data);
+            }
+        });
+    }
+
+    private void layoutBeli(final ViewHolder viewHolder, int i, final JoinModel data) {
+        viewHolder.beli.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLayoutCart(viewHolder, data);
 
             }
         });
     }
 
-    private void showLayoutCart(ViewHolder viewHolder) {
+    private void showLayoutCart(final ViewHolder viewHolder, final JoinModel data) {
         viewHolder.layoutCart.setVisibility(View.VISIBLE);
         viewHolder.beli.setVisibility(View.GONE);
+        //add
+        viewHolder.btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCart(viewHolder, data);
+            }
+        });
+    }
+
+    private void addCart(ViewHolder viewHolder, JoinModel data)      {
+        //insert table cart and update table shop
+        String strQuantity = String.valueOf(viewHolder.textQuantity.getText());
+        int quantity = Integer.parseInt(strQuantity);
+        quantity = quantity + 1;
+        if(quantity > data.getStock()){
+            viewHolder.btnAdd.setVisibility(View.GONE);
+        } else {
+            displayText(quantity, viewHolder);
+        }
+    }
+
+    private void displayText(int quantity, ViewHolder viewHolder) {
+        viewHolder.textQuantity.setText(String.valueOf(quantity));
     }
 
     private int checkQuantity(int position) {
