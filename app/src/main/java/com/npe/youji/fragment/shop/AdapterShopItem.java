@@ -22,6 +22,7 @@ import com.npe.youji.R;
 import com.npe.youji.activity.DetailShop;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
+import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.JoinModel;
 
 import java.util.ArrayList;
@@ -35,16 +36,17 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private Gson gson;
     private OnItemClickListener mListener;
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemCick(int position, JoinModel data);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
     CartOperations cartOperations;
     ShopOperations shopOperations;
+
     public AdapterShopItem(Context context, List<JoinModel> items) {
         this.context = context;
         this.items = items;
@@ -56,11 +58,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shop_item, viewGroup, false);
-        return new ViewHolder(itemView,mListener);
+        return new ViewHolder(itemView, mListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         final JoinModel data = items.get(i);
         Glide.with(context)
                 .load(data.getImage())
@@ -77,71 +79,118 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         }catch (SQLException e){
             Log.i("IDjoinData", e.getMessage());
         }*/
-        if(checkQuantity(i) > 0){
+        if (checkQuantity(i) > 0) {
             Log.i("QuantityBarang", "LebihDari0");
-            showLayoutCart(viewHolder, data);
+            displayExist(viewHolder, i);
+            showLayoutCart(viewHolder, data, i);
         }
 
         viewHolder.beli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLayoutCart(viewHolder, data);
+                showLayoutCart(viewHolder, data, i);
             }
         });
     }
 
-    private void layoutBeli(final ViewHolder viewHolder, int i, final JoinModel data) {
-        viewHolder.beli.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLayoutCart(viewHolder, data);
-
-            }
-        });
+    private void displayExist(ViewHolder viewHolder, int i) {
+        viewHolder.textQuantity.setText(String.valueOf(checkQuantity(i)));
     }
 
-    private void showLayoutCart(final ViewHolder viewHolder, final JoinModel data) {
+    private void showLayoutCart(final ViewHolder viewHolder, final JoinModel data, final int position) {
         viewHolder.layoutCart.setVisibility(View.VISIBLE);
         viewHolder.beli.setVisibility(View.GONE);
+        //insert data to cart
+        if (checkQuantity(position) == 0) {
+            //Toast.makeText(context, "Check", Toast.LENGTH_SHORT).show();
+            insertFirst(position, 1);
+        }
         //add
         viewHolder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCart(viewHolder, data);
+                addCart(viewHolder, data, position);
             }
         });
     }
 
-    private void addCart(ViewHolder viewHolder, JoinModel data)      {
-        //insert table cart and update table shop
-        String strQuantity = String.valueOf(viewHolder.textQuantity.getText());
-        int quantity = Integer.parseInt(strQuantity);
-        quantity = quantity + 1;
-        if(quantity > data.getStock()){
-            viewHolder.btnAdd.setVisibility(View.GONE);
-        } else {
-            displayText(quantity, viewHolder);
+    private void insertFirst(int position, int quantity) {
+        try {
+            cartOperations.openDb();
+            CartModel carts = new CartModel(items.get(position).getIdproduk(), quantity);
+            cartOperations.insertCart(carts);
+            cartOperations.closeDb();
+            refreshView(position);
+        } catch (SQLException e) {
+            Log.i("UpdateSqlFirst", e.getMessage());
         }
     }
 
-    private void displayText(int quantity, ViewHolder viewHolder) {
-        viewHolder.textQuantity.setText(String.valueOf(quantity));
+    public void refreshView(int position) {
+        if (joinData()) {
+            notifyItemChanged(position);
+        }
+    }
+
+    private Boolean joinData() {
+        boolean join = false;
+        try {
+            shopOperations.openDb();
+            shopOperations.joinData();
+            //insert to adapter
+            join = true;
+            shopOperations.closeDb();
+        } catch (SQLException e) {
+            Log.d("ERROR JOIN", e.getMessage());
+        }
+        return false;
     }
 
     private int checkQuantity(int position) {
         int quantity = 0;
-        try{
+        try {
             shopOperations.openDb();
             quantity = shopOperations.joinData().get(position).getQuantity();
             Log.i("DataShop", String.valueOf(shopOperations.joinData().get(position).getQuantity()));
             shopOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("SqlException", e.getMessage());
         }
-
+        Log.i("QuantityCart", String.valueOf(quantity));
         return quantity;
     }
 
+    private void addCart(ViewHolder viewHolder, JoinModel data, int position) {
+        //insert table cart and update table shop
+        String strQuantity = String.valueOf(checkQuantity(position));
+        Log.i("StrQuantity", strQuantity);
+
+        int quantity = Integer.parseInt(strQuantity);
+        quantity = quantity + 1;
+        if (quantity > data.getStock()) {
+            viewHolder.btnAdd.setVisibility(View.GONE);
+        } else {
+            displayText(viewHolder, position, quantity);
+        }
+    }
+
+    private void displayText(ViewHolder viewHolder, int position, int quantity) {
+        updateQuantity(position,quantity);
+        viewHolder.textQuantity.setText(String.valueOf(checkQuantity(position)));
+        refreshView(position);
+    }
+
+    private void updateQuantity(int position, int quantity) {
+        try{
+            cartOperations.openDb();
+            CartModel cartModel = new CartModel(items.get(position).getIdproduk(), quantity);
+            cartOperations.updateCart(cartModel);
+            cartOperations.closeDb();
+            Log.i("SqlUpate","masuk");
+        } catch (SQLException e){
+            Log.i("ErrorSqlUpdate",e.getMessage());
+        }
+    }
 
     public void detailItem(JoinModel data) {
         gson = new Gson();
@@ -151,8 +200,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         context.startActivity(intent);
 
     }
-
-
 
 
     @Override
@@ -184,9 +231,9 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(listener != null){
+                    if (listener != null) {
                         int position = getAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             listener.onItemCick(position, items.get(position));
                         }
                     }
@@ -194,5 +241,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             });
         }
     }
+
 
 }

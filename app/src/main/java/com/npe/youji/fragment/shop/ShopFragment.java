@@ -129,16 +129,29 @@ public class ShopFragment extends Fragment {
 
     private void insertAllData(ArrayList<DataShopItemModel> dataItem) {
         for (int i = 0; i < dataItem.size(); i++) {
-            dataShopModel = new DataShopModel(dataItem.get(i).getId(), dataItem.get(i).getName(), dataItem.get(i).getSell_price(),
+            DataShopModel data = new DataShopModel(dataItem.get(i).getId(), dataItem.get(i).getName(), dataItem.get(i).getSell_price(),
                     dataItem.get(i).getImage(), dataItem.get(i).getStock());
             try {
                 shopOperations.openDb();
-                shopOperations.insertShop(dataShopModel);
+                shopOperations.insertShop(data);
                 shopOperations.closeDb();
-                Log.i("INSERT SQL", "SUCCESS");
+                Log.i("INSERTSQL", "SUCCESS");
             } catch (SQLException e) {
-                Log.i("ERROR INSERT", e.getMessage() + " ERROR");
+                Log.i("ERRORINSERT", e.getMessage() + " ERROR");
             }
+        }
+    }
+
+
+
+    public void checkIsiSqlShop(){
+        try{
+            shopOperations.openDb();
+            shopOperations.getAllShop();
+            Log.i("CheckAllDataShop", String.valueOf(shopOperations.getAllShop()));
+            shopOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("CheckErrorAll", e.getMessage());
         }
     }
 
@@ -186,8 +199,10 @@ public class ShopFragment extends Fragment {
                     RootShopItemModel data = response.body();
                     if (data.getApi_message().equalsIgnoreCase("success")) {
                         dataItem = (ArrayList<DataShopItemModel>) data.getData();
+                        //insert all data
                         insertAllData(dataItem);
                         Log.i("dataItemGetItem", String.valueOf(dataItem.get(1).id));
+                        checkIsiSqlShop();
                         joinData();
                     }
                 }
