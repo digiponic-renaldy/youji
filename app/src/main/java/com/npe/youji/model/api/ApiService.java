@@ -3,6 +3,7 @@ package com.npe.youji.model.api;
 import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
 import com.npe.youji.model.shop.menu.RootShopMenuModel;
+import com.npe.youji.model.user.RootUserModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,6 +20,6 @@ public interface ApiService {
     @GET("categories")
     Call<RootCategoryModel> listCategory();
 
-//    @POST("customers")
-//    Call<>
+    @POST("customers")
+    Call<RootUserModel> apiUser();
 }
