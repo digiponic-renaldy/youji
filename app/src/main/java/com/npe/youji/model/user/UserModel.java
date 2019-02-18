@@ -1,4 +1,4 @@
-package com.npe.youji.model;
+package com.npe.youji.model.user;
 
 public class UserModel {
     int id;

@@ -6,6 +6,7 @@ import com.npe.youji.model.shop.menu.RootShopMenuModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -17,4 +18,7 @@ public interface ApiService {
 
     @GET("categories")
     Call<RootCategoryModel> listCategory();
+
+//    @POST("customers")
+//    Call<>
 }

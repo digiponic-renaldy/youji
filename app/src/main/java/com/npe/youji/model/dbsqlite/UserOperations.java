@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.npe.youji.model.UserModel;
+import com.npe.youji.model.user.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
