@@ -43,7 +43,8 @@ public class CartOperations {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_IDPRODUCTCART, carts.getIdProduct());
         values.put(DatabaseHelper.COLUMN_QUANTITY , carts.getQuantity());
-        int insertId = (int) sqLiteDatabase.insert(DatabaseHelper.TABLE_CART, null, values);
+        int insertId = (int) sqLiteDatabase.insert(DatabaseHelper.TABLE_CART,
+                null, values);
         carts.setIdProduct(insertId);
         return carts;
     }
@@ -67,8 +68,10 @@ public class CartOperations {
 
     //get single data cart
     public CartModel getCart(long id) {
-        Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_CART, allColumns, DatabaseHelper.COLUMN_IDPRODUCTCART
-                + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_CART, allColumns,
+                DatabaseHelper.COLUMN_IDPRODUCTCART
+                + "=?", new String[]{String.valueOf(id)},
+                null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -82,14 +85,17 @@ public class CartOperations {
     //get list cart
     public List<CartModel> getAllCart() {
         Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_CART, allColumns,
-                null, null, null, null, null);
+                null, null, null, null,
+                null);
 
         List<CartModel> carts = new ArrayList<>();
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 CartModel cart = new CartModel();
-                cart.setIdProduct(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCTCART)));
-                cart.setQuantity(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY)));
+                cart.setIdProduct(cursor.getInt(
+                        cursor.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCTCART)));
+                cart.setQuantity(
+                        cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_QUANTITY)));
                 carts.add(cart);
             }
         }
