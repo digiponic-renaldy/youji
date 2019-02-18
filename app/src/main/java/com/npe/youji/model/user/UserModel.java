@@ -14,6 +14,11 @@ public class UserModel {
         this.email = email;
     }
 
+    public UserModel(String nama, String email) {
+        this.nama = nama;
+        this.email = email;
+    }
+
     public int getId() {
         return id;
     }

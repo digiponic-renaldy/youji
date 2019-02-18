@@ -1,23 +1,23 @@
 package com.npe.youji.model.user;
 
 public class RequestBodyUser {
-    String nama;
+    String name;
     String email;
 
     public RequestBodyUser() {
     }
 
     public RequestBodyUser(String nama, String email) {
-        this.nama = nama;
+        this.name = nama;
         this.email = email;
     }
 
     public String getNama() {
-        return nama;
+        return name;
     }
 
     public void setNama(String nama) {
-        this.nama = nama;
+        this.name = nama;
     }
 
     public String getEmail() {

@@ -50,10 +50,6 @@ public class ShopFragment extends Fragment {
     private ApiService service;
     private CartOperations cartOperations;
     private ShopOperations shopOperations;
-    private DataShopModel dataShopModel;
-    private CartModel cartModel;
-    private ArrayList<DataShopModel> dataItemSql;
-    private List<CartModel> listCartModel;
 
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
@@ -143,14 +139,13 @@ public class ShopFragment extends Fragment {
     }
 
 
-
-    public void checkIsiSqlShop(){
-        try{
+    public void checkIsiSqlShop() {
+        try {
             shopOperations.openDb();
             shopOperations.getAllShop();
             Log.i("CheckAllDataShop", String.valueOf(shopOperations.getAllShop()));
             shopOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("CheckErrorAll", e.getMessage());
         }
     }
@@ -214,7 +209,6 @@ public class ShopFragment extends Fragment {
             }
         });
     }
-
 
 
     private void joinData() {

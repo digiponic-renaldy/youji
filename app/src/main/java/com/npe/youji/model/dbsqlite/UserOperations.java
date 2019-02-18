@@ -40,7 +40,6 @@ public class UserOperations {
     //insert data user
     public UserModel insertUser(UserModel users) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_IDUSER, users.getId());
         values.put(DatabaseHelper.COLUMN_NAMAUSER, users.getNama());
         values.put(DatabaseHelper.COLUMN_EMAILUSER, users.getEmail());
 
@@ -107,7 +106,6 @@ public class UserOperations {
     public int updateuser(UserModel user) {
 
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_IDUSER, user.getId());
         values.put(DatabaseHelper.COLUMN_NAMAUSER, user.getNama());
         values.put(DatabaseHelper.COLUMN_EMAILUSER, user.getEmail());
 

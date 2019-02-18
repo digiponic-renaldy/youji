@@ -27,6 +27,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
+import com.npe.youji.model.api.ApiService;
+import com.npe.youji.model.api.NetworkClient;
+import com.npe.youji.model.dbsqlite.UserOperations;
+import com.npe.youji.model.user.DataUserModel;
+import com.npe.youji.model.user.RequestBodyUser;
+import com.npe.youji.model.user.RootUserModel;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +51,10 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private Button btnLoginGoogle;
+    private Retrofit retrofit;
+    private ApiService service;
+    private UserOperations userOperations;
+    List<DataUserModel> listUser;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -60,6 +77,11 @@ public class LoginFragment extends Fragment {
 
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         mAuth = FirebaseAuth.getInstance();
+
+        //retrofit
+        retrofit = NetworkClient.getRetrofitClient();
+        service = retrofit.create(ApiService.class);
+        userOperations = new UserOperations(getContext());
 
         btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +113,24 @@ public class LoginFragment extends Fragment {
     }
 
     private void updateUI(FirebaseUser user) {
+        RequestBodyUser bodyUser = new RequestBodyUser(user.getDisplayName().toString(), user.getEmail().toString());
+        service.apiUser(bodyUser).enqueue(new Callback<RootUserModel>() {
+            @Override
+            public void onResponse(Call<RootUserModel> call, Response<RootUserModel> response) {
+                RootUserModel data = response.body();
+                if(data != null){
+                    if(data.getApi_message().equalsIgnoreCase("success")){
+                        listUser = data.getData();
+                        Log.i("ApiCustomer", "Berhasil");
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<RootUserModel> call, Throwable t) {
+                Log.i("GagalApiCustomer", t.getMessage());
+            }
+        });
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
