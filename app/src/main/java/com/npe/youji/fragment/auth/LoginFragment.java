@@ -2,6 +2,7 @@ package com.npe.youji.fragment.auth;
 
 
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.user.DataUserModel;
 import com.npe.youji.model.user.RequestBodyUser;
 import com.npe.youji.model.user.RootUserModel;
+import com.npe.youji.model.user.UserModel;
 
 import java.util.List;
 
@@ -117,7 +119,10 @@ public class LoginFragment extends Fragment {
                 if(data != null){
                     if(data.getApi_message().equalsIgnoreCase("success")){
                         listUser = data.getData();
-                        Log.i("ApiCustomer", "Berhasil");
+                        if(insertDataUser(listUser)){
+                            toMain();
+                        }
+                        Log.i("listUser", String.valueOf(listUser.get(0).getEmail()));
                     }
                 }
             }
@@ -127,6 +132,21 @@ public class LoginFragment extends Fragment {
                 Log.i("GagalApiCustomer", t.getMessage());
             }
         });
+    }
+
+    private Boolean insertDataUser(List<DataUserModel> listUser) {
+        boolean cek = false;
+        try{
+            userOperations.openDb();
+            UserModel userModel = new UserModel(listUser.get(0).getId(), listUser.get(0).getName(), listUser.get(0).getEmail());
+            userOperations.insertUser(userModel);
+            cek = true;
+            userOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorInsertUser", e.getMessage());
+        }
+
+        return cek;
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -141,7 +161,7 @@ public class LoginFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             updateUI(user);
-                            toMain();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -154,7 +174,7 @@ public class LoginFragment extends Fragment {
 
     private void toMain() {
         Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

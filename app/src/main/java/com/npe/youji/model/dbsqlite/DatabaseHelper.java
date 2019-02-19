@@ -45,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLEUSER =
             "CREATE TABLE " + TABLE_USER + " ( " +
-                    COLUMN_IDUSER + " INTEGER UNIQUE NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_IDUSER + " INTEGER UNIQUE NOT NULL, " +
                     COLUMN_NAMAUSER + " TEXT NOT NULL, " +
                     COLUMN_EMAILUSER + " TEXT NOT NULL) " ;
 
