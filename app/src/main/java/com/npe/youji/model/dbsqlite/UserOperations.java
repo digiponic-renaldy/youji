@@ -123,6 +123,11 @@ public class UserOperations {
                 userModel.getId(), null);
     }
 
+    //drop table user
+    public void dropUser(){
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_USER);
+    }
+
     //deltering spesific row
     public void deleteRow(String id) {
         sqLiteDatabase.execSQL("DELETE FROM " + DatabaseHelper.TABLE_USER + " WHERE " + DatabaseHelper.COLUMN_IDUSER

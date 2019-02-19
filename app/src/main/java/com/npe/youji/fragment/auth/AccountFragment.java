@@ -2,9 +2,11 @@ package com.npe.youji.fragment.auth;
 
 
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +20,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
+import com.npe.youji.model.dbsqlite.UserOperations;
 
 public class AccountFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
+    private UserOperations userOperations;
     private Button btnLogout;
 
     public AccountFragment() {
@@ -44,6 +48,7 @@ public class AccountFragment extends Fragment {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         btnLogout = v.findViewById(R.id.btnLogout);
+        userOperations = new UserOperations(getContext());
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,9 +74,25 @@ public class AccountFragment extends Fragment {
     }
 
     private void toMain() {
-        Intent intent =new Intent(getActivity(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        if (deleteDataUserSql()) {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
+
+    private boolean deleteDataUserSql() {
+        boolean cek = false;
+        try {
+            userOperations.openDb();
+            userOperations.dropUser();
+            cek = true;
+            userOperations.closeDb();
+            Log.i("DeleteDataUser", "Berhasil");
+        } catch (SQLException e) {
+            Log.i("DeleteDataUser", e.getMessage());
+        }
+        return cek;
     }
 
     private void revokeAccess() {
