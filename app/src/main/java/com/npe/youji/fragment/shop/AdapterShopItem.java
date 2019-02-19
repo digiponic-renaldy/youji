@@ -70,15 +70,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         viewHolder.nama.setText(data.getName());
         viewHolder.harga.setText(String.valueOf(data.getSell_price()));
         //check quantity
-
-        //check id join
-        /*try{
-            shopOperations.openDb();
-            Log.i("IDjoinData", String.valueOf(shopOperations.joinData().get(i).getIdproduk()));
-            shopOperations.closeDb();
-        }catch (SQLException e){
-            Log.i("IDjoinData", e.getMessage());
-        }*/
         if (checkQuantity(i) > 0) {
             Log.i("QuantityBarang", "LebihDari0");
             displayExist(viewHolder, i);
@@ -112,6 +103,40 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 addCart(viewHolder, data, position);
             }
         });
+        //minus
+        viewHolder.btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                minusCart(viewHolder, data, position);
+            }
+        });
+    }
+
+    private void addCart(ViewHolder viewHolder, JoinModel data, int position) {
+        //insert table cart and update table shop
+        String strQuantity = String.valueOf(checkQuantity(position));
+        Log.i("StrQuantity", strQuantity);
+
+        int quantity = Integer.parseInt(strQuantity);
+        quantity = quantity + 1;
+        if (quantity > data.getStock()) {
+            viewHolder.btnAdd.setVisibility(View.GONE);
+        } else {
+            displayText(viewHolder, position, quantity);
+        }
+    }
+
+    private void minusCart(ViewHolder viewHolder, JoinModel data, int position) {
+        String strQuantity = String.valueOf(checkQuantity(position));
+        Log.i("StrQuantity", strQuantity);
+        int quantity = Integer.parseInt(strQuantity);
+        quantity = quantity - 1;
+        if (quantity <= 0) {
+            viewHolder.layoutCart.setVisibility(View.GONE);
+            viewHolder.beli.setVisibility(View.VISIBLE);
+        } else {
+            displayText(viewHolder, position, quantity);
+        }
     }
 
     private void insertFirst(int position, int quantity) {
@@ -160,35 +185,22 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         return quantity;
     }
 
-    private void addCart(ViewHolder viewHolder, JoinModel data, int position) {
-        //insert table cart and update table shop
-        String strQuantity = String.valueOf(checkQuantity(position));
-        Log.i("StrQuantity", strQuantity);
-
-        int quantity = Integer.parseInt(strQuantity);
-        quantity = quantity + 1;
-        if (quantity > data.getStock()) {
-            viewHolder.btnAdd.setVisibility(View.GONE);
-        } else {
-            displayText(viewHolder, position, quantity);
-        }
-    }
 
     private void displayText(ViewHolder viewHolder, int position, int quantity) {
-        updateQuantity(position,quantity);
+        updateQuantity(position, quantity);
         viewHolder.textQuantity.setText(String.valueOf(checkQuantity(position)));
         refreshView(position);
     }
 
     private void updateQuantity(int position, int quantity) {
-        try{
+        try {
             cartOperations.openDb();
             CartModel cartModel = new CartModel(items.get(position).getIdproduk(), quantity);
             cartOperations.updateCart(cartModel);
             cartOperations.closeDb();
-            Log.i("SqlUpate","masuk");
-        } catch (SQLException e){
-            Log.i("ErrorSqlUpdate",e.getMessage());
+            Log.i("SqlUpate", "masuk");
+        } catch (SQLException e) {
+            Log.i("ErrorSqlUpdate", e.getMessage());
         }
     }
 
