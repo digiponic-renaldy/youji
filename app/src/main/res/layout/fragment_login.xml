@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.LoginFragment">
+    tools:context=".fragment.auth.LoginFragment">
 
     <ImageView
         android:src="@drawable/logogalaksiorganik"

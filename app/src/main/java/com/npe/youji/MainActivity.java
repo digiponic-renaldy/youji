@@ -2,21 +2,15 @@ package com.npe.youji;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.npe.youji.fragment.LoginFragment;
+import com.npe.youji.fragment.auth.LoginFragment;
 import com.npe.youji.fragment.OrderFragment;
 import com.npe.youji.fragment.shop.ShopFragment;
-
-import at.markushi.ui.CircleButton;
 
 public class MainActivity extends AppCompatActivity {
 

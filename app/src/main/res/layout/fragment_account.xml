@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.auth.AccountFragment">
+
+    <android.support.v7.widget.CardView
+        app:cardUseCompatPadding="true"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgAccountUser"
+                android:src="@drawable/avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/colorGreenSoft"
+                    android:id="@+id/tvNamaProfile"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="Nama"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/tvEmailProfile"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:text="email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnVoucher"
+            android:drawableRight="@drawable/ic_arrow_kanan"
+            android:padding="10dp"
+            android:textAlignment="viewStart"
+            android:textAllCaps="true"
+            android:text="voucher"
+            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_marginTop="20dp"
+        app:cardUseCompatPadding="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btnPrivacy"
+                android:drawableRight="@drawable/ic_arrow_kanan"
+                android:padding="10dp"
+                android:textAlignment="viewStart"
+                android:background="@color/colorWhite"
+                android:textAllCaps="true"
+                android:text="privacy and policy"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+            <Button
+                android:id="@+id/btnHelp"
+                android:drawableRight="@drawable/ic_arrow_kanan"
+                android:padding="10dp"
+                android:textAlignment="viewStart"
+                android:background="@color/colorWhite"
+                android:textAllCaps="true"
+                android:text="help"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+            <Button
+                android:id="@+id/btnLogout"
+                android:textColor="@color/colorRed"
+                android:drawableRight="@drawable/ic_arrow_kanan"
+                android:padding="10dp"
+                android:textAlignment="viewStart"
+                android:background="@color/colorWhite"
+                android:textAllCaps="true"
+                android:text="logout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
