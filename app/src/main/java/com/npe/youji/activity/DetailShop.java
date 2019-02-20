@@ -75,7 +75,20 @@ public class DetailShop extends AppCompatActivity {
             gson = new Gson();
             dataItem = gson.fromJson(jsonString, JoinModel.class);
             initData(dataItem);
+            Log.i("DataItemDetailShop", String.valueOf(dataItem.getQuantity()));
         }
+
+        if(dataItem.getQuantity() > 0){
+            showLayoutCart();
+            displayIfexist();
+        }
+
+        btnAddtoCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLayoutCart();
+            }
+        });
 
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +97,87 @@ public class DetailShop extends AppCompatActivity {
                 toCheckout();
             }
         });
+    }
+
+    private void displayIfexist() {
+        textQuantity.setText(String.valueOf(dataItem.getQuantity()));
+    }
+
+    private void showLayoutCart() {
+        btnAddtoCart.setVisibility(View.GONE);
+        layoutCart.setVisibility(View.VISIBLE);
+        btnCheckout.setVisibility(View.VISIBLE);
+
+        if(dataItem.getQuantity() == 0){
+            insertFirst(1);
+        }
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addQuantity();
+            }
+        });
+        btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                minusQuantity();
+            }
+        });
+    }
+
+    private void insertFirst(int i) {
+        try{
+            cartOperations.openDb();
+            CartModel cartModel = new CartModel(dataItem.getIdproduk(), i);
+            cartOperations.insertCart(cartModel);
+            cartOperations.closeDb();
+            Log.i("InsertFirst","Masuk");
+        }catch (SQLException e){
+            Log.i("ErrorInsertFirst", e.getMessage());
+        }
+    }
+
+    private void minusQuantity() {
+        String strQuantity = String.valueOf(textQuantity.getText());
+        Log.i("STRquantityCheck", strQuantity);
+        int quantity = Integer.parseInt(strQuantity);
+        quantity = quantity - 1;
+        if(quantity <= 0){
+            layoutCart.setVisibility(View.GONE);
+            btnAddtoCart.setVisibility(View.VISIBLE);
+        } else {
+            displayText(quantity);
+        }
+    }
+
+    private void addQuantity() {
+        String strQuantity = String.valueOf(textQuantity.getText());
+        Log.i("STRquantityCheck", strQuantity);
+        int quantity = Integer.parseInt(strQuantity);
+        quantity = quantity + 1;
+        if(quantity > dataItem.getStock()){
+            btnAdd.setVisibility(View.GONE);
+        } else {
+            displayText(quantity);
+        }
+    }
+
+    private void displayText(int quantity) {
+        updateQuantity(quantity);
+        textQuantity.setText(String.valueOf(quantity));
+    }
+
+    private void updateQuantity(int quantity) {
+        try{
+            cartOperations.openDb();
+            CartModel cartModel = new CartModel(dataItem.getIdproduk(), quantity);
+            cartOperations.updateCart(cartModel);
+            cartOperations.closeDb();
+            Log.i("UpdateCartCheckout", "Masuk");
+        }catch (SQLException e){
+            Log.i("ErrorUpdateCart",e.getMessage());
+        }
     }
 
     private void toCheckout() {
