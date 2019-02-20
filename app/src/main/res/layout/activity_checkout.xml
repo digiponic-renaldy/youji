@@ -32,7 +32,6 @@
             </android.support.v7.widget.RecyclerView>
 
             <android.support.v7.widget.CardView
-                android:layout_marginTop="10dp"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="5dp"
                 app:cardUseCompatPadding="true"

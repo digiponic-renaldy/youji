@@ -19,13 +19,14 @@ import com.google.gson.Gson;
 import com.npe.youji.R;
 import com.npe.youji.activity.checkout.CheckoutActivity;
 import com.npe.youji.model.dbsqlite.CartOperations;
+import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.shop.CartModel;
-import com.npe.youji.model.shop.DataShopItemModel;
 import com.npe.youji.model.shop.JoinModel;
 
 
 public class DetailShop extends AppCompatActivity {
     private CartOperations cartOperations;
+    private UserOperations userOperations;
     private CartModel cartModel;
     private Button btnAddtoCart;
     private Button btnCheckout;
@@ -50,6 +51,7 @@ public class DetailShop extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //inisialisasi
+        userOperations = new UserOperations(getApplicationContext());
         btnAddtoCart = findViewById(R.id.btn_addToCart_detailItem);
         btnCheckout = findViewById(R.id.btn_checkout);
         layoutCart = findViewById(R.id.layout_addToCart_detailItem);
@@ -61,12 +63,6 @@ public class DetailShop extends AppCompatActivity {
         descBarang = findViewById(R.id.tv_desc_detailBarang);
         imgBarang = findViewById(R.id.imgToolbar);
 
-        btnAddtoCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // showLayoutCart();
-            }
-        });
 
         Bundle extra = getIntent().getExtras();
         cartOperations = new CartOperations(getApplicationContext());
@@ -78,7 +74,7 @@ public class DetailShop extends AppCompatActivity {
             Log.i("DataItemDetailShop", String.valueOf(dataItem.getQuantity()));
         }
 
-        if(dataItem.getQuantity() > 0){
+        if (dataItem.getQuantity() > 0) {
             showLayoutCart();
             displayIfexist();
         }
@@ -93,7 +89,6 @@ public class DetailShop extends AppCompatActivity {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
                 toCheckout();
             }
         });
@@ -108,7 +103,7 @@ public class DetailShop extends AppCompatActivity {
         layoutCart.setVisibility(View.VISIBLE);
         btnCheckout.setVisibility(View.VISIBLE);
 
-        if(dataItem.getQuantity() == 0){
+        if (dataItem.getQuantity() == 0) {
             insertFirst(1);
         }
 
@@ -127,13 +122,13 @@ public class DetailShop extends AppCompatActivity {
     }
 
     private void insertFirst(int i) {
-        try{
+        try {
             cartOperations.openDb();
             CartModel cartModel = new CartModel(dataItem.getIdproduk(), i);
             cartOperations.insertCart(cartModel);
             cartOperations.closeDb();
-            Log.i("InsertFirst","Masuk");
-        }catch (SQLException e){
+            Log.i("InsertFirst", "Masuk");
+        } catch (SQLException e) {
             Log.i("ErrorInsertFirst", e.getMessage());
         }
     }
@@ -143,7 +138,7 @@ public class DetailShop extends AppCompatActivity {
         Log.i("STRquantityCheck", strQuantity);
         int quantity = Integer.parseInt(strQuantity);
         quantity = quantity - 1;
-        if(quantity <= 0){
+        if (quantity <= 0) {
             layoutCart.setVisibility(View.GONE);
             btnAddtoCart.setVisibility(View.VISIBLE);
         } else {
@@ -156,7 +151,7 @@ public class DetailShop extends AppCompatActivity {
         Log.i("STRquantityCheck", strQuantity);
         int quantity = Integer.parseInt(strQuantity);
         quantity = quantity + 1;
-        if(quantity > dataItem.getStock()){
+        if (quantity > dataItem.getStock()) {
             btnAdd.setVisibility(View.GONE);
         } else {
             displayText(quantity);
@@ -169,21 +164,38 @@ public class DetailShop extends AppCompatActivity {
     }
 
     private void updateQuantity(int quantity) {
-        try{
+        try {
             cartOperations.openDb();
             CartModel cartModel = new CartModel(dataItem.getIdproduk(), quantity);
             cartOperations.updateCart(cartModel);
             cartOperations.closeDb();
             Log.i("UpdateCartCheckout", "Masuk");
-        }catch (SQLException e){
-            Log.i("ErrorUpdateCart",e.getMessage());
+        } catch (SQLException e) {
+            Log.i("ErrorUpdateCart", e.getMessage());
         }
     }
 
     private void toCheckout() {
-        Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        if (checkUser()) {
+            Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }else {
+            Toast.makeText(getApplicationContext(), "Login First", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkUser() {
+        boolean cek = false;
+        try{
+            userOperations.openDb();
+            cek = userOperations.checkRecordUser();
+            userOperations.closeDb();
+            Log.i("CheckUser", String.valueOf(cek));
+        }catch (SQLException e){
+            Log.i("ErrorCheckUser", e.getMessage());
+        }
+        return cek;
     }
 
     private void initData(JoinModel dataItem) {

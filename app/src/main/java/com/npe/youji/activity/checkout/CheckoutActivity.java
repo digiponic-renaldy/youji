@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.npe.youji.R;
 import com.npe.youji.model.dbsqlite.CartOperations;
@@ -25,6 +27,8 @@ public class CheckoutActivity extends AppCompatActivity {
     private AdapterCheckout adapter;
 
     private RecyclerView recyclerView;
+    TextView tvNamaUser,tvEmailUser, tvTanggal, tvSubtotal,tvDiskon, tvTotal;
+    EditText etAlamat, etNotelp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +38,21 @@ public class CheckoutActivity extends AppCompatActivity {
         userOperations = new UserOperations(getApplicationContext());
         cartOperations = new CartOperations(getApplicationContext());
         recyclerView = findViewById(R.id.recyclerCheckout);
+        tvNamaUser = findViewById(R.id.tvNamaUserCheckout);
+        tvEmailUser = findViewById(R.id.tvEmailUserCheckout);
+        tvTanggal = findViewById(R.id.tvTanggalCheckout);
+        tvSubtotal = findViewById(R.id.tvSubtotalCheckout);
+        tvDiskon = findViewById(R.id.tvDiskonCheckout);
+        tvTotal = findViewById(R.id.tvTotalCheckout);
+        etAlamat = findViewById(R.id.etAlamatPenerima);
+        etNotelp = findViewById(R.id.etNotelpPenerima);
 
-        //receycler
+        //data user
+
+
+        //receycler data
         joinData();
+
     }
 
     private void joinData() {
