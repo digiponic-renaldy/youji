@@ -56,7 +56,6 @@
                 android:layout_alignParentEnd="true"/>
 
             <Button
-                android:visibility="gone"
                 android:id="@+id/btn_checkout"
                 android:textStyle="bold"
                 android:textColor="@color/colorWhite"

@@ -1,5 +1,6 @@
 package com.npe.youji.activity;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +12,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.npe.youji.R;
+import com.npe.youji.activity.checkout.CheckoutActivity;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.DataShopItemModel;
@@ -71,34 +74,23 @@ public class DetailShop extends AppCompatActivity {
             jsonString = extra.getString("DATA");
             gson = new Gson();
             dataItem = gson.fromJson(jsonString, JoinModel.class);
-            //sql check
-            /*if (chekSql(dataItem.id)) {
-                try {
-                    cartOperations.openDb();
-                    cartModel = cartOperations.getCart(dataItem.id);
-                    cartOperations.closeDb();
-                    Log.d("DATA_CART _MODEL", String.valueOf(cartModel));
-                    showLayoutCart();
-                    displayQuantity(String.valueOf(cartModel.getQuantity()));
-                } catch (SQLException e) {
-                    Log.d("ERROR_GET_QUANTITY", e.getMessage() + " ERROR");
-                }
-            }*/
             initData(dataItem);
         }
+
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
+                toCheckout();
+            }
+        });
     }
 
-    /*private Boolean chekSql(int id) {
-        boolean hasRecord = false;
-        try {
-            cartOperations.openDb();
-            hasRecord = cartOperations.checkRecordCart(id);
-            cartOperations.closeDb();
-        } catch (SQLException e) {
-            Log.d("ERROR SQL", e.getMessage() + " ERROR");
-        }
-        return hasRecord;
-    }*/
+    private void toCheckout() {
+        Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
     private void initData(JoinModel dataItem) {
         if (dataItem != null) {
@@ -115,94 +107,6 @@ public class DetailShop extends AppCompatActivity {
 
     }
 
-    /*private void showLayoutCart() {
-        btnAddtoCart.setVisibility(View.GONE);
-        layoutCart.setVisibility(View.VISIBLE);
-        btnCheckout.setVisibility(View.VISIBLE);
-        if (layoutCart.getVisibility() == View.VISIBLE) {
-            btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addQuantity();
-                }
-            });
-
-            btnMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    minusQuantity();
-                }
-            });
-        }
-
-    }
-
-    private void minusQuantity() {
-        this.quantity = this.quantity - 1;
-        if (this.quantity <= 0) {
-            this.quantity = 0;
-            layoutCart.setVisibility(View.GONE);
-            btnCheckout.setVisibility(View.GONE);
-            btnAddtoCart.setVisibility(View.VISIBLE);
-            deleteCart(cartModel.getIdProduct());
-        } else {
-            String textQuantity = String.valueOf(this.quantity);
-            displayQuantity(textQuantity);
-        }
-    }
-
-    private void deleteCart(long idProduct) {
-        try {
-            cartOperations.openDb();
-            cartOperations.deleteRow(String.valueOf(idProduct));
-            cartOperations.closeDb();
-            Log.d("SUCCESS DELETE ROW CART", "SUCCESS");
-        } catch (SQLException e) {
-            Log.d("ERROR DELETE CART", "ERROR " + e.getMessage());
-        }
-    }*/
-
-    /*private void displayQuantity(String Quantity) {
-        if (chekSql(dataItem.getId())) {
-            updateRowCart();
-        } else {
-            insertRowCart(Quantity);
-        }
-        textQuantity.setText(Quantity);
-    }*/
-
-    /*private void insertRowCart(String quantity) {
-        try{
-            cartOperations.openDb();
-            cartModel = new CartModel(dataItem.getId(), dataItem.getName(), dataItem.getStock(), Long.parseLong(quantity));
-            cartOperations.insertCart(cartModel);
-            cartOperations.closeDb();
-            Log.d("INSERT ROW CART DETAIL", "SUCCESS");
-        }catch (SQLException e){
-            Log.d("ERROR INSERT ROW CART", "ERROR "+e.getMessage());
-        }
-    }
-
-    private void updateRowCart() {
-        try {
-            cartOperations.openDb();
-            cartOperations.updateCart(cartModel);
-            cartOperations.closeDb();
-            Log.d("SUCCESS UPDATE","SUCCESS");
-        } catch (SQLException e) {
-            Log.d("ERROR UPDATE ROW CART", "ERROR " + e.getMessage());
-        }
-    }*/
-
-    /*private void addQuantity() {
-        this.quantity = this.quantity + 1;
-        if (this.quantity > stok) {
-            btnAdd.setClickable(false);
-        } else {
-            String textQuantity = String.valueOf(this.quantity);
-            displayQuantity(textQuantity);
-        }
-    }*/
 
     @Override
     public boolean onSupportNavigateUp() {
