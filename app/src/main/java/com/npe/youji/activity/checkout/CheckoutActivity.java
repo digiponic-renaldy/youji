@@ -99,7 +99,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
         getApiCity();
         //get spin city and distrik
-        Log.i("NamaKota", String.valueOf(spinCity.getSelectedItem()));
     }
 
     private void getApiCity() {
