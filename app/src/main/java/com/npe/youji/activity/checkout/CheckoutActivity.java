@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -18,7 +19,9 @@ import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.city.DataCitiesModel;
+import com.npe.youji.model.city.DataDistrikModel;
 import com.npe.youji.model.city.RootCitiesModel;
+import com.npe.youji.model.city.RootDistrikModel;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.dbsqlite.UserOperations;
@@ -49,13 +52,18 @@ public class CheckoutActivity extends AppCompatActivity {
 
     //spinner
     private Spinner spinCity;
-
+    private Spinner spinDistrik;
     //retrofit
     private Retrofit retrofit;
     private ApiService service;
     List<DataCitiesModel> listCity;
     ArrayList<String> listNamaCity = new ArrayList<String>();
     ArrayList<Integer> listStateIdCity = new ArrayList<Integer>();
+    List<DataDistrikModel> listDistrik;
+    ArrayList<String> listNamaDistrik = new ArrayList<String>();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +82,7 @@ public class CheckoutActivity extends AppCompatActivity {
         etAlamat = findViewById(R.id.etAlamatPenerima);
         etNotelp = findViewById(R.id.etNotelpPenerima);
         spinCity = findViewById(R.id.spinCity);
+        spinDistrik = findViewById(R.id.spinDistrik);
 
         //data user
         if(checkUser()){
@@ -88,8 +97,9 @@ public class CheckoutActivity extends AppCompatActivity {
         retrofit = NetworkClient.getRetrofitClient();
         service = retrofit.create(ApiService.class);
 
-        //get city
         getApiCity();
+        //get spin city and distrik
+        Log.i("NamaKota", String.valueOf(spinCity.getSelectedItem()));
     }
 
     private void getApiCity() {
@@ -128,8 +138,10 @@ public class CheckoutActivity extends AppCompatActivity {
         spinCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 int states_id = listStateIdCity.get(position);
                 getApiDistrik(states_id);
+
             }
 
             @Override
@@ -139,7 +151,49 @@ public class CheckoutActivity extends AppCompatActivity {
         });
     }
 
+
     private void getApiDistrik(int states_id) {
+        service.listDistrik(states_id).enqueue(new Callback<RootDistrikModel>() {
+            @Override
+            public void onResponse(Call<RootDistrikModel> call, Response<RootDistrikModel> response) {
+                RootDistrikModel data = response.body();
+                if(data != null){
+                    if(data.getApi_message().equalsIgnoreCase("success")){
+                        listDistrik = data.getData();
+                        getDistrik(listDistrik);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RootDistrikModel> call, Throwable t) {
+                Log.i("ErrorGetListDistrik", t.getMessage());
+            }
+        });
+    }
+
+    private void getDistrik(List<DataDistrikModel> listDistrik) {
+        for (int i = 0; i < listDistrik.size() ; i++) {
+            listNamaDistrik.add(i, listDistrik.get(i).getName());
+        }
+        spinNamaDistrik(listNamaDistrik);
+    }
+
+    private void spinNamaDistrik(ArrayList<String> listNamaDistrik) {
+        ArrayAdapter<String> dataDistrik = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listNamaDistrik);
+        dataDistrik.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinDistrik.setAdapter(dataDistrik);
+        spinDistrik.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.i("NothingSelectCity", "Nothing");
+            }
+        });
     }
 
     private void setCurrentDate() {

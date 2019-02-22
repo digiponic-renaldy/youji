@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,19 +9,20 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
-            android:padding="10dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
-                android:textColor="@color/colorBlack"
-                android:layout_marginBottom="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:text="Detail Order"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Detail Order"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerCheckout"
@@ -32,194 +32,198 @@
             </android.support.v7.widget.RecyclerView>
 
             <android.support.v7.widget.CardView
-                app:cardElevation="5dp"
-                app:cardCornerRadius="5dp"
-                app:cardUseCompatPadding="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true">
+
                 <Button
                     android:id="@+id/btnBelanjaLagi"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorGreenSoft"
-                    android:text="Belanja Lagi"
-                    android:background="@color/colorWhite"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp" />
+                    android:layout_height="50dp"
+                    android:background="@color/colorWhite"
+                    android:text="Belanja Lagi"
+                    android:textColor="@color/colorGreenSoft"
+                    android:textStyle="bold" />
             </android.support.v7.widget.CardView>
 
             <TextView
-                android:text="Detail Customer"
-                android:textStyle="bold"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Detail Customer"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="Tanggal Pembelian"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Tanggal Pembelian"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/tvTanggalCheckout"
-                android:textColor="@color/colorGreenSoft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="Tanggal"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/colorGreenSoft" />
+
             <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="Nama Penerima"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Nama Penerima"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/tvNamaUserCheckout"
-                android:textColor="@color/colorGreenSoft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="Nama"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/colorGreenSoft" />
+
             <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="Email"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Email"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/tvEmailUserCheckout"
-                android:textColor="@color/colorGreenSoft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="Email"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/colorGreenSoft" />
+
             <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="Area Pengiriman"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Area Pengiriman"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <Spinner
                 android:id="@+id/spinCity"
-                android:spinnerMode="dropdown"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"></Spinner>
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:spinnerMode="dropdown"></Spinner>
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="Distrik Pengiriman"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Distrik Pengiriman"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <Spinner
                 android:id="@+id/spinDistrik"
-                android:spinnerMode="dropdown"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"></Spinner>
-
-           <android.support.design.widget.TextInputLayout
-               android:layout_marginTop="10dp"
-               android:layout_width="match_parent"
-               android:layout_height="50dp">
-
-               <EditText
-                   android:inputType="text"
-                   android:textColorHint="@color/colorGreenSoft"
-                   android:hint="Alamat Penerima"
-                   android:id="@+id/etAlamatPenerima"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent" />
-           </android.support.design.widget.TextInputLayout>
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:spinnerMode="dropdown"></Spinner>
 
             <android.support.design.widget.TextInputLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp">
 
                 <EditText
+                    android:id="@+id/etAlamatPenerima"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Alamat Penerima"
                     android:inputType="text"
-                    android:textColorHint="@color/colorGreenSoft"
-                    android:hint="Notelp Penerima"
+                    android:textColorHint="@color/colorGreenSoft" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
                     android:id="@+id/etNotelpPenerima"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:hint="Notelp Penerima"
+                    android:inputType="text"
+                    android:textColorHint="@color/colorGreenSoft" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
-                android:text="Ringkasan Pembayaran"
-                android:textStyle="bold"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Ringkasan Pembayaran"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="Subtotal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Subtotal"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/tvSubtotalCheckout"
-                android:layout_gravity="end"
-                android:textStyle="bold"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:text="100000"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="100000"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="Diskon"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Diskon"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/tvDiskonCheckout"
-                android:layout_gravity="end"
-                android:textStyle="bold"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:text="0"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="0"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="Total Harga"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Total Harga"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/tvTotalCheckout"
-                android:layout_gravity="end"
-                android:textStyle="bold"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:text="100000"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="100000"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_pembayaran"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"
-                android:text="Pembayaran"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@color/colorGreenSoft"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"/>
+                android:text="Pembayaran"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
