@@ -1,6 +1,7 @@
 package com.npe.youji.model.api;
 
 import com.npe.youji.model.city.RootCitiesModel;
+import com.npe.youji.model.city.RootDistrikModel;
 import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
 import com.npe.youji.model.shop.menu.RootShopMenuModel;
@@ -28,4 +29,7 @@ public interface ApiService {
 
     @GET("cities")
     Call<RootCitiesModel> listCity();
+
+    @GET("districs")
+    Call<RootDistrikModel> listDistrik(@Query("cities_id") int states_id);
 }
