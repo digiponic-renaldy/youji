@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -89,7 +88,11 @@ public class DetailShop extends AppCompatActivity {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toCheckout();
+                if (checkUser()) {
+                    toCheckout();
+                } else {
+                    toLogin();
+                }
             }
         });
     }
@@ -176,23 +179,26 @@ public class DetailShop extends AppCompatActivity {
     }
 
     private void toCheckout() {
-        if (checkUser()) {
-            Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }else {
-            Toast.makeText(getApplicationContext(), "Login First", Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
+
+    private void toLogin() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 
     private boolean checkUser() {
         boolean cek = false;
-        try{
+        try {
             userOperations.openDb();
             cek = userOperations.checkRecordUser();
             userOperations.closeDb();
             Log.i("CheckUser", String.valueOf(cek));
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("ErrorCheckUser", e.getMessage());
         }
         return cek;

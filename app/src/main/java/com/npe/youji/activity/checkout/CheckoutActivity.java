@@ -15,8 +15,10 @@ import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.shop.JoinModel;
+import com.npe.youji.model.user.UserModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CheckoutActivity extends AppCompatActivity {
     private CartOperations cartOperations;
@@ -24,11 +26,13 @@ public class CheckoutActivity extends AppCompatActivity {
     private ShopOperations shopOperations;
 
     private ArrayList<JoinModel> dataitem;
+    private List<UserModel> userModels;
     private AdapterCheckout adapter;
 
     private RecyclerView recyclerView;
     TextView tvNamaUser,tvEmailUser, tvTanggal, tvSubtotal,tvDiskon, tvTotal;
     EditText etAlamat, etNotelp;
+    int idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +52,51 @@ public class CheckoutActivity extends AppCompatActivity {
         etNotelp = findViewById(R.id.etNotelpPenerima);
 
         //data user
-
+        if(checkUser()){
+            getDataUser();
+            setCurrentDate();
+        }
 
         //receycler data
         joinData();
 
+    }
+
+    private void setCurrentDate() {
+
+    }
+
+    private void getDataUser() {
+        try{
+            userOperations.openDb();
+            userModels = userOperations.getAllUser();
+            Log.i("DataUser", userModels.get(0).getNama());
+            //set user
+            setUser(userModels);
+            userOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorGetAllUser", e.getMessage());
+        }
+    }
+
+    private void setUser(List<UserModel> userModels) {
+        tvNamaUser.setText(userModels.get(0).getNama());
+        tvEmailUser.setText(userModels.get(0).getEmail());
+        idUser = userModels.get(0).getId();
+    }
+
+
+    private boolean checkUser() {
+        boolean cek = false;
+        try{
+            userOperations.openDb();
+            cek = userOperations.checkRecordUser();
+            userOperations.closeDb();
+            Log.i("CheckUser", "Masuk");
+        }catch (SQLException e){
+            Log.i("ErrorCheckUserCheckout", e.getMessage());
+        }
+        return cek;
     }
 
     private void joinData() {

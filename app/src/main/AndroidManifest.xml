@@ -22,7 +22,8 @@
             android:name=".activity.DetailShop"
             android:label="@string/title_activity_detail_shop"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.checkout.CheckoutActivity"></activity>
+        <activity android:name=".activity.checkout.CheckoutActivity" />
+        <activity android:name=".activity.LoginActivity"></activity>
     </application>
 
 </manifest>
