@@ -75,6 +75,9 @@ public class CheckoutActivity extends AppCompatActivity {
     int idDistrik;
     SimpleDateFormat sdf;
     String currentDate;
+    int subTotal;
+    int discount;
+    int totalHarga;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +131,7 @@ public class CheckoutActivity extends AppCompatActivity {
         Log.i("Customers_name", getUserName());
         Log.i("Customers_email", getUserEmail());
         Log.i("IdDistrik", String.valueOf(getIdDistrik()));
+        Log.i("total", String.valueOf(getSubTotal()));
 
     }
 
@@ -304,6 +308,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void listDataItem(ArrayList<JoinModel> dataitem) {
         int index = 0;
+        int subTotal = 0;
         for (int i = 0; i < dataitem.size(); i++) {
             Log.i("DataItemCheckout", String.valueOf(dataitem.get(i).getQuantity()));
             if (dataitem.get(i).getQuantity() > 0) {
@@ -314,6 +319,8 @@ public class CheckoutActivity extends AppCompatActivity {
                     jsonObject.put("products_price", dataitem.get(i).getSell_price());
                     jsonObject.put("quantity", dataitem.get(i).getQuantity());
                     jsonObject.put("sub_total", (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity()));
+                    //add subtotal
+                    subTotal = subTotal + (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity());
                     Log.i("JsonObjectSuccess", "Berhasil");
                     listJsonObject.add(index, jsonObject);
                     Log.i("JSONObject", String.valueOf(listJsonObject.get(index)));
@@ -324,10 +331,19 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
             }
         }
+        setSubTotal(subTotal);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
         adapter = new AdapterCheckout(getApplicationContext(), dataitem);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setSubTotal(int subTotal){
+        this.subTotal = subTotal;
+    }
+
+    private int getSubTotal(){
+        return this.subTotal;
     }
 
 
