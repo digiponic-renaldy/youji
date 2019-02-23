@@ -248,6 +248,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void listDataItem(ArrayList<JoinModel> dataitem) {
+        int index = 0;
         for (int i = 0; i < dataitem.size(); i++) {
             Log.i("DataItemCheckout", String.valueOf(dataitem.get(i).getQuantity()));
             if (dataitem.get(i).getQuantity() > 0) {
@@ -259,11 +260,13 @@ public class CheckoutActivity extends AppCompatActivity {
                     jsonObject.put("quantity", dataitem.get(i).getQuantity());
                     jsonObject.put("sub_total", (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity()));
                     Log.i("JsonObjectSuccess", "Berhasil");
-                    listJsonObject.add(i, jsonObject);
+                    listJsonObject.add(index, jsonObject);
+                    Log.i("JSONObject", String.valueOf(listJsonObject.get(index)));
+                    Log.i("SizeArrayJson", String.valueOf(listJsonObject.size()));
+                    index++;
                 } catch (JSONException e) {
                     Log.i("JsonObjectError", e.getMessage());
                 }
-                Log.i("JSONObject", String.valueOf(listJsonObject.get(i)));
             }
         }
 
