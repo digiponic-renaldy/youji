@@ -1,6 +1,7 @@
 package com.npe.youji.model.order;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestOrder {
@@ -12,13 +13,13 @@ public class RequestOrder {
     int status;
     int districs;
     String ordering_user;
-    List<JSONObject> order_detail;
+    ArrayList<JSONObject> order_detail;
     String ordering_email;
 
     public RequestOrder() {
     }
 
-    public RequestOrder(int customers_id, int total, int discount, int grand_total, String shipping_date, int status, int districs, String ordering_user, List<JSONObject> order_detail, String ordering_email) {
+    public RequestOrder(int customers_id, int total, int discount, int grand_total, String shipping_date, int status, int districs, String ordering_user, ArrayList<JSONObject> order_detail, String ordering_email) {
         this.customers_id = customers_id;
         this.total = total;
         this.discount = discount;
@@ -95,11 +96,11 @@ public class RequestOrder {
         this.ordering_user = ordering_user;
     }
 
-    public List<JSONObject> getOrder_detail() {
+    public ArrayList<JSONObject> getOrder_detail() {
         return order_detail;
     }
 
-    public void setOrder_detail(List<JSONObject> order_detail) {
+    public void setOrder_detail(ArrayList<JSONObject> order_detail) {
         this.order_detail = order_detail;
     }
 

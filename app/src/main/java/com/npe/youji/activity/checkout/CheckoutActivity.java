@@ -271,4 +271,6 @@ public class CheckoutActivity extends AppCompatActivity {
         adapter = new AdapterCheckout(getApplicationContext(), dataitem);
         recyclerView.setAdapter(adapter);
     }
+
+
 }
