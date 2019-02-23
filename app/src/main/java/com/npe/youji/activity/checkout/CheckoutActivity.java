@@ -128,11 +128,19 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void sendOrder() {
         Log.i("Customers_id", String.valueOf(getUserId()));
-        Log.i("Customers_name", getUserName());
-        Log.i("Customers_email", getUserEmail());
-        Log.i("IdDistrik", String.valueOf(getIdDistrik()));
         Log.i("total", String.valueOf(getSubTotal()));
+        Log.i("discount", String.valueOf(this.discount));
+        int grandTotal = getSubTotal() - discount;
+        Log.i("grand_total", String.valueOf(grandTotal));
+        Log.i("shipping_date", getCurrentDate());
+        int status = 1;
+        Log.i("status", String.valueOf(status));
+        Log.i("IdDistrik", String.valueOf(getIdDistrik()));
+        Log.i("Customers_name", getUserName());
+        Log.i("ordering_detail", String.valueOf(listJsonObject));
+        Log.i("Customers_email", getUserEmail());
 
+        
     }
 
     private void getApiCity() {
