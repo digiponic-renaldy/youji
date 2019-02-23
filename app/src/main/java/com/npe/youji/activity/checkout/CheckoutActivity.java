@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -30,7 +31,9 @@ import com.npe.youji.model.user.UserModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,6 +53,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     TextView tvNamaUser, tvEmailUser, tvTanggal, tvSubtotal, tvDiskon, tvTotal;
     EditText etAlamat, etNotelp;
+    Button btnPembayaran;
     int idUser;
 
     //spinner
@@ -63,10 +67,14 @@ public class CheckoutActivity extends AppCompatActivity {
     ArrayList<Integer> listStateIdCity = new ArrayList<Integer>();
     List<DataDistrikModel> listDistrik;
     ArrayList<String> listNamaDistrik = new ArrayList<String>();
+    ArrayList<Integer> listIdDistrik = new ArrayList<Integer>();
 
     JSONObject jsonObject;
     ArrayList<JSONObject> listJsonObject = new ArrayList<JSONObject>();
 
+    int idDistrik;
+    SimpleDateFormat sdf;
+    String currentDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,12 +94,15 @@ public class CheckoutActivity extends AppCompatActivity {
         etNotelp = findViewById(R.id.etNotelpPenerima);
         spinCity = findViewById(R.id.spinCity);
         spinDistrik = findViewById(R.id.spinDistrik);
+        btnPembayaran = findViewById(R.id.btn_pembayaran);
+
         //data user
         if (checkUser()) {
             getDataUser();
             setCurrentDate();
         }
-
+        //date and time
+        tvTanggal.setText(getCurrentDate());
         //receycler data
         joinData();
 
@@ -101,6 +112,22 @@ public class CheckoutActivity extends AppCompatActivity {
 
         getApiCity();
         //get spin city and distrik
+
+
+        //btn pembayaran
+        btnPembayaran.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendOrder();
+            }
+        });
+    }
+
+    private void sendOrder() {
+        Log.i("Customers_id", String.valueOf(getUserId()));
+        Log.i("Customers_name", getUserName());
+        Log.i("Customers_email", getUserEmail());
+        Log.i("IdDistrik", String.valueOf(getIdDistrik()));
 
     }
 
@@ -140,10 +167,8 @@ public class CheckoutActivity extends AppCompatActivity {
         spinCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 int states_id = listStateIdCity.get(position);
                 getApiDistrik(states_id);
-
             }
 
             @Override
@@ -152,6 +177,7 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     private void getApiDistrik(int states_id) {
@@ -177,6 +203,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void getDistrik(List<DataDistrikModel> listDistrik) {
         for (int i = 0; i < listDistrik.size(); i++) {
             listNamaDistrik.add(i, listDistrik.get(i).getName());
+            listIdDistrik.add(i, listDistrik.get(i).getId());
         }
         spinNamaDistrik(listNamaDistrik);
     }
@@ -188,7 +215,8 @@ public class CheckoutActivity extends AppCompatActivity {
         spinDistrik.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                int idDistrik = listIdDistrik.get(position);
+                dataIdDistrik(idDistrik);
             }
 
             @Override
@@ -198,8 +226,22 @@ public class CheckoutActivity extends AppCompatActivity {
         });
     }
 
-    private void setCurrentDate() {
+    private void dataIdDistrik(int idDistrik) {
+        this.idDistrik = idDistrik;
+    }
 
+    private int getIdDistrik(){
+        return this.idDistrik;
+    }
+
+    private void setCurrentDate() {
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.currentDate = sdf.format(new Date());
+        Log.i("CurrentDate", currentDate);
+    }
+
+    private String getCurrentDate(){
+        return this.currentDate;
     }
 
     private void getDataUser() {
@@ -216,11 +258,24 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void setUser(List<UserModel> userModels) {
-        tvNamaUser.setText(userModels.get(0).getNama());
-        tvEmailUser.setText(userModels.get(0).getEmail());
-        idUser = userModels.get(0).getId();
+        this.tvNamaUser.setText(userModels.get(0).getNama());
+        this.tvEmailUser.setText(userModels.get(0).getEmail());
+        this.idUser = userModels.get(0).getId();
     }
 
+    private int getUserId(){
+        return this.idUser;
+    }
+
+    private String getUserName(){
+        String nameUser = this.tvNamaUser.getText().toString();
+        return nameUser;
+    }
+
+    private String getUserEmail(){
+        String emailUser = this.tvEmailUser.getText().toString();
+        return emailUser;
+    }
 
     private boolean checkUser() {
         boolean cek = false;
@@ -274,6 +329,8 @@ public class CheckoutActivity extends AppCompatActivity {
         adapter = new AdapterCheckout(getApplicationContext(), dataitem);
         recyclerView.setAdapter(adapter);
     }
+
+
 
 
 }
