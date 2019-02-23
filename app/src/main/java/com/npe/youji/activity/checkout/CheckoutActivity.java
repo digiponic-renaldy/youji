@@ -1,15 +1,14 @@
 package com.npe.youji.activity.checkout;
 
 import android.database.SQLException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -27,6 +26,9 @@ import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.user.UserModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private AdapterCheckout adapter;
 
     private RecyclerView recyclerView;
-    TextView tvNamaUser,tvEmailUser, tvTanggal, tvSubtotal,tvDiskon, tvTotal;
+    TextView tvNamaUser, tvEmailUser, tvTanggal, tvSubtotal, tvDiskon, tvTotal;
     EditText etAlamat, etNotelp;
     int idUser;
 
@@ -62,7 +64,8 @@ public class CheckoutActivity extends AppCompatActivity {
     List<DataDistrikModel> listDistrik;
     ArrayList<String> listNamaDistrik = new ArrayList<String>();
 
-
+    JSONObject jsonObject;
+    ArrayList<JSONObject> listJsonObject = new ArrayList<JSONObject>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +86,8 @@ public class CheckoutActivity extends AppCompatActivity {
         etNotelp = findViewById(R.id.etNotelpPenerima);
         spinCity = findViewById(R.id.spinCity);
         spinDistrik = findViewById(R.id.spinDistrik);
-
         //data user
-        if(checkUser()){
+        if (checkUser()) {
             getDataUser();
             setCurrentDate();
         }
@@ -99,6 +101,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         getApiCity();
         //get spin city and distrik
+
     }
 
     private void getApiCity() {
@@ -106,8 +109,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RootCitiesModel> call, Response<RootCitiesModel> response) {
                 RootCitiesModel data = response.body();
-                if(data != null){
-                    if(data.getApi_message().equalsIgnoreCase("success")){
+                if (data != null) {
+                    if (data.getApi_message().equalsIgnoreCase("success")) {
                         listCity = data.getData();
                         getCity(listCity);
                     }
@@ -125,7 +128,7 @@ public class CheckoutActivity extends AppCompatActivity {
         for (int i = 0; i < listCity.size(); i++) {
             Log.i("DataNamaCity", listCity.get(i).getName());
             listNamaCity.add(i, listCity.get(i).getName());
-            listStateIdCity.add(i,listCity.get(i).getStates_id());
+            listStateIdCity.add(i, listCity.get(i).getStates_id());
         }
         spinNamaCity(listNamaCity);
     }
@@ -156,8 +159,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RootDistrikModel> call, Response<RootDistrikModel> response) {
                 RootDistrikModel data = response.body();
-                if(data != null){
-                    if(data.getApi_message().equalsIgnoreCase("success")){
+                if (data != null) {
+                    if (data.getApi_message().equalsIgnoreCase("success")) {
                         listDistrik = data.getData();
                         getDistrik(listDistrik);
                     }
@@ -172,7 +175,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void getDistrik(List<DataDistrikModel> listDistrik) {
-        for (int i = 0; i < listDistrik.size() ; i++) {
+        for (int i = 0; i < listDistrik.size(); i++) {
             listNamaDistrik.add(i, listDistrik.get(i).getName());
         }
         spinNamaDistrik(listNamaDistrik);
@@ -200,14 +203,14 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void getDataUser() {
-        try{
+        try {
             userOperations.openDb();
             userModels = userOperations.getAllUser();
             Log.i("DataUser", userModels.get(0).getNama());
             //set user
             setUser(userModels);
             userOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("ErrorGetAllUser", e.getMessage());
         }
     }
@@ -221,12 +224,12 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private boolean checkUser() {
         boolean cek = false;
-        try{
+        try {
             userOperations.openDb();
             cek = userOperations.checkRecordUser();
             userOperations.closeDb();
             Log.i("CheckUser", "Masuk");
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("ErrorCheckUserCheckout", e.getMessage());
         }
         return cek;
@@ -247,7 +250,23 @@ public class CheckoutActivity extends AppCompatActivity {
     private void listDataItem(ArrayList<JoinModel> dataitem) {
         for (int i = 0; i < dataitem.size(); i++) {
             Log.i("DataItemCheckout", String.valueOf(dataitem.get(i).getQuantity()));
+            if (dataitem.get(i).getQuantity() > 0) {
+                try {
+                    jsonObject = new JSONObject();
+                    jsonObject.put("products_id", dataitem.get(i).getIdproduk());
+                    jsonObject.put("products_name", dataitem.get(i).getName());
+                    jsonObject.put("products_price", dataitem.get(i).getSell_price());
+                    jsonObject.put("quantity", dataitem.get(i).getQuantity());
+                    jsonObject.put("sub_total", (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity()));
+                    Log.i("JsonObjectSuccess", "Berhasil");
+                    listJsonObject.add(i, jsonObject);
+                } catch (JSONException e) {
+                    Log.i("JsonObjectError", e.getMessage());
+                }
+                Log.i("JSONObject", String.valueOf(listJsonObject.get(i)));
+            }
         }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
         adapter = new AdapterCheckout(getApplicationContext(), dataitem);
         recyclerView.setAdapter(adapter);
