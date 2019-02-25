@@ -83,9 +83,6 @@ public class CheckoutActivity extends AppCompatActivity {
     ArrayList<String> listNamaDistrik = new ArrayList<String>();
     ArrayList<Integer> listIdDistrik = new ArrayList<Integer>();
 
-    //JSONObject jsonObject;
-    JSONObject rawJsonObject;
-    //JSONArray rawJsonArray;
 
     JSONArray jsonArray;
     int idDistrik;
@@ -145,8 +142,6 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void rawJson() {
-        //rawJsonObject = new JSONObject();
-        //rawJsonArray = new JSONArray();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -213,7 +208,6 @@ public class CheckoutActivity extends AppCompatActivity {
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
             writer.write(jsonObject.toString());
-            //Log.i(MainActivity.class.toString(), jsonObject.toString());
             writer.flush();
             writer.close();
             os.close();
@@ -223,19 +217,12 @@ public class CheckoutActivity extends AppCompatActivity {
     private JSONObject createJSON() throws JSONException {
         JSONObject jsonObject = new JSONObject();
 
-//        int total_price = 0;
         int discount = 0;
         int grandTotal = getSubTotal() - discount;
         int status = 1;
         int pajak = 0;
         int satuan = 10;
         String kodeProduk = "PRD/00012";
-//        if (mDataCart.size() > 0) {
-//            for (DataItemMenu item : mDataCart) {
-//                total_price += item.get_itemPrice();
-//            }
-//        }
-
         try {
             // Add Property
             jsonObject.accumulate("customer_id", getUserId());
@@ -244,14 +231,8 @@ public class CheckoutActivity extends AppCompatActivity {
             jsonObject.accumulate("diskon", discount);
             jsonObject.accumulate("pajak", pajak);
             jsonObject.accumulate("grand_total", grandTotal);
-            //jsonObject.accumulate("status",status );
-            //jsonObject.accumulate("districs",getIdDistrik());
-
-            //JsonArr
 
             jsonObject.accumulate("penjualan_detil", jsonArray);
-            //jsonObject.accumulate("ordering_user", getUserName());
-            //jsonObject.accumulate("ordering_email", getUserEmail());
 
             Log.d("EXPORTJSON", jsonObject.toString());
         } catch (JsonIOException e) {
@@ -281,7 +262,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 discount, grandTotal, getCurrentDate(), status, getIdDistrik(), getUserName(), getUserEmail());
 
         Log.i("RequestJson", String.valueOf(requestOrder));
-        //Toast.makeText(getApplicationContext(), "Click send", Toast.LENGTH_SHORT).show();
 
         service.sendOrder(requestOrder).enqueue(new Callback<RootOrderModel>() {
             @Override
@@ -480,14 +460,9 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void listDataItem(ArrayList<JoinModel> dataitem) {
-        int index = 0;
         int subTotal = 0;
         String kodeProduk = "PRD/00012";
         int satuan = 10;
-        //jsonArray = new JSONArray();
-
-        //subTotal = subTotal + (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity());
-
         JSONArray jsonArray = new JSONArray();
 
         for (int i = 0; i < dataitem.size(); i++) {
