@@ -461,32 +461,32 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void listDataItem(ArrayList<JoinModel> dataitem) {
         int subTotal = 0;
-        String kodeProduk = "PRD/00012";
-        int satuan = 10;
+        //String kodeProduk = "PRD/00012";
+        //int satuan = 10;
         JSONArray jsonArray = new JSONArray();
 
         for (int i = 0; i < dataitem.size(); i++) {
             Log.i("DataItemCheckout", String.valueOf(dataitem.get(i).getQuantity()));
-//            if (dataitem.get(i).getQuantity() > 0) {
-//                try {
-//                    JSONObject pnObj = new JSONObject();
-//                    pnObj.put("id_produk", dataitem.get(i).getIdproduk());
-//                    pnObj.put("kode_produk", kodeProduk);
-//                    Log.i("NamaProdukJoin", dataitem.get(i).getName());
-//                    pnObj.put("nama_produk", dataitem.get(i).getName());
-//                    pnObj.put("satuan", satuan);
-//                    pnObj.put("kuantitas", dataitem.get(i).getQuantity());
-//                    int jsonSubTotal = dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity();
-//                    pnObj.put("harga", jsonSubTotal);
-//                    pnObj.put("diskon", discount);
-//                    //add subtotal
-//                    subTotal = subTotal + jsonSubTotal;
-//                    Log.i("JsonObjectSuccess", "Berhasil");
-//                    jsonArray.put(pnObj);
-//                } catch (JSONException e) {
-//                    Log.i("JsonObjectError", e.getMessage());
-//                }
-//            }
+            if (dataitem.get(i).getQuantity() > 0) {
+                try {
+                    JSONObject pnObj = new JSONObject();
+                    pnObj.put("id_produk", dataitem.get(i).getIdproduk());
+                    pnObj.put("kode_produk", dataitem.get(i).getKode());
+                    //Log.i("NamaProdukJoin", dataitem.get(i).getKeterangan());
+                    pnObj.put("nama_produk", dataitem.get(i).getKeterangan());
+                    pnObj.put("satuan", dataitem.get(i).getSatuan());
+                    pnObj.put("kuantitas", dataitem.get(i).getQuantity());
+                    int jsonSubTotal = dataitem.get(i).getHarga() * dataitem.get(i).getQuantity();
+                    pnObj.put("harga", jsonSubTotal);
+                    pnObj.put("diskon", discount);
+                    //add subtotal
+                    subTotal = subTotal + jsonSubTotal;
+                    Log.i("JsonObjectSuccess", "Berhasil");
+                    jsonArray.put(pnObj);
+                } catch (JSONException e) {
+                    Log.i("JsonObjectError", e.getMessage());
+                }
+            }
         }
         this.jsonArray = jsonArray;
         Log.i("JSONARRAYJoin", String.valueOf(jsonArray));

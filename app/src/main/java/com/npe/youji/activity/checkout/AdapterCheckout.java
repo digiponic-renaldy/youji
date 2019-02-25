@@ -52,12 +52,12 @@ public class AdapterCheckout extends RecyclerView.Adapter<AdapterCheckout.ViewHo
 
         if(checkQuantity(i) > 0){
             viewHolder.layoutCheckout.setVisibility(View.VISIBLE);
-//            Glide.with(context)
-//                    .load(data.getImage())
-//                    .into(viewHolder.imgCheckout);
-//            viewHolder.tvNamaBarang.setText(String.valueOf(data.getName()));
-//            viewHolder.tvHargaBarang.setText(String.valueOf(data.getSell_price()));
-//            viewHolder.tvJumlahBarang.setText(String.valueOf(checkQuantity(i)));
+            Glide.with(context)
+                    .load(data.getGambar())
+                    .into(viewHolder.imgCheckout);
+            viewHolder.tvNamaBarang.setText(String.valueOf(data.getKeterangan()));
+            viewHolder.tvHargaBarang.setText(String.valueOf(data.getHarga()));
+            viewHolder.tvJumlahBarang.setText(String.valueOf(checkQuantity(i)));
         }
 
     }
