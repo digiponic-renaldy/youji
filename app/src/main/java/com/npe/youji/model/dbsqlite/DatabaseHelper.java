@@ -50,8 +50,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_HARGAPRODUCT + " INTEGER NOT NULL, " +
                     COLUMN_GAMBARPRODUCT + " TEXT NOT NULL, " +
                     COLUMN_CREATEDPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_UPDATEDPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_DELETEDPRODUCT + " TEXT NOT NULL)";
+                    COLUMN_UPDATEDPRODUCT + " TEXT , " +
+                    COLUMN_DELETEDPRODUCT + " TEXT )";
 
 
     //user

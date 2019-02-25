@@ -154,11 +154,11 @@ public class DetailShop extends AppCompatActivity {
         Log.i("STRquantityCheck", strQuantity);
         int quantity = Integer.parseInt(strQuantity);
         quantity = quantity + 1;
-        if (quantity > dataItem.getStock()) {
-            btnAdd.setVisibility(View.GONE);
-        } else {
-            displayText(quantity);
-        }
+//        if (quantity > dataItem.getStock()) {
+//            btnAdd.setVisibility(View.GONE);
+//        } else {
+//            displayText(quantity);
+//        }
     }
 
     private void displayText(int quantity) {
@@ -205,17 +205,17 @@ public class DetailShop extends AppCompatActivity {
     }
 
     private void initData(JoinModel dataItem) {
-        if (dataItem != null) {
-            namaBarang.setText(String.valueOf(dataItem.getName()));
-            hargaBarang.setText("Rp " + String.valueOf(dataItem.getSell_price()));
-            //descBarang.setText(String.valueOf(dataItem.getDescription()));
-            this.stok = dataItem.getStock();
-            //toolbar
-            Glide.with(this)
-                    .load(dataItem.getImage())
-                    .into(imgBarang);
-            getSupportActionBar().setTitle(dataItem.getName());
-        }
+//        if (dataItem != null) {
+//            namaBarang.setText(String.valueOf(dataItem.getName()));
+//            hargaBarang.setText("Rp " + String.valueOf(dataItem.getSell_price()));
+//            //descBarang.setText(String.valueOf(dataItem.getDescription()));
+//            this.stok = dataItem.getStock();
+//            //toolbar
+//            Glide.with(this)
+//                    .load(dataItem.getImage())
+//                    .into(imgBarang);
+//            getSupportActionBar().setTitle(dataItem.getName());
+//        }
 
     }
 

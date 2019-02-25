@@ -70,11 +70,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
         final JoinModel data = items.get(i);
         Glide.with(context)
-                .load(data.getImage())
+                .load(data.getGambar())
                 .apply(myOptions)
                 .into(viewHolder.imageView);
-        viewHolder.nama.setText(data.getName());
-        viewHolder.harga.setText(String.valueOf(data.getSell_price()));
+        viewHolder.nama.setText(data.getKeterangan());
+        viewHolder.harga.setText(String.valueOf(data.getHarga()));
         //check quantity
         if (checkQuantity(i) > 0) {
             Log.i("QuantityBarang", "LebihDari0");
@@ -125,7 +125,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
         int quantity = Integer.parseInt(strQuantity);
         quantity = quantity + 1;
-        if (quantity > data.getStock()) {
+        if (quantity > data.getStok()) {
             viewHolder.btnAdd.setVisibility(View.GONE);
         } else {
             displayText(viewHolder, position, quantity);

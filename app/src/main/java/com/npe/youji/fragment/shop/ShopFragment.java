@@ -7,13 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -26,7 +24,6 @@ import com.npe.youji.model.shop.DataShopItemModel;
 import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.shop.RootProdukModel;
-import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.DataCategory;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
 
@@ -89,9 +86,9 @@ public class ShopFragment extends Fragment {
 
 
         //retrofit
-        retrofit = NetworkClient.getRetrofitClient();
+        //retrofit = NetworkClient.getRetrofitClient();
         retrofit_local = NetworkClient.getRetrofitClientLocal();
-        service = retrofit.create(ApiService.class);
+        //service = retrofit.create(ApiService.class);
         service_local = retrofit_local.create(ApiService.class);
 
         //getCategory();
@@ -121,7 +118,6 @@ public class ShopFragment extends Fragment {
                 if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
                     insertAllDataShopLocal(data);
-                    checkIsiSqlCart();
                     checkIsiSqlShop();
                     joinData();
                 }
@@ -134,16 +130,6 @@ public class ShopFragment extends Fragment {
         });
     }
 
-    private void checkIsiSqlCart() {
-        try{
-            cartOperations.openDb();
-            cartOperations.getAllCart();
-            Log.i("CekCart", String.valueOf(cartOperations.getAllCart()));
-            cartOperations.closeDb();
-        } catch (SQLException e){
-            Log.i("ErrorCekCart", e.getMessage());
-        }
-    }
 
     private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
         String imgUrl = "https://i.imgur.com/kTRJDky.png";
@@ -151,11 +137,27 @@ public class ShopFragment extends Fragment {
             if (dataItem.get(i).getGambar() == null) {
                 dataItem.get(i).setGambar(imgUrl);
             }
-            DataShopModel data = new DataShopModel(dataItem.get(i).getId(), dataItem.get(i).getKeterangan(), dataItem.get(i).getHarga(),
-                    dataItem.get(i).getGambar(), dataItem.get(i).getStok());
+            Log.i("DataItemSize", String.valueOf(dataItem.size()));
+
+            Log.i("DataProduk", String.valueOf(dataItem.get(i).getSatuan()));
+            DataShopModel data = new DataShopModel(
+                    dataItem.get(i).getId(),
+                    dataItem.get(i).getCabang(),
+                    dataItem.get(i).getKode(),
+                    dataItem.get(i).getKeterangan(),
+                    dataItem.get(i).getKategori(),
+                    dataItem.get(i).getJenis(),
+                    dataItem.get(i).getSatuan(),
+                    dataItem.get(i).getStok(),
+                    dataItem.get(i).getHarga(),
+                    dataItem.get(i).getGambar(),
+                    dataItem.get(i).getCreated_at(),
+                    dataItem.get(i).getUpdated_at(),
+                    dataItem.get(i).getDeleted_at());
             try {
                 shopOperations.openDb();
                 shopOperations.insertShop(data);
+                Log.i("DataNamaProdukInsert", data.getKeterangan());
                 shopOperations.closeDb();
                 Log.i("INSERTSQL", "SUCCESS");
             } catch (SQLException e) {
@@ -168,8 +170,7 @@ public class ShopFragment extends Fragment {
         try {
             shopOperations.openDb();
             shopOperations.joinData();
-            Log.i("ProdukDataSatu",
-                    String.valueOf(shopOperations.getShop(1)));
+
             //insert to adapter
             listItemShop(shopOperations.joinData());
             shopOperations.closeDb();
@@ -205,13 +206,6 @@ public class ShopFragment extends Fragment {
         }
     }
 
-    private void expandSheetCollapse() {
-        if (botomSheet.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-            botomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
-        } else {
-            botomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
-        }
-    }
 
     private void getCategory() {
         layoutShop.setVisibility(View.GONE);
@@ -275,6 +269,15 @@ public class ShopFragment extends Fragment {
         });
 
     }
+
+    private void expandSheetCollapse() {
+        if (botomSheet.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+            botomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+        } else {
+            botomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+    }
+
 
     @Override
     public void onResume() {

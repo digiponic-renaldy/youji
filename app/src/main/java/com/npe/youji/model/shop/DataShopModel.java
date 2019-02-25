@@ -143,4 +143,21 @@ public class DataShopModel {
     public void setDeleted_at(String deleted_at) {
         this.deleted_at = deleted_at;
     }
+
+    public String toString() {
+        return "idProduct : " + getIdproduk() + "\n" +
+                "Cabang Product : " + getCabang() + "\n" +
+                "Kode Product :" + getKode() + "\n" +
+                "Keterangan Product :" + getKeterangan() + "\n" +
+                "Jenis Product :" + getJenis() + "\n" +
+                "Satuan Product :" + getSatuan() + "\n" +
+                "Stok Product : " + getStok() + "\n" +
+                "Harga Product : " + getHarga() + "\n" +
+                "Gambar Product : " + getGambar() + "\n" +
+                "Created Product : " + getCreated_at() + "\n" +
+                "Updated Product : " + getUpdated_at() + "\n" +
+                "Deleted Product : " + getDeleted_at() + "\n";
+
+
+    }
 }
