@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
@@ -25,12 +26,17 @@ import com.npe.youji.model.city.RootDistrikModel;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.dbsqlite.UserOperations;
+import com.npe.youji.model.order.RequestOrder;
+import com.npe.youji.model.order.RootOrderModel;
 import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.user.UserModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,14 +76,14 @@ public class CheckoutActivity extends AppCompatActivity {
     ArrayList<Integer> listIdDistrik = new ArrayList<Integer>();
 
     JSONObject jsonObject;
-    ArrayList<JSONObject> listJsonObject = new ArrayList<JSONObject>();
-
+    JSONArray jsonArray;
     int idDistrik;
-    SimpleDateFormat sdf;
+    DateFormat sdf;
     String currentDate;
     int subTotal;
     int discount;
     int totalHarga;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,10 +143,39 @@ public class CheckoutActivity extends AppCompatActivity {
         Log.i("status", String.valueOf(status));
         Log.i("IdDistrik", String.valueOf(getIdDistrik()));
         Log.i("Customers_name", getUserName());
-        Log.i("ordering_detail", String.valueOf(listJsonObject));
+        Log.i("ordering_detail", String.valueOf(jsonArray));
         Log.i("Customers_email", getUserEmail());
 
-        
+
+
+        RequestOrder requestOrder = new RequestOrder(getUserId(), getSubTotal(),
+                discount, grandTotal, getCurrentDate(), status, getIdDistrik(), getUserName(), getUserEmail() );
+
+        Log.i("RequestJson", String.valueOf(requestOrder));
+        //Toast.makeText(getApplicationContext(), "Click send", Toast.LENGTH_SHORT).show();
+
+        service.sendOrder(requestOrder).enqueue(new Callback<RootOrderModel>() {
+            @Override
+            public void onResponse(Call<RootOrderModel> call, Response<RootOrderModel> response) {
+                RootOrderModel data = response.body();
+                Log.i("DataResponseOrder", String.valueOf(response));
+
+                Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
+                Log.i("BerhasilResponseInsert","Berhasil");
+                if(data != null){
+                    if(data.getApi_message().equalsIgnoreCase("success")){
+                        Log.i("SuccessSendOrder", "Success");
+                        Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RootOrderModel> call, Throwable t) {
+                Log.i("ErrorSendOrder",t.getMessage());
+            }
+        });
+
     }
 
     private void getApiCity() {
@@ -249,7 +284,9 @@ public class CheckoutActivity extends AppCompatActivity {
     private void setCurrentDate() {
         sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.currentDate = sdf.format(new Date());
+
         Log.i("CurrentDate", currentDate);
+
     }
 
     private String getCurrentDate(){
@@ -317,6 +354,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void listDataItem(ArrayList<JoinModel> dataitem) {
         int index = 0;
         int subTotal = 0;
+        jsonArray = new JSONArray();
         for (int i = 0; i < dataitem.size(); i++) {
             Log.i("DataItemCheckout", String.valueOf(dataitem.get(i).getQuantity()));
             if (dataitem.get(i).getQuantity() > 0) {
@@ -330,9 +368,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     //add subtotal
                     subTotal = subTotal + (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity());
                     Log.i("JsonObjectSuccess", "Berhasil");
-                    listJsonObject.add(index, jsonObject);
-                    Log.i("JSONObject", String.valueOf(listJsonObject.get(index)));
-                    Log.i("SizeArrayJson", String.valueOf(listJsonObject.size()));
+                    jsonArray.put(index, jsonObject);
                     index++;
                 } catch (JSONException e) {
                     Log.i("JsonObjectError", e.getMessage());
