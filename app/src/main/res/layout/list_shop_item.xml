@@ -48,6 +48,16 @@
             android:background="@color/colorGreenSoft"
             android:layout_width="match_parent"
             android:layout_height="40dp"/>
+
+        <TextView
+            android:visibility="gone"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tvStokNull"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_gravity="center_horizontal"
+            android:text="Maaf Barang Tidak Tersedia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <RelativeLayout
             android:layout_marginTop="20dp"
             android:visibility="gone"

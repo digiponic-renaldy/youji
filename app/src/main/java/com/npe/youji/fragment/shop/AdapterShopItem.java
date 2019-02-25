@@ -26,14 +26,12 @@ import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.JoinModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder> {
 
     private Context context;
     private List<JoinModel> items;
-    private ArrayList<JoinModel> dataJoin;
     private Gson gson;
     private OnItemClickListener mListener;
 
@@ -81,13 +79,20 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             displayExist(viewHolder, i);
             showLayoutCart(viewHolder, data, i);
         }
+        if (data.getStok() == 0) {
+            viewHolder.beli.setVisibility(View.GONE);
+            viewHolder.textStokNull.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.beli.setVisibility(View.VISIBLE);
+            viewHolder.textStokNull.setVisibility(View.GONE);
 
-        viewHolder.beli.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLayoutCart(viewHolder, data, i);
-            }
-        });
+            viewHolder.beli.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLayoutCart(viewHolder, data, i);
+                }
+            });
+        }
     }
 
     private void displayExist(ViewHolder viewHolder, int i) {
@@ -228,7 +233,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView nama, harga, textQuantity;
+        TextView nama, harga, textQuantity, textStokNull;
         Button beli;
         CardView lihat;
         RelativeLayout layoutCart;
@@ -246,6 +251,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             btnAdd = itemView.findViewById(R.id.btn_addCart_adapter);
             btnMinus = itemView.findViewById(R.id.btn_minusCart_adapter);
             textQuantity = itemView.findViewById(R.id.tv_jumlahBarang_adapter);
+            textStokNull = itemView.findViewById(R.id.tvStokNull);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
