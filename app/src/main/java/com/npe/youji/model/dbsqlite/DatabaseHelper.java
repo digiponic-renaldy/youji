@@ -24,18 +24,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //shops
     public static final String COLUMN_IDPRODUCTSHOP = "idProduct";
-    public static final String COLUMN_NAMEPRODUCT = "namaProduct";
-    public static final String COLUMN_HARGAPRODUCT = "hargaProduct";
-    public static final String COLUMN_IMAGEPRODUCT = "imageProduct";
+    public static final String COLUMN_CABANGPRODUCT = "cabangProduct";
+    public static final String COLUMN_KODEPRODUCT = "kodeProduct";
+    public static final String COLUMN_KETERANGANPRODUCT = "keteranganProduct";
+    public static final String COLUMN_KATEGORIPRODUCT = "kategoriProduct";
+    public static final String COLUMN_JENISPRODUCT = "jenisProduct";
+    public static final String COLUMN_SATUANPRODUCT = "satuanProduct";
     public static final String COLUMN_STOKPRODUCT = "stokProduct";
+    public static final String COLUMN_HARGAPRODUCT = "hargaProduct";
+    public static final String COLUMN_GAMBARPRODUCT = "gambarProduct";
+    public static final String COLUMN_CREATEDPRODUCT = "createdProduct";
+    public static final String COLUMN_UPDATEDPRODUCT = "updatedProduct";
+    public static final String COLUMN_DELETEDPRODUCT = "deletedProduct";
 
     private static final String CREATE_TABLESHOP =
             "CREATE TABLE " + TABLE_SHOP + " ( " +
                     COLUMN_IDPRODUCTSHOP + " INTEGER UNIQUE NOT NULL, " +
-                    COLUMN_NAMEPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_CABANGPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_KODEPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_KETERANGANPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_KATEGORIPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_JENISPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_SATUANPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_STOKPRODUCT + " INTEGER NOT NULL, " +
                     COLUMN_HARGAPRODUCT + " INTEGER NOT NULL, " +
-                    COLUMN_IMAGEPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_STOKPRODUCT + " INTEGER NOT NULL)";
+                    COLUMN_GAMBARPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_CREATEDPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_UPDATEDPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_DELETEDPRODUCT + " TEXT NOT NULL)";
 
 
     //user
@@ -47,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_USER + " ( " +
                     COLUMN_IDUSER + " INTEGER UNIQUE NOT NULL, " +
                     COLUMN_NAMAUSER + " TEXT NOT NULL, " +
-                    COLUMN_EMAILUSER + " TEXT NOT NULL) " ;
+                    COLUMN_EMAILUSER + " TEXT NOT NULL) ";
 
 
     public DatabaseHelper(Context context) {

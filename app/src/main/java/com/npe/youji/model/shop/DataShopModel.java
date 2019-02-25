@@ -1,21 +1,43 @@
 package com.npe.youji.model.shop;
 
 public class DataShopModel {
-    public int idproduk;
-    public String name;
-    public int sell_price;
-    public String image;
-    public int stock;
+    int idproduk;
+    String cabang;
+    String kode;
+    String keterangan;
+    String kategori;
+    String jenis;
+    String satuan;
+    int stok;
+    int harga;
+    String gambar;
+    String created_at;
+    String updated_at;
+    String deleted_at;
 
     public DataShopModel() {
     }
 
-    public DataShopModel(int idproduk, String name, int sell_price, String image, int stock) {
+
+    public DataShopModel(int idproduk, String cabang, String kode,
+                         String keterangan, String kategori,
+                         String jenis, String satuan,
+                         int stok, int harga,
+                         String gambar, String created_at,
+                         String updated_at, String deleted_at) {
         this.idproduk = idproduk;
-        this.name = name;
-        this.sell_price = sell_price;
-        this.image = image;
-        this.stock = stock;
+        this.cabang = cabang;
+        this.kode = kode;
+        this.keterangan = keterangan;
+        this.kategori = kategori;
+        this.jenis = jenis;
+        this.satuan = satuan;
+        this.stok = stok;
+        this.harga = harga;
+        this.gambar = gambar;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.deleted_at = deleted_at;
     }
 
     public int getIdproduk() {
@@ -26,46 +48,99 @@ public class DataShopModel {
         this.idproduk = idproduk;
     }
 
-    public String getName() {
-        return name;
+    public String getCabang() {
+        return cabang;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCabang(String cabang) {
+        this.cabang = cabang;
     }
 
-    public int getSell_price() {
-        return sell_price;
+    public String getKode() {
+        return kode;
     }
 
-    public void setSell_price(int sell_price) {
-        this.sell_price = sell_price;
+    public void setKode(String kode) {
+        this.kode = kode;
     }
 
-    public String getImage() {
-        return image;
+    public String getKeterangan() {
+        return keterangan;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
-    public int getStock() {
-        return stock;
+    public String getKategori() {
+        return kategori;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
     }
 
+    public String getJenis() {
+        return jenis;
+    }
 
-    public String toString() {
-        return "idProduct : " + getIdproduk() + "\n" +
-                "Nama Product : " + getName() + "\n" +
-                "Harga Product :" + getSell_price() + "\n" +
-                "Image Product :" + getImage() + "\n" +
-                "Stok Product : " + getStock() + "\n";
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
+    public String getSatuan() {
+        return satuan;
+    }
 
+    public void setSatuan(String satuan) {
+        this.satuan = satuan;
+    }
+
+    public int getStok() {
+        return stok;
+    }
+
+    public void setStok(int stok) {
+        this.stok = stok;
+    }
+
+    public int getHarga() {
+        return harga;
+    }
+
+    public void setHarga(int harga) {
+        this.harga = harga;
+    }
+
+    public String getGambar() {
+        return gambar;
+    }
+
+    public void setGambar(String gambar) {
+        this.gambar = gambar;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public String getDeleted_at() {
+        return deleted_at;
+    }
+
+    public void setDeleted_at(String deleted_at) {
+        this.deleted_at = deleted_at;
     }
 }
