@@ -1,7 +1,9 @@
 package com.npe.youji.activity.checkout;
 
 import android.database.SQLException;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonIOException;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
@@ -35,8 +38,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,7 +83,10 @@ public class CheckoutActivity extends AppCompatActivity {
     ArrayList<String> listNamaDistrik = new ArrayList<String>();
     ArrayList<Integer> listIdDistrik = new ArrayList<Integer>();
 
-    JSONObject jsonObject;
+    //JSONObject jsonObject;
+    JSONObject rawJsonObject;
+    //JSONArray rawJsonArray;
+
     JSONArray jsonArray;
     int idDistrik;
     DateFormat sdf;
@@ -127,9 +138,128 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPembayaran.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendOrder();
+                //sendOrder();
+                rawJson();
             }
         });
+    }
+
+    private void rawJson() {
+        //rawJsonObject = new JSONObject();
+        //rawJsonArray = new JSONArray();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new HTTPAsyncTaskPOSTData().execute("http://192.168.1.186/digiponic/youji/apiyouji/api/transaksi");
+
+            }
+        }, 3000);
+
+    }
+
+    public class HTTPAsyncTaskPOSTData extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            // params comes from the execute() call: params[0] is the url.
+            try {
+                try {
+                    Log.i("RunningRawJson", "Run");
+                    return HttpPost(urls[0]);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return "Error!";
+                }
+            } catch (IOException e) {
+                return "Unable to retrieve web page. URL may be invalid.";
+            }
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+        }
+
+        private String HttpPost(String myUrl) throws IOException, JSONException {
+            String result = "";
+            URL url = new URL(myUrl);
+
+            // 1. create HttpURLConnection
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+
+            // 2. build JSON object
+            JSONObject jsonObject = createJSON();
+            Log.i("ISIjson", String.valueOf(jsonObject));
+            // 3. add JSON content to POST request body
+            setPostRequestContent(conn, jsonObject);
+            Log.i("ResponseCode", String.valueOf(conn.getResponseCode()));
+            // 4. make POST request to the given URL
+            conn.connect();
+            Log.i("SuccessKirim", "Berhasil");
+            // 5. return response message
+            Log.i("Kembalian",conn.getResponseMessage());
+            return conn.getResponseMessage() + "";
+        }
+
+        private void setPostRequestContent(HttpURLConnection conn,
+                                           JSONObject jsonObject) throws IOException {
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(jsonObject.toString());
+            //Log.i(MainActivity.class.toString(), jsonObject.toString());
+            writer.flush();
+            writer.close();
+            os.close();
+        }
+    }
+
+    private JSONObject createJSON() throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+
+//        int total_price = 0;
+        int discount = 0;
+        int grandTotal = getSubTotal() - discount;
+        int status = 1;
+        int pajak = 0;
+        int satuan = 10;
+        String kodeProduk = "PRD/00012";
+//        if (mDataCart.size() > 0) {
+//            for (DataItemMenu item : mDataCart) {
+//                total_price += item.get_itemPrice();
+//            }
+//        }
+
+        try {
+            // Add Property
+            jsonObject.accumulate("customer_id", getUserId());
+            jsonObject.accumulate("tanggal", getCurrentDate());
+            jsonObject.accumulate("subtotal", getSubTotal());
+            jsonObject.accumulate("diskon", discount);
+            jsonObject.accumulate("pajak", pajak);
+            jsonObject.accumulate("grand_total", grandTotal);
+            //jsonObject.accumulate("status",status );
+            //jsonObject.accumulate("districs",getIdDistrik());
+
+            //JsonArr
+
+            jsonObject.accumulate("penjualan_detil", jsonArray);
+            //jsonObject.accumulate("ordering_user", getUserName());
+            //jsonObject.accumulate("ordering_email", getUserEmail());
+
+            Log.d("EXPORTJSON", jsonObject.toString());
+        } catch (JsonIOException e) {
+            Log.d("JSONERROREX", e.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     private void sendOrder() {
@@ -147,9 +277,8 @@ public class CheckoutActivity extends AppCompatActivity {
         Log.i("Customers_email", getUserEmail());
 
 
-
         RequestOrder requestOrder = new RequestOrder(getUserId(), getSubTotal(),
-                discount, grandTotal, getCurrentDate(), status, getIdDistrik(), getUserName(), getUserEmail() );
+                discount, grandTotal, getCurrentDate(), status, getIdDistrik(), getUserName(), getUserEmail());
 
         Log.i("RequestJson", String.valueOf(requestOrder));
         //Toast.makeText(getApplicationContext(), "Click send", Toast.LENGTH_SHORT).show();
@@ -161,9 +290,9 @@ public class CheckoutActivity extends AppCompatActivity {
                 Log.i("DataResponseOrder", String.valueOf(response));
 
                 Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
-                Log.i("BerhasilResponseInsert","Berhasil");
-                if(data != null){
-                    if(data.getApi_message().equalsIgnoreCase("success")){
+                Log.i("BerhasilResponseInsert", "Berhasil");
+                if (data != null) {
+                    if (data.getApi_message().equalsIgnoreCase("success")) {
                         Log.i("SuccessSendOrder", "Success");
                         Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
                     }
@@ -172,7 +301,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RootOrderModel> call, Throwable t) {
-                Log.i("ErrorSendOrder",t.getMessage());
+                Log.i("ErrorSendOrder", t.getMessage());
             }
         });
 
@@ -226,7 +355,6 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
 
-
     private void getApiDistrik(int states_id) {
         service.listDistrik(states_id).enqueue(new Callback<RootDistrikModel>() {
             @Override
@@ -277,7 +405,7 @@ public class CheckoutActivity extends AppCompatActivity {
         this.idDistrik = idDistrik;
     }
 
-    private int getIdDistrik(){
+    private int getIdDistrik() {
         return this.idDistrik;
     }
 
@@ -289,7 +417,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     }
 
-    private String getCurrentDate(){
+    private String getCurrentDate() {
         return this.currentDate;
     }
 
@@ -312,16 +440,16 @@ public class CheckoutActivity extends AppCompatActivity {
         this.idUser = userModels.get(0).getId();
     }
 
-    private int getUserId(){
+    private int getUserId() {
         return this.idUser;
     }
 
-    private String getUserName(){
+    private String getUserName() {
         String nameUser = this.tvNamaUser.getText().toString();
         return nameUser;
     }
 
-    private String getUserEmail(){
+    private String getUserEmail() {
         String emailUser = this.tvEmailUser.getText().toString();
         return emailUser;
     }
@@ -354,27 +482,39 @@ public class CheckoutActivity extends AppCompatActivity {
     private void listDataItem(ArrayList<JoinModel> dataitem) {
         int index = 0;
         int subTotal = 0;
-        jsonArray = new JSONArray();
+        String kodeProduk = "PRD/00012";
+        int satuan = 10;
+        //jsonArray = new JSONArray();
+
+        //subTotal = subTotal + (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity());
+
+        JSONArray jsonArray = new JSONArray();
+
         for (int i = 0; i < dataitem.size(); i++) {
             Log.i("DataItemCheckout", String.valueOf(dataitem.get(i).getQuantity()));
             if (dataitem.get(i).getQuantity() > 0) {
                 try {
-                    jsonObject = new JSONObject();
-                    jsonObject.put("products_id", dataitem.get(i).getIdproduk());
-                    jsonObject.put("products_name", dataitem.get(i).getName());
-                    jsonObject.put("products_price", dataitem.get(i).getSell_price());
-                    jsonObject.put("quantity", dataitem.get(i).getQuantity());
-                    jsonObject.put("sub_total", (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity()));
+                    JSONObject pnObj = new JSONObject();
+                    pnObj.put("id_produk", dataitem.get(i).getIdproduk());
+                    pnObj.put("kode_produk", kodeProduk);
+                    Log.i("NamaProdukJoin", dataitem.get(i).getName());
+                    pnObj.put("nama_produk", dataitem.get(i).getName());
+                    pnObj.put("satuan", satuan);
+                    pnObj.put("kuantitas", dataitem.get(i).getQuantity());
+                    int jsonSubTotal = dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity();
+                    pnObj.put("harga", jsonSubTotal);
+                    pnObj.put("diskon", discount);
                     //add subtotal
-                    subTotal = subTotal + (dataitem.get(i).getSell_price() * dataitem.get(i).getQuantity());
+                    subTotal = subTotal + jsonSubTotal;
                     Log.i("JsonObjectSuccess", "Berhasil");
-                    jsonArray.put(index, jsonObject);
-                    index++;
+                    jsonArray.put(pnObj);
                 } catch (JSONException e) {
                     Log.i("JsonObjectError", e.getMessage());
                 }
             }
         }
+        this.jsonArray = jsonArray;
+        Log.i("JSONARRAYJoin", String.valueOf(jsonArray));
         setSubTotal(subTotal);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
@@ -382,15 +522,13 @@ public class CheckoutActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void setSubTotal(int subTotal){
+    private void setSubTotal(int subTotal) {
         this.subTotal = subTotal;
     }
 
-    private int getSubTotal(){
+    private int getSubTotal() {
         return this.subTotal;
     }
-
-
 
 
 }
