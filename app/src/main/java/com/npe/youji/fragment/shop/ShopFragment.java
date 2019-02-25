@@ -20,10 +20,10 @@ import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
-import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.DataShopItemModel;
 import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
+import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.DataCategory;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
@@ -47,8 +47,12 @@ public class ShopFragment extends Fragment {
     private AdapterCategory adapterCategory;
     private ArrayList<DataShopItemModel> dataItem;
     private ArrayList<DataCategory> dataCategories;
+    //retrofit
     private Retrofit retrofit;
+    private Retrofit retrofit_local;
     private ApiService service;
+    private ApiService service_local;
+
     private CartOperations cartOperations;
     private ShopOperations shopOperations;
     private ProgressBar progressBar;
@@ -84,9 +88,14 @@ public class ShopFragment extends Fragment {
 
         //retrofit
         retrofit = NetworkClient.getRetrofitClient();
+        retrofit_local = NetworkClient.getRetrofitClientLocal();
         service = retrofit.create(ApiService.class);
-        getCategory();
-        getItemProduct();
+        service_local = retrofit_local.create(ApiService.class);
+
+        //getCategory();
+        getItemProduk_local();
+
+        //getItemProduct();
 
         //float sheet
         btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
@@ -102,42 +111,36 @@ public class ShopFragment extends Fragment {
         return v;
     }
 
-    private void bottomSheetBehavior() {
-        botomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+    private void getItemProduk_local() {
+        //layoutShop.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.VISIBLE);
+        service_local.listProduk().enqueue(new Callback<List<RootProdukModel>>() {
             @Override
-            public void onStateChanged(@NonNull View view, int i) {
-                switch (i) {
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        btnFloatCheckout.setVisibility(View.VISIBLE);
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        btnFloatCheckout.setVisibility(View.GONE);
-                        break;
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        btnFloatCheckout.setVisibility(View.GONE);
-                        break;
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        btnFloatCheckout.setVisibility(View.GONE);
-                        break;
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        btnFloatCheckout.setVisibility(View.GONE);
-                        break;
-
+            public void onResponse(Call<List<RootProdukModel>> call, Response<List<RootProdukModel>> response) {
+                List<RootProdukModel> data = response.body();
+                if (data != null) {
+                    Log.i("ResponSucc", "Berhasil");
+                    insertAllDataShopLocal(data);
+                    checkIsiSqlShop();
+                    joinData();
                 }
             }
 
             @Override
-            public void onSlide(@NonNull View view, float v) {
-
+            public void onFailure(Call<List<RootProdukModel>> call, Throwable t) {
+                Log.i("ResponseError", t.getMessage());
             }
         });
-
     }
 
-    private void insertAllData(ArrayList<DataShopItemModel> dataItem) {
+    private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
+        String imgUrl = "https://i.imgur.com/kTRJDky.png";
         for (int i = 0; i < dataItem.size(); i++) {
-            DataShopModel data = new DataShopModel(dataItem.get(i).getId(), dataItem.get(i).getName(), dataItem.get(i).getSell_price(),
-                    dataItem.get(i).getImage(), dataItem.get(i).getStock());
+            if (dataItem.get(i).getGambar() == null) {
+                dataItem.get(i).setGambar(imgUrl);
+            }
+            DataShopModel data = new DataShopModel(dataItem.get(i).getId(), dataItem.get(i).getKeterangan(), dataItem.get(i).getHarga(),
+                    dataItem.get(i).getGambar(), dataItem.get(i).getStok());
             try {
                 shopOperations.openDb();
                 shopOperations.insertShop(data);
@@ -149,6 +152,33 @@ public class ShopFragment extends Fragment {
         }
     }
 
+    private void joinData() {
+        try {
+            shopOperations.openDb();
+            shopOperations.joinData();
+            //insert to adapter
+            listItemShop(shopOperations.joinData());
+            shopOperations.closeDb();
+        } catch (SQLException e) {
+            Log.d("ERROR JOIN", e.getMessage());
+        }
+    }
+
+    private void listItemShop(ArrayList<JoinModel> dataItem) {
+        Log.d("LIST_DATA_PRODUCT", dataItem.toString());
+        recyclerItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        adapterItem = new AdapterShopItem(getContext(), dataItem);
+        recyclerItem.setAdapter(adapterItem);
+        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
+            @Override
+            public void onItemCick(int position, JoinModel data) {
+                adapterItem.detailItem(data);
+            }
+        });
+
+        layoutShop.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
 
     public void checkIsiSqlShop() {
         try {
@@ -160,6 +190,22 @@ public class ShopFragment extends Fragment {
             Log.i("CheckErrorAll", e.getMessage());
         }
     }
+//    private void insertAllData(ArrayList<DataShopItemModel> dataItem) {
+//        for (int i = 0; i < dataItem.size(); i++) {
+//            DataShopModel data = new DataShopModel(dataItem.get(i).getId(), dataItem.get(i).getName(), dataItem.get(i).getSell_price(),
+//                    dataItem.get(i).getImage(), dataItem.get(i).getStock());
+//            try {
+//                shopOperations.openDb();
+//                shopOperations.insertShop(data);
+//                shopOperations.closeDb();
+//                Log.i("INSERTSQL", "SUCCESS");
+//            } catch (SQLException e) {
+//                Log.i("ERRORINSERT", e.getMessage() + " ERROR");
+//            }
+//        }
+//    }
+
+
 
     private void expandSheetCollapse() {
         if (botomSheet.getState() != BottomSheetBehavior.STATE_EXPANDED) {
@@ -200,60 +246,63 @@ public class ShopFragment extends Fragment {
 
     }
 
-    private void getItemProduct() {
+//    private void getItemProduct() {
+//
+//        layoutShop.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.VISIBLE);
+//        service.listProduct().enqueue(new Callback<RootShopItemModel>() {
+//            @Override
+//            public void onResponse(Call<RootShopItemModel> call, Response<RootShopItemModel> response) {
+//                if (response.body() != null) {
+//                    RootShopItemModel data = response.body();
+//                    if (data.getApi_message().equalsIgnoreCase("success")) {
+//                        dataItem = (ArrayList<DataShopItemModel>) data.getData();
+//                        //insert all data
+//                        insertAllData(dataItem);
+//                        Log.i("dataItemGetItem", String.valueOf(dataItem.get(1).id));
+//                        checkIsiSqlShop();
+//                        joinData();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RootShopItemModel> call, Throwable t) {
+//                Log.d("FAILURE_PRODUCT", t.getMessage());
+//            }
+//        });
+//    }
 
-        layoutShop.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-        service.listProduct().enqueue(new Callback<RootShopItemModel>() {
+    private void bottomSheetBehavior() {
+        botomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
-            public void onResponse(Call<RootShopItemModel> call, Response<RootShopItemModel> response) {
-                if (response.body() != null) {
-                    RootShopItemModel data = response.body();
-                    if (data.getApi_message().equalsIgnoreCase("success")) {
-                        dataItem = (ArrayList<DataShopItemModel>) data.getData();
-                        //insert all data
-                        insertAllData(dataItem);
-                        Log.i("dataItemGetItem", String.valueOf(dataItem.get(1).id));
-                        checkIsiSqlShop();
-                        joinData();
-                    }
+            public void onStateChanged(@NonNull View view, int i) {
+                switch (i) {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        btnFloatCheckout.setVisibility(View.VISIBLE);
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        btnFloatCheckout.setVisibility(View.GONE);
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        btnFloatCheckout.setVisibility(View.GONE);
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        btnFloatCheckout.setVisibility(View.GONE);
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        btnFloatCheckout.setVisibility(View.GONE);
+                        break;
+
                 }
             }
 
             @Override
-            public void onFailure(Call<RootShopItemModel> call, Throwable t) {
-                Log.d("FAILURE_PRODUCT", t.getMessage());
-            }
-        });
-    }
+            public void onSlide(@NonNull View view, float v) {
 
-
-    private void joinData() {
-        try {
-            shopOperations.openDb();
-            shopOperations.joinData();
-            //insert to adapter
-            listItemShop(shopOperations.joinData());
-            shopOperations.closeDb();
-        } catch (SQLException e) {
-            Log.d("ERROR JOIN", e.getMessage());
-        }
-    }
-
-    private void listItemShop(ArrayList<JoinModel> dataItem) {
-        Log.d("LIST_DATA_PRODUCT", dataItem.toString());
-        recyclerItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        adapterItem = new AdapterShopItem(getContext(), dataItem);
-        recyclerItem.setAdapter(adapterItem);
-        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
-            @Override
-            public void onItemCick(int position, JoinModel data) {
-                adapterItem.detailItem(data);
             }
         });
 
-        layoutShop.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override

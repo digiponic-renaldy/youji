@@ -139,7 +139,7 @@ public class ShopOperations {
                 shop.add(cart);
             }
         }
-        Log.i("JOINKU", String.valueOf(shop.get(2).getQuantity()));
+        //Log.i("JOINKU", String.valueOf(shop.get(2).getQuantity()));
         return shop;
     }
 

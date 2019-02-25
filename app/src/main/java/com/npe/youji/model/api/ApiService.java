@@ -4,11 +4,14 @@ import com.npe.youji.model.city.RootCitiesModel;
 import com.npe.youji.model.city.RootDistrikModel;
 import com.npe.youji.model.order.RequestOrder;
 import com.npe.youji.model.order.RootOrderModel;
+import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
 import com.npe.youji.model.shop.menu.RootShopMenuModel;
 import com.npe.youji.model.user.RequestBodyUser;
 import com.npe.youji.model.user.RootUserModel;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -37,4 +40,7 @@ public interface ApiService {
 
     @POST("orders")
     Call<RootOrderModel> sendOrder(@Body RequestOrder requestOrder);
+
+    @GET("produk")
+    Call<List<RootProdukModel>> listProduk();
 }
