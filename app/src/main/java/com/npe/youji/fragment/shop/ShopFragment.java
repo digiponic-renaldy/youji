@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.npe.youji.R;
@@ -50,6 +51,8 @@ public class ShopFragment extends Fragment {
     private ApiService service;
     private CartOperations cartOperations;
     private ShopOperations shopOperations;
+    private ProgressBar progressBar;
+    private RelativeLayout layoutShop;
 
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
@@ -70,6 +73,8 @@ public class ShopFragment extends Fragment {
         layoutBottomSheet = v.findViewById(R.id.bottom_sheet);
         shopOperations = new ShopOperations(getContext());
         cartOperations = new CartOperations(getContext());
+        progressBar = v.findViewById(R.id.pbShop);
+        layoutShop = v.findViewById(R.id.layoutShop);
 
         //bottom sheet
         botomSheet = BottomSheetBehavior.from(layoutBottomSheet);
@@ -91,6 +96,13 @@ public class ShopFragment extends Fragment {
             }
         });
         //bottom sheet
+
+        bottomSheetBehavior();
+
+        return v;
+    }
+
+    private void bottomSheetBehavior() {
         botomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
@@ -120,7 +132,6 @@ public class ShopFragment extends Fragment {
             }
         });
 
-        return v;
     }
 
     private void insertAllData(ArrayList<DataShopItemModel> dataItem) {
@@ -159,6 +170,8 @@ public class ShopFragment extends Fragment {
     }
 
     private void getCategory() {
+        layoutShop.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         service.listCategory().enqueue(new Callback<RootCategoryModel>() {
             @Override
             public void onResponse(Call<RootCategoryModel> call, Response<RootCategoryModel> response) {
@@ -180,6 +193,7 @@ public class ShopFragment extends Fragment {
     }
 
     private void listCategory(ArrayList<DataCategory> dataCategories) {
+
         recyclerCategory.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapterCategory = new AdapterCategory(getContext(), dataCategories);
         recyclerCategory.setAdapter(adapterCategory);
@@ -187,6 +201,9 @@ public class ShopFragment extends Fragment {
     }
 
     private void getItemProduct() {
+
+        layoutShop.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         service.listProduct().enqueue(new Callback<RootShopItemModel>() {
             @Override
             public void onResponse(Call<RootShopItemModel> call, Response<RootShopItemModel> response) {
@@ -234,6 +251,9 @@ public class ShopFragment extends Fragment {
                 adapterItem.detailItem(data);
             }
         });
+
+        layoutShop.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

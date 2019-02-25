@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
         auth = FirebaseAuth.getInstance();
 
+        //shop
+        bottomNavigation.getMenu().getItem(0).setCheckable(false);
+        Fragment fragment = new ShopFragment();
+        loadFragment(fragment);
+
         //bottom navigation
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
