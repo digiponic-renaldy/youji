@@ -9,7 +9,10 @@ import com.npe.youji.model.shop.RootShopItemModel;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
 import com.npe.youji.model.shop.menu.RootShopMenuModel;
 import com.npe.youji.model.user.RequestBodyUser;
+import com.npe.youji.model.user.RootPelangganModel;
 import com.npe.youji.model.user.RootUserModel;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -43,4 +46,7 @@ public interface ApiService {
 
     @GET("produk")
     Call<List<RootProdukModel>> listProduk();
+
+    @POST("pelanggan")
+    Call<List<RootPelangganModel>> sendPelanggan(@Body JSONObject jsonObject);
 }

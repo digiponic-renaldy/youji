@@ -114,10 +114,10 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPembayaran = findViewById(R.id.btn_pembayaran);
 
         //data user
-        if (checkUser()) {
-            getDataUser();
-            setCurrentDate();
-        }
+//        if (checkUser()) {
+//            getDataUser();
+//        }
+        setCurrentDate();
         //date and time
         tvTanggal.setText(getCurrentDate());
         //receycler data
@@ -145,7 +145,7 @@ public class CheckoutActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                new HTTPAsyncTaskPOSTData().execute("http://192.168.1.186/digiponic/youji/apiyouji/api/transaksi");
+                new HTTPAsyncTaskPOSTData().execute("http://app.digiponic.co.id/youji/apiyouji/api/transaksi");
 
             }
         }, 3000);
@@ -219,13 +219,15 @@ public class CheckoutActivity extends AppCompatActivity {
 
         int discount = 0;
         int grandTotal = getSubTotal() - discount;
-        int status = 1;
+        //int status = 1;
+        int idUser = 8;
         int pajak = 0;
-        int satuan = 10;
-        String kodeProduk = "PRD/00012";
+        //int satuan = 10;
+        //String kodeProduk = "PRD/00012";
         try {
             // Add Property
-            jsonObject.accumulate("customer_id", getUserId());
+            jsonObject.accumulate("customer_id", idUser);
+            Log.i("Id", String.valueOf(idUser));
             jsonObject.accumulate("tanggal", getCurrentDate());
             jsonObject.accumulate("subtotal", getSubTotal());
             jsonObject.accumulate("diskon", discount);
@@ -243,49 +245,49 @@ public class CheckoutActivity extends AppCompatActivity {
         return jsonObject;
     }
 
-    private void sendOrder() {
-        Log.i("Customers_id", String.valueOf(getUserId()));
-        Log.i("total", String.valueOf(getSubTotal()));
-        Log.i("discount", String.valueOf(this.discount));
-        int grandTotal = getSubTotal() - discount;
-        Log.i("grand_total", String.valueOf(grandTotal));
-        Log.i("shipping_date", getCurrentDate());
-        int status = 1;
-        Log.i("status", String.valueOf(status));
-        Log.i("IdDistrik", String.valueOf(getIdDistrik()));
-        Log.i("Customers_name", getUserName());
-        Log.i("ordering_detail", String.valueOf(jsonArray));
-        Log.i("Customers_email", getUserEmail());
-
-
-        RequestOrder requestOrder = new RequestOrder(getUserId(), getSubTotal(),
-                discount, grandTotal, getCurrentDate(), status, getIdDistrik(), getUserName(), getUserEmail());
-
-        Log.i("RequestJson", String.valueOf(requestOrder));
-
-        service.sendOrder(requestOrder).enqueue(new Callback<RootOrderModel>() {
-            @Override
-            public void onResponse(Call<RootOrderModel> call, Response<RootOrderModel> response) {
-                RootOrderModel data = response.body();
-                Log.i("DataResponseOrder", String.valueOf(response));
-
-                Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
-                Log.i("BerhasilResponseInsert", "Berhasil");
-                if (data != null) {
-                    if (data.getApi_message().equalsIgnoreCase("success")) {
-                        Log.i("SuccessSendOrder", "Success");
-                        Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RootOrderModel> call, Throwable t) {
-                Log.i("ErrorSendOrder", t.getMessage());
-            }
-        });
-
-    }
+//    private void sendOrder() {
+//        Log.i("Customers_id", String.valueOf(getUserId()));
+//        Log.i("total", String.valueOf(getSubTotal()));
+//        Log.i("discount", String.valueOf(this.discount));
+//        int grandTotal = getSubTotal() - discount;
+//        Log.i("grand_total", String.valueOf(grandTotal));
+//        Log.i("shipping_date", getCurrentDate());
+//        int status = 1;
+//        Log.i("status", String.valueOf(status));
+//        Log.i("IdDistrik", String.valueOf(getIdDistrik()));
+//        Log.i("Customers_name", getUserName());
+//        Log.i("ordering_detail", String.valueOf(jsonArray));
+//        Log.i("Customers_email", getUserEmail());
+//
+//
+//        RequestOrder requestOrder = new RequestOrder(getUserId(), getSubTotal(),
+//                discount, grandTotal, getCurrentDate(), status, getIdDistrik(), getUserName(), getUserEmail());
+//
+//        Log.i("RequestJson", String.valueOf(requestOrder));
+//
+//        service.sendOrder(requestOrder).enqueue(new Callback<RootOrderModel>() {
+//            @Override
+//            public void onResponse(Call<RootOrderModel> call, Response<RootOrderModel> response) {
+//                RootOrderModel data = response.body();
+//                Log.i("DataResponseOrder", String.valueOf(response));
+//
+//                Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
+//                Log.i("BerhasilResponseInsert", "Berhasil");
+//                if (data != null) {
+//                    if (data.getApi_message().equalsIgnoreCase("success")) {
+//                        Log.i("SuccessSendOrder", "Success");
+//                        Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RootOrderModel> call, Throwable t) {
+//                Log.i("ErrorSendOrder", t.getMessage());
+//            }
+//        });
+//
+//    }
 
     private void getApiCity() {
         service.listCity().enqueue(new Callback<RootCitiesModel>() {

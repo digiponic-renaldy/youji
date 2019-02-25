@@ -30,10 +30,15 @@ import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.UserOperations;
+import com.npe.youji.model.order.RootOrderModel;
 import com.npe.youji.model.user.DataUserModel;
 import com.npe.youji.model.user.RequestBodyUser;
+import com.npe.youji.model.user.RootPelangganModel;
 import com.npe.youji.model.user.RootUserModel;
 import com.npe.youji.model.user.UserModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -49,8 +54,8 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private Button btnLoginGoogle;
-    private Retrofit retrofit;
-    private ApiService service;
+    private Retrofit retrofit_local;
+    private ApiService service_local;
     private UserOperations userOperations;
     List<DataUserModel> listUser;
 
@@ -77,8 +82,8 @@ public class LoginFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         //retrofit
-        retrofit = NetworkClient.getRetrofitClient();
-        service = retrofit.create(ApiService.class);
+        retrofit_local = NetworkClient.getRetrofitClientLocal();
+        service_local = retrofit_local.create(ApiService.class);
         userOperations = new UserOperations(getContext());
 
         btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
@@ -111,30 +116,54 @@ public class LoginFragment extends Fragment {
     }
 
     private void updateUI(FirebaseUser user) {
-        RequestBodyUser bodyUser = new RequestBodyUser(user.getDisplayName().toString(), user.getEmail().toString());
-        service.apiUser(bodyUser).enqueue(new Callback<RootUserModel>() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", user.getDisplayName());
+            jsonObject.put("email", user.getEmail());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //RequestBodyUser bodyUser = new RequestBodyUser(user.getDisplayName().toString(), user.getEmail().toString());
+//        service.apiUser(bodyUser).enqueue(new Callback<RootUserModel>() {
+//            @Override
+//            public void onResponse(Call<RootUserModel> call, Response<RootUserModel> response) {
+//                RootUserModel data = response.body();
+//                if(data != null){
+//                    if(data.getApi_message().equalsIgnoreCase("success")){
+//                        listUser = data.getData();
+//                        if(insertDataUser(listUser)){
+//                            toMain();
+//                        }
+//                        Log.i("listUser", String.valueOf(listUser.get(0).getEmail()));
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RootUserModel> call, Throwable t) {
+//                Log.i("GagalApiCustomer", t.getMessage());
+//            }
+//        });
+        service_local.sendPelanggan(jsonObject).enqueue(new Callback<List<RootPelangganModel>>() {
             @Override
-            public void onResponse(Call<RootUserModel> call, Response<RootUserModel> response) {
-                RootUserModel data = response.body();
+            public void onResponse(Call<List<RootPelangganModel>> call, Response<List<RootPelangganModel>> response) {
+                List<RootPelangganModel> data = response.body();
                 if(data != null){
-                    if(data.getApi_message().equalsIgnoreCase("success")){
-                        listUser = data.getData();
-                        if(insertDataUser(listUser)){
-                            toMain();
-                        }
-                        Log.i("listUser", String.valueOf(listUser.get(0).getEmail()));
+                    if(insertDataUser(data)){
+                        toMain();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<RootUserModel> call, Throwable t) {
+            public void onFailure(Call<List<RootPelangganModel>> call, Throwable t) {
                 Log.i("GagalApiCustomer", t.getMessage());
             }
         });
     }
 
-    private Boolean insertDataUser(List<DataUserModel> listUser) {
+    private Boolean insertDataUser(List<RootPelangganModel> listUser) {
         boolean cek = false;
         try{
             userOperations.openDb();

@@ -142,8 +142,20 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         if (quantity <= 0) {
             viewHolder.layoutCart.setVisibility(View.GONE);
             viewHolder.beli.setVisibility(View.VISIBLE);
+            deleteRowCart(position);
         } else {
             displayText(viewHolder, position, quantity);
+        }
+    }
+
+    private void deleteRowCart(int position) {
+        try{
+            cartOperations.openDb();
+            cartOperations.deleteRow(String.valueOf(items.get(position).getIdproduk()));
+            Log.i("DeleteRow", "Masuk");
+            cartOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("DeleteRowError", e.getMessage());
         }
     }
 

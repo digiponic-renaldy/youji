@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -21,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.model.dbsqlite.UserOperations;
+import com.npe.youji.model.user.UserModel;
+
+import java.util.List;
 
 public class AccountFragment extends Fragment {
 
@@ -28,6 +32,7 @@ public class AccountFragment extends Fragment {
     private GoogleSignInClient mGoogleSignInClient;
     private UserOperations userOperations;
     private Button btnLogout;
+    private TextView tvNama, tvEmail;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -41,6 +46,11 @@ public class AccountFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_account, container, false);
         //inisialisasi
         mAuth = FirebaseAuth.getInstance();
+        tvNama = v.findViewById(R.id.tvNamaProfile);
+        tvEmail = v.findViewById(R.id.tvEmailProfile);
+
+        //getDataUser();
+
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -58,6 +68,24 @@ public class AccountFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void getDataUser() {
+        try{
+            userOperations.openDb();
+            userOperations.getAllUser();
+            initDataUser(userOperations.getAllUser());
+            userOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorGetDataUser", e.getMessage());
+        }
+    }
+
+    private void initDataUser(List<UserModel> allUser) {
+        if(allUser != null){
+            tvNama.setText(allUser.get(0).getNama());
+            tvEmail.setText(allUser.get(0).getEmail());
+        }
     }
 
     private void signOut() {
