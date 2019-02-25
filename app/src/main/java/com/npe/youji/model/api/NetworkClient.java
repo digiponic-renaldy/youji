@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkClient {
     public static final String BASE_URL = "http://app.digiponic.co.id/stock/public/api/";
-    public static final String BASE_URL_LOCAL = " http://192.168.1.186/digiponic/youji/apiyouji/api/";
+    public static final String BASE_URL_LOCAL = " http://app.digiponic.co.id/youji/apiyouji/api/";
     public static Retrofit retrofit;
     public static Retrofit retrofit_local;
     public static Retrofit getRetrofitClient() {

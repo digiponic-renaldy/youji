@@ -83,9 +83,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             viewHolder.beli.setVisibility(View.GONE);
             viewHolder.textStokNull.setVisibility(View.VISIBLE);
         } else {
-            viewHolder.beli.setVisibility(View.VISIBLE);
-            viewHolder.textStokNull.setVisibility(View.GONE);
-
             viewHolder.beli.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

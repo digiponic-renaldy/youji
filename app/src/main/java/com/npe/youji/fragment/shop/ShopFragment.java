@@ -86,12 +86,12 @@ public class ShopFragment extends Fragment {
 
 
         //retrofit
-        //retrofit = NetworkClient.getRetrofitClient();
+        retrofit = NetworkClient.getRetrofitClient();
         retrofit_local = NetworkClient.getRetrofitClientLocal();
-        //service = retrofit.create(ApiService.class);
+        service = retrofit.create(ApiService.class);
         service_local = retrofit_local.create(ApiService.class);
 
-        //getCategory();
+        getCategory();
         getItemProduk_local();
 
         //getItemProduct();
@@ -139,7 +139,7 @@ public class ShopFragment extends Fragment {
             }
             Log.i("DataItemSize", String.valueOf(dataItem.size()));
 
-            Log.i("DataProduk", String.valueOf(dataItem.get(i).getSatuan()));
+            Log.i("DataProduk", String.valueOf(dataItem.get(i).getStok()));
             DataShopModel data = new DataShopModel(
                     dataItem.get(i).getId(),
                     dataItem.get(i).getCabang(),
@@ -282,8 +282,6 @@ public class ShopFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //checkSqliDb();
+        getItemProduk_local();
     }
-
-
 }
