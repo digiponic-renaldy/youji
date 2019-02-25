@@ -7,11 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -112,8 +114,6 @@ public class ShopFragment extends Fragment {
     }
 
     private void getItemProduk_local() {
-        //layoutShop.setVisibility(View.GONE);
-        //progressBar.setVisibility(View.VISIBLE);
         service_local.listProduk().enqueue(new Callback<List<RootProdukModel>>() {
             @Override
             public void onResponse(Call<List<RootProdukModel>> call, Response<List<RootProdukModel>> response) {
@@ -121,6 +121,7 @@ public class ShopFragment extends Fragment {
                 if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
                     insertAllDataShopLocal(data);
+                    checkIsiSqlCart();
                     checkIsiSqlShop();
                     joinData();
                 }
@@ -131,6 +132,17 @@ public class ShopFragment extends Fragment {
                 Log.i("ResponseError", t.getMessage());
             }
         });
+    }
+
+    private void checkIsiSqlCart() {
+        try{
+            cartOperations.openDb();
+            cartOperations.getAllCart();
+            Log.i("CekCart", String.valueOf(cartOperations.getAllCart()));
+            cartOperations.closeDb();
+        } catch (SQLException e){
+            Log.i("ErrorCekCart", e.getMessage());
+        }
     }
 
     private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
@@ -156,6 +168,8 @@ public class ShopFragment extends Fragment {
         try {
             shopOperations.openDb();
             shopOperations.joinData();
+            Log.i("ProdukDataSatu",
+                    String.valueOf(shopOperations.getShop(1)));
             //insert to adapter
             listItemShop(shopOperations.joinData());
             shopOperations.closeDb();
@@ -190,22 +204,6 @@ public class ShopFragment extends Fragment {
             Log.i("CheckErrorAll", e.getMessage());
         }
     }
-//    private void insertAllData(ArrayList<DataShopItemModel> dataItem) {
-//        for (int i = 0; i < dataItem.size(); i++) {
-//            DataShopModel data = new DataShopModel(dataItem.get(i).getId(), dataItem.get(i).getName(), dataItem.get(i).getSell_price(),
-//                    dataItem.get(i).getImage(), dataItem.get(i).getStock());
-//            try {
-//                shopOperations.openDb();
-//                shopOperations.insertShop(data);
-//                shopOperations.closeDb();
-//                Log.i("INSERTSQL", "SUCCESS");
-//            } catch (SQLException e) {
-//                Log.i("ERRORINSERT", e.getMessage() + " ERROR");
-//            }
-//        }
-//    }
-
-
 
     private void expandSheetCollapse() {
         if (botomSheet.getState() != BottomSheetBehavior.STATE_EXPANDED) {
@@ -245,33 +243,6 @@ public class ShopFragment extends Fragment {
         recyclerCategory.setAdapter(adapterCategory);
 
     }
-
-//    private void getItemProduct() {
-//
-//        layoutShop.setVisibility(View.GONE);
-//        progressBar.setVisibility(View.VISIBLE);
-//        service.listProduct().enqueue(new Callback<RootShopItemModel>() {
-//            @Override
-//            public void onResponse(Call<RootShopItemModel> call, Response<RootShopItemModel> response) {
-//                if (response.body() != null) {
-//                    RootShopItemModel data = response.body();
-//                    if (data.getApi_message().equalsIgnoreCase("success")) {
-//                        dataItem = (ArrayList<DataShopItemModel>) data.getData();
-//                        //insert all data
-//                        insertAllData(dataItem);
-//                        Log.i("dataItemGetItem", String.valueOf(dataItem.get(1).id));
-//                        checkIsiSqlShop();
-//                        joinData();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RootShopItemModel> call, Throwable t) {
-//                Log.d("FAILURE_PRODUCT", t.getMessage());
-//            }
-//        });
-//    }
 
     private void bottomSheetBehavior() {
         botomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {

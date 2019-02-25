@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.npe.youji.R;
 import com.npe.youji.activity.DetailShop;
@@ -63,9 +64,14 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
+        RequestOptions myOptions = new RequestOptions()
+                .fitCenter() // or centerCrop
+                .override(100, 100);
+
         final JoinModel data = items.get(i);
         Glide.with(context)
                 .load(data.getImage())
+                .apply(myOptions)
                 .into(viewHolder.imageView);
         viewHolder.nama.setText(data.getName());
         viewHolder.harga.setText(String.valueOf(data.getSell_price()));
@@ -140,6 +146,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     private void insertFirst(int position, int quantity) {
+        Log.i("Position", String.valueOf(position));
         try {
             cartOperations.openDb();
             CartModel carts = new CartModel(items.get(position).getIdproduk(), quantity);

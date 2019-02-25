@@ -122,14 +122,13 @@ public class ShopOperations {
                 "= C." + DatabaseHelper.COLUMN_IDPRODUCTCART;*/
 
         Cursor c = sqLiteDatabase.rawQuery(query, null);
-        c.moveToFirst();
+        //c.moveToFirst();
         Log.i("QUERYJOIN", String.valueOf(query));
         ArrayList<JoinModel> shop = new ArrayList<>();
         if (c.getCount() > 0) {
             Log.i("IFMASUK", "MASUK");
             while (c.moveToNext()) {
                 JoinModel cart = new JoinModel();
-                Log.i("JOINID", String.valueOf(c.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCTSHOP)));
                 cart.setIdproduk(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_IDPRODUCTSHOP)));
                 cart.setName(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_NAMEPRODUCT)));
                 cart.setSell_price(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_HARGAPRODUCT)));
