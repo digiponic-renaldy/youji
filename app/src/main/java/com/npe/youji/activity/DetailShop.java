@@ -39,7 +39,7 @@ public class DetailShop extends AppCompatActivity {
     private Gson gson;
     private JoinModel dataItem;
     //show data
-    private TextView namaBarang, hargaBarang, descBarang;
+    private TextView namaBarang, hargaBarang, descBarang, satuan, kategori, stokNull;
     private ImageView imgBarang;
 
     @Override
@@ -61,7 +61,9 @@ public class DetailShop extends AppCompatActivity {
         hargaBarang = findViewById(R.id.tv_hargaBarang_detailBarang);
         descBarang = findViewById(R.id.tv_desc_detailBarang);
         imgBarang = findViewById(R.id.imgToolbar);
-
+        satuan = findViewById(R.id.tvSatuanDetailShop);
+        kategori = findViewById(R.id.tv_category_detailBarang);
+        stokNull = findViewById(R.id.tvStokNullDetailShop);
 
         Bundle extra = getIntent().getExtras();
         cartOperations = new CartOperations(getApplicationContext());
@@ -154,11 +156,11 @@ public class DetailShop extends AppCompatActivity {
         Log.i("STRquantityCheck", strQuantity);
         int quantity = Integer.parseInt(strQuantity);
         quantity = quantity + 1;
-//        if (quantity > dataItem.getStock()) {
-//            btnAdd.setVisibility(View.GONE);
-//        } else {
-//            displayText(quantity);
-//        }
+        if (quantity > dataItem.getStok()) {
+            btnAdd.setVisibility(View.GONE);
+        } else {
+            displayText(quantity);
+        }
     }
 
     private void displayText(int quantity) {
@@ -205,17 +207,25 @@ public class DetailShop extends AppCompatActivity {
     }
 
     private void initData(JoinModel dataItem) {
-//        if (dataItem != null) {
-//            namaBarang.setText(String.valueOf(dataItem.getName()));
-//            hargaBarang.setText("Rp " + String.valueOf(dataItem.getSell_price()));
-//            //descBarang.setText(String.valueOf(dataItem.getDescription()));
-//            this.stok = dataItem.getStock();
-//            //toolbar
-//            Glide.with(this)
-//                    .load(dataItem.getImage())
-//                    .into(imgBarang);
-//            getSupportActionBar().setTitle(dataItem.getName());
-//        }
+        if (dataItem != null) {
+            namaBarang.setText(String.valueOf(dataItem.getKeterangan()));
+            hargaBarang.setText("Rp " + String.valueOf(dataItem.getHarga()));
+            satuan.setText("/"+String.valueOf(dataItem.getSatuan()));
+            kategori.setText(String.valueOf(dataItem.getKategori()));
+            //descBarang.setText(String.valueOf(dataItem.getDescription()));
+
+            //stok
+            this.stok = dataItem.getStok();
+            if(this.stok == 0){
+                stokNull.setVisibility(View.VISIBLE);
+                btnAddtoCart.setVisibility(View.GONE);
+            }
+            //toolbar
+            Glide.with(this)
+                    .load(dataItem.getGambar())
+                    .into(imgBarang);
+            getSupportActionBar().setTitle(dataItem.getKeterangan());
+        }
 
     }
 
@@ -229,6 +239,6 @@ public class DetailShop extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        initData(dataItem);
     }
 }

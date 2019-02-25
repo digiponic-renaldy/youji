@@ -20,8 +20,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    @GET("products")
-    Call<RootShopItemModel> listProduct();
+//    @GET("products")
+//    Call<RootShopItemModel> listProduct();
 
     @GET("product_category")
     Call<RootShopMenuModel> listMenuProduct(@Query("categories_id") int categorys_id);
