@@ -49,7 +49,9 @@ public class AccountFragment extends Fragment {
         tvNama = v.findViewById(R.id.tvNamaProfile);
         tvEmail = v.findViewById(R.id.tvEmailProfile);
 
-        //getDataUser();
+        if(checkUser()){
+            getDataUser();
+        }
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -68,6 +70,19 @@ public class AccountFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private boolean checkUser() {
+        boolean cek = false;
+        try {
+            userOperations.openDb();
+            cek = userOperations.checkRecordUser();
+            userOperations.closeDb();
+            Log.i("CheckUser", "Masuk");
+        } catch (SQLException e) {
+            Log.i("ErrorCheckUserCheckout", e.getMessage());
+        }
+        return cek;
     }
 
     private void getDataUser() {

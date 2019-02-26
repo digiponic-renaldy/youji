@@ -25,6 +25,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
@@ -37,8 +39,8 @@ import com.npe.youji.model.user.RootPelangganModel;
 import com.npe.youji.model.user.RootUserModel;
 import com.npe.youji.model.user.UserModel;
 
+
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -58,6 +60,7 @@ public class LoginFragment extends Fragment {
     private ApiService service_local;
     private UserOperations userOperations;
     List<DataUserModel> listUser;
+    UserModel mUserModel;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -115,43 +118,24 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void updateUI(FirebaseUser user) {
-        JSONObject jsonObject = new JSONObject();
+    private void updateUI(final FirebaseUser user) {
+        JsonObject jsonObject = new JsonObject();
         try {
-            jsonObject.put("name", user.getDisplayName());
-            jsonObject.put("email", user.getEmail());
-        } catch (JSONException e) {
-            e.printStackTrace();
+            jsonObject.addProperty("name", user.getDisplayName().toString());
+            jsonObject.addProperty("email", user.getEmail().toString());
+        } catch (JsonIOException e){
+            Log.i("JsonPelangganError",e.getMessage());
         }
 
-        //RequestBodyUser bodyUser = new RequestBodyUser(user.getDisplayName().toString(), user.getEmail().toString());
-//        service.apiUser(bodyUser).enqueue(new Callback<RootUserModel>() {
-//            @Override
-//            public void onResponse(Call<RootUserModel> call, Response<RootUserModel> response) {
-//                RootUserModel data = response.body();
-//                if(data != null){
-//                    if(data.getApi_message().equalsIgnoreCase("success")){
-//                        listUser = data.getData();
-//                        if(insertDataUser(listUser)){
-//                            toMain();
-//                        }
-//                        Log.i("listUser", String.valueOf(listUser.get(0).getEmail()));
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RootUserModel> call, Throwable t) {
-//                Log.i("GagalApiCustomer", t.getMessage());
-//            }
-//        });
         service_local.sendPelanggan(jsonObject).enqueue(new Callback<List<RootPelangganModel>>() {
             @Override
             public void onResponse(Call<List<RootPelangganModel>> call, Response<List<RootPelangganModel>> response) {
                 List<RootPelangganModel> data = response.body();
                 if(data != null){
-                    if(insertDataUser(data)){
+                    if(insertDataUser(data) != null){
                         toMain();
+                        Log.i("ApiPelanggan", "masuk");
+                        Log.i("NamaUser", mUserModel.getNama().toString());
                     }
                 }
             }
@@ -163,19 +147,17 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private Boolean insertDataUser(List<RootPelangganModel> listUser) {
-        boolean cek = false;
+    private UserModel insertDataUser(List<RootPelangganModel> listUser) {
         try{
             userOperations.openDb();
             UserModel userModel = new UserModel(listUser.get(0).getId(), listUser.get(0).getName(), listUser.get(0).getEmail());
-            userOperations.insertUser(userModel);
-            cek = true;
+            mUserModel = userOperations.insertUser(userModel);
             userOperations.closeDb();
         }catch (SQLException e){
             Log.i("ErrorInsertUser", e.getMessage());
         }
 
-        return cek;
+        return mUserModel;
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {

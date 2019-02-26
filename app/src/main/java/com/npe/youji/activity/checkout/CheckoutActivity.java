@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.JsonIOException;
 import com.npe.youji.R;
@@ -29,8 +28,6 @@ import com.npe.youji.model.city.RootDistrikModel;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.dbsqlite.UserOperations;
-import com.npe.youji.model.order.RequestOrder;
-import com.npe.youji.model.order.RootOrderModel;
 import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.user.UserModel;
 
@@ -114,9 +111,9 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPembayaran = findViewById(R.id.btn_pembayaran);
 
         //data user
-//        if (checkUser()) {
-//            getDataUser();
-//        }
+        if (checkUser()) {
+            getDataUser();
+        }
         setCurrentDate();
         //date and time
         tvTanggal.setText(getCurrentDate());
@@ -199,7 +196,7 @@ public class CheckoutActivity extends AppCompatActivity {
             conn.connect();
             Log.i("SuccessKirim", "Berhasil");
             // 5. return response message
-            Log.i("Kembalian",conn.getResponseMessage());
+            Log.i("Kembalian", conn.getResponseMessage());
             return conn.getResponseMessage() + "";
         }
 
@@ -219,14 +216,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
         int discount = 0;
         int grandTotal = getSubTotal() - discount;
-        //int status = 1;
-        int idUser = 8;
+        //int idUser = 8;
         int pajak = 0;
-        //int satuan = 10;
-        //String kodeProduk = "PRD/00012";
         try {
             // Add Property
-            jsonObject.accumulate("customer_id", idUser);
+            jsonObject.accumulate("customer_id", getUserId());
             Log.i("Id", String.valueOf(idUser));
             jsonObject.accumulate("tanggal", getCurrentDate());
             jsonObject.accumulate("subtotal", getSubTotal());
@@ -245,49 +239,6 @@ public class CheckoutActivity extends AppCompatActivity {
         return jsonObject;
     }
 
-//    private void sendOrder() {
-//        Log.i("Customers_id", String.valueOf(getUserId()));
-//        Log.i("total", String.valueOf(getSubTotal()));
-//        Log.i("discount", String.valueOf(this.discount));
-//        int grandTotal = getSubTotal() - discount;
-//        Log.i("grand_total", String.valueOf(grandTotal));
-//        Log.i("shipping_date", getCurrentDate());
-//        int status = 1;
-//        Log.i("status", String.valueOf(status));
-//        Log.i("IdDistrik", String.valueOf(getIdDistrik()));
-//        Log.i("Customers_name", getUserName());
-//        Log.i("ordering_detail", String.valueOf(jsonArray));
-//        Log.i("Customers_email", getUserEmail());
-//
-//
-//        RequestOrder requestOrder = new RequestOrder(getUserId(), getSubTotal(),
-//                discount, grandTotal, getCurrentDate(), status, getIdDistrik(), getUserName(), getUserEmail());
-//
-//        Log.i("RequestJson", String.valueOf(requestOrder));
-//
-//        service.sendOrder(requestOrder).enqueue(new Callback<RootOrderModel>() {
-//            @Override
-//            public void onResponse(Call<RootOrderModel> call, Response<RootOrderModel> response) {
-//                RootOrderModel data = response.body();
-//                Log.i("DataResponseOrder", String.valueOf(response));
-//
-//                Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
-//                Log.i("BerhasilResponseInsert", "Berhasil");
-//                if (data != null) {
-//                    if (data.getApi_message().equalsIgnoreCase("success")) {
-//                        Log.i("SuccessSendOrder", "Success");
-//                        Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RootOrderModel> call, Throwable t) {
-//                Log.i("ErrorSendOrder", t.getMessage());
-//            }
-//        });
-//
-//    }
 
     private void getApiCity() {
         service.listCity().enqueue(new Callback<RootCitiesModel>() {
