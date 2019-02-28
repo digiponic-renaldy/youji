@@ -48,6 +48,7 @@ public class AccountFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         tvNama = v.findViewById(R.id.tvNamaProfile);
         tvEmail = v.findViewById(R.id.tvEmailProfile);
+        userOperations = new UserOperations(getContext());
 
         if(checkUser()){
             getDataUser();
@@ -60,7 +61,6 @@ public class AccountFragment extends Fragment {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         btnLogout = v.findViewById(R.id.btnLogout);
-        userOperations = new UserOperations(getContext());
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -104,8 +104,8 @@ public class CheckoutActivity extends AppCompatActivity {
         tvSubtotal = findViewById(R.id.tvSubtotalCheckout);
         tvDiskon = findViewById(R.id.tvDiskonCheckout);
         tvTotal = findViewById(R.id.tvTotalCheckout);
-        etAlamat = findViewById(R.id.etAlamatPenerima);
-        etNotelp = findViewById(R.id.etNotelpPenerima);
+//        etAlamat = findViewById(R.id.etAlamatPenerima);
+//        etNotelp = findViewById(R.id.etNotelpPenerima);
         spinCity = findViewById(R.id.spinCity);
         spinDistrik = findViewById(R.id.spinDistrik);
         btnPembayaran = findViewById(R.id.btn_pembayaran);
@@ -124,8 +124,8 @@ public class CheckoutActivity extends AppCompatActivity {
         retrofit = NetworkClient.getRetrofitClient();
         service = retrofit.create(ApiService.class);
 
-        getApiCity();
         //get spin city and distrik
+        getApiCity();
 
 
         //btn pembayaran
@@ -367,6 +367,12 @@ public class CheckoutActivity extends AppCompatActivity {
         }
     }
 
+    private void setDataTotal(){
+        tvSubtotal.setText(String.valueOf(getSubTotal()));
+        int total= getSubTotal() - 0;
+        tvTotal.setText(String.valueOf(total));
+    }
+
     private void setUser(List<UserModel> userModels) {
         this.tvNamaUser.setText(userModels.get(0).getNama());
         this.tvEmailUser.setText(userModels.get(0).getEmail());
@@ -444,6 +450,9 @@ public class CheckoutActivity extends AppCompatActivity {
         this.jsonArray = jsonArray;
         Log.i("JSONARRAYJoin", String.valueOf(jsonArray));
         setSubTotal(subTotal);
+
+        //set data total and grand total
+        setDataTotal();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
         adapter = new AdapterCheckout(getApplicationContext(), dataitem);
