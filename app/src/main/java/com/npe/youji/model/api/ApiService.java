@@ -3,13 +3,8 @@ package com.npe.youji.model.api;
 import com.google.gson.JsonObject;
 import com.npe.youji.model.city.RootCitiesModel;
 import com.npe.youji.model.city.RootDistrikModel;
-import com.npe.youji.model.order.RequestOrder;
-import com.npe.youji.model.order.RootOrderModel;
 import com.npe.youji.model.shop.RootProdukModel;
-import com.npe.youji.model.shop.menu.RootCategoryModel;
 import com.npe.youji.model.shop.menu.RootDetailProdukModel;
-import com.npe.youji.model.shop.menu.RootFilterProdukModel;
-import com.npe.youji.model.shop.menu.RootShopMenuModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 import com.npe.youji.model.user.RequestBodyUser;
 import com.npe.youji.model.user.RootPelangganModel;
@@ -51,12 +46,9 @@ public interface ApiService {
     @POST("pelanggan")
     Call<List<RootPelangganModel>> sendPelanggan(@Body JsonObject jsonObject);
 
-    @POST("produk/filter")
-    Call<List<RootDetailProdukModel>> getCategoriProduk(@Body JsonObject jsonObject);
-
     @GET("tipe/detil/kategori")
     Call<List<RootTipeKategoriModel>> listCategory();
 
     @POST("produk/filter")
-    Call<List<RootFilterProdukModel>> listDetailFilterProduk(@Body JsonObject jsonObject);
+    Call<List<RootProdukModel>> listDetailFilterProduk(@Body JsonObject jsonObject);
 }

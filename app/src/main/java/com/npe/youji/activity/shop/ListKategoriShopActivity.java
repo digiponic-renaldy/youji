@@ -1,16 +1,22 @@
 package com.npe.youji.activity.shop;
 
+import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.google.gson.JsonObject;
 import com.npe.youji.R;
+import com.npe.youji.fragment.shop.AdapterShopItem;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
-import com.npe.youji.model.shop.menu.RootFilterProdukModel;
+import com.npe.youji.model.dbsqlite.ShopOperations;
+import com.npe.youji.model.shop.JoinModel;
+import com.npe.youji.model.shop.RootProdukModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -23,12 +29,15 @@ public class ListKategoriShopActivity extends AppCompatActivity {
     String kategori;
     Retrofit retrofit_local;
     ApiService service_local;
+    ShopOperations shopOperations;
+    AdapterShopItem adapterItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_kategori_shop);
         //inisialisasi
         rvListFilter = findViewById(R.id.rvListKategori);
+        shopOperations = new ShopOperations(getApplicationContext());
         //retorgfit
         retrofit_local = NetworkClient.getRetrofitClientLocal();
         service_local = retrofit_local.create(ApiService.class);
@@ -45,24 +54,54 @@ public class ListKategoriShopActivity extends AppCompatActivity {
     private void getDataFilter(String kategori) {
         JsonObject requet = new JsonObject();
         requet.addProperty("kategori", kategori);
-        service_local.listDetailFilterProduk(requet).enqueue(new Callback<List<RootFilterProdukModel>>() {
+        service_local.listDetailFilterProduk(requet).enqueue(new Callback<List<RootProdukModel>>() {
             @Override
-            public void onResponse(Call<List<RootFilterProdukModel>> call, Response<List<RootFilterProdukModel>> response) {
-                List<RootFilterProdukModel> data = response.body();
+            public void onResponse(Call<List<RootProdukModel>> call, Response<List<RootProdukModel>> response) {
+                List<RootProdukModel> data = response.body();
                 if(data != null){
-                    Log.i("DataFilter", String.valueOf(data));
-                    insertAllData(data);
+                    Log.i("ResponSucc", "Berhasil");
+                    insertAllDataShopLocal(data);
+                    checkIsiSqlShop();
+                    joinData();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<RootFilterProdukModel>> call, Throwable t) {
-                Log.i("ErrorGetFilterData",t.getMessage());
+            public void onFailure(Call<List<RootProdukModel>> call, Throwable t) {
+                Log.i("ErrorGetFilterProduk", t.getMessage());
+            }
+        });
+    }
+    private void joinData() {
+        try {
+            shopOperations.openDb();
+            shopOperations.joinData();
+
+            //insert to adapter
+            listItemShop(shopOperations.joinData());
+            shopOperations.closeDb();
+        } catch (SQLException e) {
+            Log.d("ERROR JOIN", e.getMessage());
+        }
+    }
+
+    private void listItemShop(ArrayList<JoinModel> dataItem) {
+        Log.d("LIST_DATA_PRODUCT", dataItem.toString());
+        rvListFilter.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        adapterItem = new AdapterShopItem(getApplicationContext(), dataItem);
+        rvListFilter.setAdapter(adapterItem);
+        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
+            @Override
+            public void onItemCick(int position, JoinModel data) {
+                adapterItem.detailItem(data);
             }
         });
     }
 
-    private void insertAllData(List<RootFilterProdukModel> data) {
+    private void checkIsiSqlShop() {
+    }
+
+    private void insertAllDataShopLocal(List<RootProdukModel> data) {
     }
 
 

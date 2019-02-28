@@ -20,12 +20,10 @@ import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
-import com.npe.youji.model.shop.DataShopItemModel;
 import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.menu.DataCategory;
-import com.npe.youji.model.shop.menu.RootCategoryModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 
 import java.util.ArrayList;
