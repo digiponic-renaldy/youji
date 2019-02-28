@@ -8,6 +8,7 @@ import com.npe.youji.model.order.RootOrderModel;
 import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
 import com.npe.youji.model.shop.menu.RootDetailProdukModel;
+import com.npe.youji.model.shop.menu.RootFilterProdukModel;
 import com.npe.youji.model.shop.menu.RootShopMenuModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 import com.npe.youji.model.user.RequestBodyUser;
@@ -55,4 +56,7 @@ public interface ApiService {
 
     @GET("tipe/detil/kategori")
     Call<List<RootTipeKategoriModel>> listCategory();
+
+    @POST("produk/filter")
+    Call<List<RootFilterProdukModel>> listDetailFilterProduk(@Body JsonObject jsonObject);
 }
