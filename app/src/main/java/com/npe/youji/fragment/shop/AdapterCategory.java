@@ -19,18 +19,19 @@ import com.npe.youji.activity.DetailShop;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.shop.menu.DataCategory;
+import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
     private Context context;
-    private List<DataCategory> items;
+    private List<RootTipeKategoriModel> items;
     private Gson gson;
     ShopOperations shopOperations;
     ArrayList<JoinModel> dataJoin;
 
-    public AdapterCategory(Context context, List<DataCategory> items) {
+    public AdapterCategory(Context context, List<RootTipeKategoriModel> items) {
         this.context = context;
         shopOperations = new ShopOperations(context);
         this.items = items;
@@ -45,15 +46,15 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        DataCategory data = items.get(i);
+        RootTipeKategoriModel data = items.get(i);
         //join data
         getDataJoin();
 
-        Glide.with(context)
-                .load(data.getImage())
-                .into(viewHolder.image);
+//        Glide.with(context)
+//                .load(data.get)
+//                .into(viewHolder.image);
 
-        viewHolder.nama.setText(data.getName());
+        viewHolder.nama.setText(data.getKeterangan()    );
 
 //        viewHolder.image.setOnClickListener(new View.OnClickListener() {
 //            @Override

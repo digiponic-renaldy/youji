@@ -26,6 +26,7 @@ import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.menu.DataCategory;
 import com.npe.youji.model.shop.menu.RootCategoryModel;
+import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +45,7 @@ public class ShopFragment extends Fragment {
     private RecyclerView recyclerItem, recyclerCategory;
     private AdapterShopItem adapterItem;
     private AdapterCategory adapterCategory;
-    private ArrayList<DataShopItemModel> dataItem;
-    private ArrayList<DataCategory> dataCategories;
+    private ArrayList<DataCategory> listCategories;
     //retrofit
     private Retrofit retrofit;
     private Retrofit retrofit_local;
@@ -210,28 +210,23 @@ public class ShopFragment extends Fragment {
     private void getCategory() {
         layoutShop.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        service.listCategory().enqueue(new Callback<RootCategoryModel>() {
+        service_local.listCategory().enqueue(new Callback<List<RootTipeKategoriModel>>() {
             @Override
-            public void onResponse(Call<RootCategoryModel> call, Response<RootCategoryModel> response) {
-                if (response.body() != null) {
-                    RootCategoryModel data = response.body();
-                    if (data.getApi_message().equalsIgnoreCase("success")) {
-                        Log.d("DATA_CATEGORY", "SUCCESS");
-                        dataCategories = (ArrayList<DataCategory>) data.getData();
-                        listCategory(dataCategories);
-                    }
+            public void onResponse(Call<List<RootTipeKategoriModel>> call, Response<List<RootTipeKategoriModel>> response) {
+                List<RootTipeKategoriModel> data = response.body();
+                if(data != null){
+                    listCategory(data);
                 }
             }
 
             @Override
-            public void onFailure(Call<RootCategoryModel> call, Throwable t) {
-                Log.d("FAILURE_CATEGORY", t.getMessage());
+            public void onFailure(Call<List<RootTipeKategoriModel>> call, Throwable t) {
+                Log.i("ErrorListKategori", t.getMessage());
             }
         });
     }
 
-    private void listCategory(ArrayList<DataCategory> dataCategories) {
-
+    private void listCategory(List<RootTipeKategoriModel> dataCategories) {
         recyclerCategory.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapterCategory = new AdapterCategory(getContext(), dataCategories);
         recyclerCategory.setAdapter(adapterCategory);
