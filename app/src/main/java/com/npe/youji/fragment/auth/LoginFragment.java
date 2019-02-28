@@ -32,15 +32,10 @@ import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.UserOperations;
-import com.npe.youji.model.order.RootOrderModel;
 import com.npe.youji.model.user.DataUserModel;
-import com.npe.youji.model.user.RequestBodyUser;
 import com.npe.youji.model.user.RootPelangganModel;
-import com.npe.youji.model.user.RootUserModel;
 import com.npe.youji.model.user.UserModel;
 
-
-import org.json.JSONException;
 
 import java.util.List;
 
