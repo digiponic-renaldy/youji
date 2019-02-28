@@ -8,10 +8,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.npe.youji.fragment.OrderFragment;
+import com.npe.youji.fragment.order.OrderFragment;
 import com.npe.youji.fragment.auth.AccountFragment;
 import com.npe.youji.fragment.auth.LoginFragment;
 import com.npe.youji.fragment.shop.ShopFragment;
@@ -50,8 +51,12 @@ public class MainActivity extends AppCompatActivity {
                         loadFragment(fragment);
                         return true;
                     case R.id.menu_order:
-                        fragment = new OrderFragment();
-                        loadFragment(fragment);
+                        if (mUser != null) {
+                            fragment = new OrderFragment();
+                            loadFragment(fragment);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Login first", Toast.LENGTH_SHORT).show();
+                        }
                         return true;
                     case R.id.menu_shop:
                         fragment = new ShopFragment();
