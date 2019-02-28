@@ -1,5 +1,6 @@
 package com.npe.youji.activity.checkout;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.JsonIOException;
+import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
@@ -64,7 +66,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     TextView tvNamaUser, tvEmailUser, tvTanggal, tvSubtotal, tvDiskon, tvTotal;
     EditText etAlamat, etNotelp;
-    Button btnPembayaran;
+    Button btnPembayaran, btnBeliLagi;
     int idUser;
 
     //spinner
@@ -109,6 +111,7 @@ public class CheckoutActivity extends AppCompatActivity {
         spinCity = findViewById(R.id.spinCity);
         spinDistrik = findViewById(R.id.spinDistrik);
         btnPembayaran = findViewById(R.id.btn_pembayaran);
+        btnBeliLagi = findViewById(R.id.btnBelanjaLagi);
 
         //data user
         if (checkUser()) {
@@ -136,6 +139,19 @@ public class CheckoutActivity extends AppCompatActivity {
                 rawJson();
             }
         });
+
+        btnBeliLagi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toMain();
+            }
+        });
+    }
+
+    private void toMain() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void rawJson() {
