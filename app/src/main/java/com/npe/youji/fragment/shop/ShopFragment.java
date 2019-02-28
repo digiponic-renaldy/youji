@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
@@ -52,13 +54,13 @@ public class ShopFragment extends Fragment {
 
     private CartOperations cartOperations;
     private ShopOperations shopOperations;
-    private ProgressBar progressBar;
+//    private ProgressBar progressBar;
     private RelativeLayout layoutShop;
 
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
     CircleButton btnFloatCheckout;
-
+    ShimmerRecyclerView shimmerRecyclerShopItem, shimmerRecyclerShopMenu;
     public ShopFragment() {
         // Required empty public constructor
     }
@@ -74,8 +76,19 @@ public class ShopFragment extends Fragment {
         layoutBottomSheet = v.findViewById(R.id.bottom_sheet);
         shopOperations = new ShopOperations(getContext());
         cartOperations = new CartOperations(getContext());
-        progressBar = v.findViewById(R.id.pbShop);
+//        progressBar = v.findViewById(R.id.pbShop);
         layoutShop = v.findViewById(R.id.layoutShop);
+        shimmerRecyclerShopItem = v.findViewById(R.id.shimmer_shopItem);
+        shimmerRecyclerShopMenu = v.findViewById(R.id.shimmer_shopMenu);
+
+        //shimmer
+        shimmerRecyclerShopItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        shimmerRecyclerShopItem.setAdapter(adapterItem);
+        shimmerRecyclerShopItem.showShimmerAdapter();
+
+        shimmerRecyclerShopMenu.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        shimmerRecyclerShopMenu.setAdapter(adapterCategory);
+        shimmerRecyclerShopMenu.showShimmerAdapter();
 
         //bottom sheet
         botomSheet = BottomSheetBehavior.from(layoutBottomSheet);
@@ -118,6 +131,7 @@ public class ShopFragment extends Fragment {
                     insertAllDataShopLocal(data);
                     checkIsiSqlShop();
                     joinData();
+                    shimmerRecyclerShopItem.hideShimmerAdapter();
                 }
             }
 
@@ -188,9 +202,9 @@ public class ShopFragment extends Fragment {
                 adapterItem.detailItem(data);
             }
         });
-
-        layoutShop.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+//
+//        layoutShop.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.GONE);
     }
 
     public void checkIsiSqlShop() {
@@ -206,8 +220,8 @@ public class ShopFragment extends Fragment {
 
 
     private void getCategory() {
-        layoutShop.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+//        layoutShop.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.VISIBLE);
         service_local.listCategory().enqueue(new Callback<List<RootTipeKategoriModel>>() {
             @Override
             public void onResponse(Call<List<RootTipeKategoriModel>> call, Response<List<RootTipeKategoriModel>> response) {
@@ -228,7 +242,7 @@ public class ShopFragment extends Fragment {
         recyclerCategory.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapterCategory = new AdapterCategory(getContext(), dataCategories);
         recyclerCategory.setAdapter(adapterCategory);
-
+        shimmerRecyclerShopMenu.hideShimmerAdapter();
     }
 
     private void bottomSheetBehavior() {

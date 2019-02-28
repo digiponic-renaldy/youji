@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.shop.ShopFragment">
-    <ProgressBar
-        android:visibility="gone"
-        android:id="@+id/pbShop"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<ProgressBar-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/pbShop"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
     <RelativeLayout
         android:id="@+id/layoutShop"
         android:layout_width="match_parent"
@@ -32,6 +32,29 @@
             </android.support.v7.widget.RecyclerView>
         </android.support.v7.widget.CardView>
 
+
+
+        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/shimmer_shopMenu"
+            app:shimmer_demo_layout="@layout/layout_shimmer_shopmenu"
+            app:shimmer_demo_layout_manager_type="linear_vertical"
+            />
+
+
+        <!--shimmer shop item-->
+
+        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/shimmer_shopItem"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/shimmer_shopMenu"
+            app:shimmer_demo_layout="@layout/layout_shimmer_shopitem"
+            app:shimmer_demo_layout_manager_type="grid"
+            />
+
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="10dp"
             android:layout_below="@id/card_recyclerMenu_shop"
@@ -40,6 +63,7 @@
             android:layout_height="match_parent">
 
         </android.support.v7.widget.RecyclerView>
+
 
         <at.markushi.ui.CircleButton
             android:visibility="gone"

@@ -10,4 +10,5 @@
     <color name="colorBlue">#3b5998</color>
     <color name="colorGreenSoft">#6ab04c</color>
     <color name="colorDarkGrey">#807d7d</color>
+    <color name="demo_dark_transparent">#24000000</color>
 </resources>
