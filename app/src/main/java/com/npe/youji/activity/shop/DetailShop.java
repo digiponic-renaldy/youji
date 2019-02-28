@@ -1,4 +1,4 @@
-package com.npe.youji.activity;
+package com.npe.youji.activity.shop;
 
 import android.content.Intent;
 import android.database.SQLException;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.npe.youji.R;
+import com.npe.youji.activity.LoginActivity;
 import com.npe.youji.activity.checkout.CheckoutActivity;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.UserOperations;

@@ -10,15 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.npe.youji.R;
-import com.npe.youji.activity.DetailShop;
+import com.npe.youji.activity.shop.ListKategoriShopActivity;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.JoinModel;
-import com.npe.youji.model.shop.menu.DataCategory;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ import java.util.List;
 public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
     private Context context;
     private List<RootTipeKategoriModel> items;
-    private Gson gson;
     ShopOperations shopOperations;
     ArrayList<JoinModel> dataJoin;
 
@@ -56,14 +53,14 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
 
         viewHolder.nama.setText(data.getKeterangan()    );
 
-//        viewHolder.image.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                toDetail(i);
-//            }
-//        });
+        viewHolder.layoutKategori.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toDetail(i);
+            }
+        });
     }
+
 
 
     private void getDataJoin() {
@@ -78,10 +75,8 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
 
 
     private void toDetail(int position) {
-        gson = new Gson();
-        String json = gson.toJson(dataJoin.get(position));
-        Intent intent = new Intent(context, DetailShop.class);
-        intent.putExtra("DATA", json);
+        Intent intent = new Intent(context, ListKategoriShopActivity.class);
+        intent.putExtra("KATEGORI", items.get(position).getKeterangan());
         context.startActivity(intent);
     }
 
@@ -93,10 +88,12 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
         TextView nama;
+        LinearLayout layoutKategori;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.imgv_listMenu_shop);
             nama = itemView.findViewById(R.id.tv_listMenu_shop);
+            layoutKategori = itemView.findViewById(R.id.layoutKategoriProduk);
         }
     }
 }

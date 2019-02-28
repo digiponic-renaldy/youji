@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/icons"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
-            android:name=".activity.DetailShop"
+            android:name=".activity.shop.DetailShop"
             android:label="@string/title_activity_detail_shop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.checkout.CheckoutActivity" />
@@ -27,6 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.shop.ListKategoriShopActivity"></activity>
     </application>
 
 </manifest>
