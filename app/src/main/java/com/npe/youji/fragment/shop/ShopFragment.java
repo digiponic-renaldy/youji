@@ -80,13 +80,8 @@ public class ShopFragment extends Fragment {
         shimmerRecyclerShopMenu = v.findViewById(R.id.shimmer_shopMenu);
 
         //shimmer
-        shimmerRecyclerShopItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        shimmerRecyclerShopItem.setAdapter(adapterItem);
-        shimmerRecyclerShopItem.showShimmerAdapter();
+        shimmerBehavior();
 
-        shimmerRecyclerShopMenu.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        shimmerRecyclerShopMenu.setAdapter(adapterCategory);
-        shimmerRecyclerShopMenu.showShimmerAdapter();
 
         //bottom sheet
         botomSheet = BottomSheetBehavior.from(layoutBottomSheet);
@@ -116,6 +111,16 @@ public class ShopFragment extends Fragment {
         bottomSheetBehavior();
 
         return v;
+    }
+
+    private void shimmerBehavior() {
+        shimmerRecyclerShopItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        shimmerRecyclerShopItem.setAdapter(adapterItem);
+        shimmerRecyclerShopItem.showShimmerAdapter();
+
+        shimmerRecyclerShopMenu.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        shimmerRecyclerShopMenu.setAdapter(adapterCategory);
+        shimmerRecyclerShopMenu.showShimmerAdapter();
     }
 
     private void getItemProduk_local() {
