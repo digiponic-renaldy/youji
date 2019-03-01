@@ -1,5 +1,6 @@
 package com.npe.youji.activity.checkout;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -91,6 +93,8 @@ public class CheckoutActivity extends AppCompatActivity {
     int discount;
     int totalHarga;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +116,18 @@ public class CheckoutActivity extends AppCompatActivity {
         spinDistrik = findViewById(R.id.spinDistrik);
         btnPembayaran = findViewById(R.id.btn_pembayaran);
         btnBeliLagi = findViewById(R.id.btnBelanjaLagi);
+
+        //progress dialog
+        progressDialog = new ProgressDialog(this,  R.style.full_screen_dialog){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.progress_dialog);
+                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        };
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
 
         //data user
         if (checkUser()) {
@@ -136,6 +152,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //sendOrder();
+                progressDialog.show();
                 rawJson();
             }
         });
@@ -180,10 +197,12 @@ public class CheckoutActivity extends AppCompatActivity {
                     Log.i("RunningRawJson", "Run");
                     return HttpPost(urls[0]);
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
                     e.printStackTrace();
                     return "Error!";
                 }
             } catch (IOException e) {
+                progressDialog.dismiss();
                 return "Unable to retrieve web page. URL may be invalid.";
             }
         }
@@ -213,6 +232,8 @@ public class CheckoutActivity extends AppCompatActivity {
             Log.i("SuccessKirim", "Berhasil");
             // 5. return response message
             Log.i("Kembalian", conn.getResponseMessage());
+            progressDialog.dismiss();
+            toMain();
             return conn.getResponseMessage() + "";
         }
 
@@ -248,8 +269,10 @@ public class CheckoutActivity extends AppCompatActivity {
 
             Log.d("EXPORTJSON", jsonObject.toString());
         } catch (JsonIOException e) {
+            progressDialog.dismiss();
             Log.d("JSONERROREX", e.toString());
         } catch (JSONException e) {
+            progressDialog.dismiss();
             e.printStackTrace();
         }
         return jsonObject;
