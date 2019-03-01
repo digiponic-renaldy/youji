@@ -91,8 +91,8 @@ public class AdapterCheckout extends RecyclerView.Adapter<AdapterCheckout.ViewHo
             tvNamaBarang = itemView.findViewById(R.id.tvNamaBarangCheckout);
             tvHargaBarang = itemView.findViewById(R.id.tvHargaBarangCheckout);
             tvJumlahBarang = itemView.findViewById(R.id.jumlahBarang_checkout);
-            btnAdd = itemView.findViewById(R.id.btn_addCart_checkout);
-            btnMinus = itemView.findViewById(R.id.btn_minusCart_checkout);
+//            btnAdd = itemView.findViewById(R.id.btn_addCart_checkout);
+//            btnMinus = itemView.findViewById(R.id.btn_minusCart_checkout);
 
             layoutCheckout = itemView.findViewById(R.id.layoutOrderCheckout);
         }
