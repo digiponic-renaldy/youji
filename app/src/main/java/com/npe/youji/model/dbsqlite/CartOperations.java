@@ -127,4 +127,8 @@ public class CartOperations {
         sqLiteDatabase.execSQL("DELETE FROM "+DatabaseHelper.TABLE_CART+" WHERE "+ DatabaseHelper.COLUMN_IDPRODUCTCART
                 + "=" + idProduct);
     }
+
+    public void dropCart(){
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_CART);
+    }
 }

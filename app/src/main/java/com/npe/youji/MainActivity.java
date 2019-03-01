@@ -1,5 +1,6 @@
 package com.npe.youji;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.npe.youji.activity.LoginActivity;
 import com.npe.youji.fragment.order.OrderFragment;
 import com.npe.youji.fragment.auth.AccountFragment;
 import com.npe.youji.fragment.auth.LoginFragment;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                             fragment = new OrderFragment();
                             loadFragment(fragment);
                         } else {
-                            Toast.makeText(getApplicationContext(), "Login first", Toast.LENGTH_SHORT).show();
+                            toLogin();
                         }
                         return true;
                     case R.id.menu_shop:
@@ -68,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void toLogin() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void loadFragment(Fragment fragment) {

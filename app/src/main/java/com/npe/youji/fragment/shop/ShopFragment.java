@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
@@ -54,13 +53,13 @@ public class ShopFragment extends Fragment {
 
     private CartOperations cartOperations;
     private ShopOperations shopOperations;
-//    private ProgressBar progressBar;
     private RelativeLayout layoutShop;
 
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
     CircleButton btnFloatCheckout;
     ShimmerRecyclerView shimmerRecyclerShopItem, shimmerRecyclerShopMenu;
+
     public ShopFragment() {
         // Required empty public constructor
     }
@@ -76,7 +75,6 @@ public class ShopFragment extends Fragment {
         layoutBottomSheet = v.findViewById(R.id.bottom_sheet);
         shopOperations = new ShopOperations(getContext());
         cartOperations = new CartOperations(getContext());
-//        progressBar = v.findViewById(R.id.pbShop);
         layoutShop = v.findViewById(R.id.layoutShop);
         shimmerRecyclerShopItem = v.findViewById(R.id.shimmer_shopItem);
         shimmerRecyclerShopMenu = v.findViewById(R.id.shimmer_shopMenu);
@@ -105,7 +103,6 @@ public class ShopFragment extends Fragment {
         getCategory();
         getItemProduk_local();
 
-        //getItemProduct();
 
         //float sheet
         btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
@@ -202,9 +199,6 @@ public class ShopFragment extends Fragment {
                 adapterItem.detailItem(data);
             }
         });
-//
-//        layoutShop.setVisibility(View.VISIBLE);
-//        progressBar.setVisibility(View.GONE);
     }
 
     public void checkIsiSqlShop() {
@@ -220,13 +214,11 @@ public class ShopFragment extends Fragment {
 
 
     private void getCategory() {
-//        layoutShop.setVisibility(View.GONE);
-//        progressBar.setVisibility(View.VISIBLE);
         service_local.listCategory().enqueue(new Callback<List<RootTipeKategoriModel>>() {
             @Override
             public void onResponse(Call<List<RootTipeKategoriModel>> call, Response<List<RootTipeKategoriModel>> response) {
                 List<RootTipeKategoriModel> data = response.body();
-                if(data != null){
+                if (data != null) {
                     listCategory(data);
                 }
             }

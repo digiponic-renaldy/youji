@@ -91,11 +91,11 @@ public class DetailShop extends AppCompatActivity {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // if (checkUser()) {
+                if (checkUser()) {
                     toCheckout();
-//                } else {
-//                    toLogin();
-//                }
+                } else {
+                    toLogin();
+                }
             }
         });
     }

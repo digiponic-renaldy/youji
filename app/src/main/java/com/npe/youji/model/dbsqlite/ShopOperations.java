@@ -211,4 +211,8 @@ public class ShopOperations {
         sqLiteDatabase.execSQL("DELETE FROM " + DatabaseHelper.TABLE_SHOP + " WHERE " + DatabaseHelper.COLUMN_IDPRODUCTSHOP
                 + "=" + idProduct);
     }
+
+    public void dropTable(){
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_SHOP);
+    }
 }

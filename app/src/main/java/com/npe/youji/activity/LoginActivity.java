@@ -1,5 +1,6 @@
 package com.npe.youji.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.SQLException;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -51,13 +53,25 @@ public class LoginActivity extends AppCompatActivity {
     private ApiService service;
     private UserOperations userOperations;
     List<DataUserModel> listUser;
-
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         btnLoginGoogle = findViewById(R.id.btn_login_google_first);
+
+        //progress dialog
+        progressDialog = new ProgressDialog(this,  R.style.full_screen_dialog){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.progress_dialog);
+                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        };
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -125,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void toMain() {
+        progressDialog.dismiss();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -146,6 +161,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        progressDialog.show();
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -163,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication Failed.", Toast.LENGTH_SHORT).show();
                             updateUI(null);
+                            progressDialog.dismiss();
                         }
                     }
                 });

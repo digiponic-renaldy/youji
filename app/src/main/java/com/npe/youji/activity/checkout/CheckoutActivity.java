@@ -169,6 +169,7 @@ public class CheckoutActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void rawJson() {
@@ -233,6 +234,7 @@ public class CheckoutActivity extends AppCompatActivity {
             // 5. return response message
             Log.i("Kembalian", conn.getResponseMessage());
             progressDialog.dismiss();
+            resetDbSQl();
             toMain();
             return conn.getResponseMessage() + "";
         }
@@ -245,6 +247,33 @@ public class CheckoutActivity extends AppCompatActivity {
             writer.flush();
             writer.close();
             os.close();
+        }
+    }
+
+    private void resetDbSQl() {
+        //dropTableShop();
+        //dropTableCart();
+    }
+
+    private void dropTableCart() {
+        try {
+            cartOperations.openDb();
+            cartOperations.dropCart();
+            Log.i("DropTableCart", "Success");
+            cartOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorResetCart", e.getMessage());
+        }
+    }
+
+    private void dropTableShop() {
+        try{
+            shopOperations.openDb();
+            shopOperations.dropTable();
+            Log.i("DropTableShop","Success");
+            shopOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorResetShop", e.getMessage());
         }
     }
 
