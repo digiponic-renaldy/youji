@@ -6,6 +6,7 @@
     android:orientation="vertical"
     tools:context=".fragment.auth.LoginFragment">
 
+
     <ImageView
         android:src="@drawable/logogalaksiorganik"
         android:layout_marginTop="50dp"
@@ -80,6 +81,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
+
 
 
 </LinearLayout>
