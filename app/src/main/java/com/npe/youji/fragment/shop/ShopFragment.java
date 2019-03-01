@@ -90,10 +90,7 @@ public class ShopFragment extends Fragment {
 
 
         //retrofit
-        retrofit = NetworkClient.getRetrofitClient();
-        retrofit_local = NetworkClient.getRetrofitClientLocal();
-        service = retrofit.create(ApiService.class);
-        service_local = retrofit_local.create(ApiService.class);
+        initRetrofit();
 
         getCategory();
         getItemProduk_local();
@@ -111,6 +108,13 @@ public class ShopFragment extends Fragment {
         bottomSheetBehavior();
 
         return v;
+    }
+
+    private void initRetrofit() {
+        retrofit = NetworkClient.getRetrofitClient();
+        retrofit_local = NetworkClient.getRetrofitClientLocal();
+        service = retrofit.create(ApiService.class);
+        service_local = retrofit_local.create(ApiService.class);
     }
 
     private void shimmerBehavior() {
@@ -196,7 +200,7 @@ public class ShopFragment extends Fragment {
     private void listItemShop(ArrayList<JoinModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
         recyclerItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        adapterItem = new AdapterShopItem(getContext(), dataItem);
+        adapterItem = new AdapterShopItem(getContext(), dataItem, ShopFragment.this);
         recyclerItem.setAdapter(adapterItem);
         adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
             @Override
@@ -286,6 +290,11 @@ public class ShopFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        //shimmerBehavior();
+        initRetrofit();
+
+        getCategory();
         getItemProduk_local();
     }
 }

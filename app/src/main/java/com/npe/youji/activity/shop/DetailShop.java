@@ -66,20 +66,14 @@ public class DetailShop extends AppCompatActivity {
         kategori = findViewById(R.id.tv_category_detailBarang);
         stokNull = findViewById(R.id.tvStokNullDetailShop);
 
-        Bundle extra = getIntent().getExtras();
-        cartOperations = new CartOperations(getApplicationContext());
-        if (extra != null) {
-            jsonString = extra.getString("DATA");
-            gson = new Gson();
-            dataItem = gson.fromJson(jsonString, JoinModel.class);
-            initData(dataItem);
-            Log.i("DataItemDetailShop", String.valueOf(dataItem.getQuantity()));
-        }
 
-        if (dataItem.getQuantity() > 0) {
-            showLayoutCart();
-            displayIfexist();
-        }
+        //get data bundle
+        getDataBundle();
+
+//        if (dataItem.getQuantity() > 0) {
+//            showLayoutCart();
+//            displayIfexist();
+//        }
 
         btnAddtoCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +92,18 @@ public class DetailShop extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getDataBundle() {
+        Bundle extra = getIntent().getExtras();
+        cartOperations = new CartOperations(getApplicationContext());
+        if (extra != null) {
+            jsonString = extra.getString("DATA");
+            gson = new Gson();
+            dataItem = gson.fromJson(jsonString, JoinModel.class);
+            initData(dataItem);
+            Log.i("DataItemDetailShop", String.valueOf(dataItem.getQuantity()));
+        }
     }
 
     private void displayIfexist() {
@@ -221,6 +227,12 @@ public class DetailShop extends AppCompatActivity {
                 stokNull.setVisibility(View.VISIBLE);
                 btnAddtoCart.setVisibility(View.GONE);
             }
+
+            if (dataItem.getQuantity() > 0) {
+                showLayoutCart();
+                displayIfexist();
+            }
+
             //toolbar
             Glide.with(this)
                     .load(dataItem.getGambar())
@@ -240,6 +252,12 @@ public class DetailShop extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initData(dataItem);
+        getDataBundle();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getDataBundle();
     }
 }

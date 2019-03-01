@@ -1,9 +1,11 @@
 package com.npe.youji.fragment.shop;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,6 +36,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private List<JoinModel> items;
     private Gson gson;
     private OnItemClickListener mListener;
+    private Fragment fragment;
 
     public interface OnItemClickListener {
         void onItemCick(int position, JoinModel data);
@@ -46,11 +49,12 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     CartOperations cartOperations;
     ShopOperations shopOperations;
 
-    public AdapterShopItem(Context context, List<JoinModel> items) {
+    public AdapterShopItem(Context context, List<JoinModel> items, ShopFragment fragment) {
         this.context = context;
         this.items = items;
         cartOperations = new CartOperations(context);
         shopOperations = new ShopOperations(context);
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -175,6 +179,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     public void refreshView(int position) {
         if (joinData()) {
             notifyItemChanged(position);
+            fragment.onResume();
         }
     }
 
@@ -231,7 +236,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         Intent intent = new Intent(context, DetailShop.class);
         intent.putExtra("DATA", json);
         context.startActivity(intent);
-
     }
 
 

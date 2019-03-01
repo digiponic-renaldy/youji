@@ -87,15 +87,15 @@ public class ListKategoriShopActivity extends AppCompatActivity {
 
     private void listItemShop(ArrayList<JoinModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
-        rvListFilter.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-        adapterItem = new AdapterShopItem(getApplicationContext(), dataItem);
-        rvListFilter.setAdapter(adapterItem);
-        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
-            @Override
-            public void onItemCick(int position, JoinModel data) {
-                adapterItem.detailItem(data);
-            }
-        });
+//        rvListFilter.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+//        adapterItem = new AdapterShopItem(getApplicationContext(), dataItem, );
+//        rvListFilter.setAdapter(adapterItem);
+//        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
+//            @Override
+//            public void onItemCick(int position, JoinModel data) {
+//                adapterItem.detailItem(data);
+//            }
+//        });
     }
 
     private void checkIsiSqlShop() {
