@@ -27,6 +27,7 @@
             android:text="@string/nama_barang"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:id="@+id/tv_namaBarangListItem_shop"
+            android:fontFamily="@font/lato_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -36,6 +37,7 @@
             android:text="@string/harga_barang"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
+            android:fontFamily="@font/lato_regular"
             android:layout_height="wrap_content"/>
 
         <Button
@@ -79,6 +81,7 @@
                 android:id="@+id/tv_jumlahBarang_adapter"
                 android:textStyle="bold"
                 android:text="1"
+                android:fontFamily="@font/lato_regular"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
