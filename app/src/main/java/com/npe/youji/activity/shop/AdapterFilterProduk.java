@@ -1,10 +1,9 @@
-package com.npe.youji.fragment.shop;
+package com.npe.youji.activity.shop;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.npe.youji.R;
-import com.npe.youji.activity.shop.DetailShop;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.CartModel;
@@ -29,38 +27,33 @@ import com.npe.youji.model.shop.JoinModel;
 
 import java.util.List;
 
-public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder> {
-
+public class AdapterFilterProduk extends RecyclerView.Adapter<AdapterFilterProduk.ViewHolder> {
     private Context context;
     private List<JoinModel> items;
+    CartOperations cartOperations;
+    ShopOperations shopOperations;
     private Gson gson;
     private OnItemClickListener mListener;
-    private Fragment fragment;
+
+    public AdapterFilterProduk(Context context, List<JoinModel> items) {
+        this.context = context;
+        this.items = items;
+        cartOperations = new CartOperations(context);
+        shopOperations = new ShopOperations(context);
+    }
 
     public interface OnItemClickListener {
-        void onItemCick(int position, JoinModel data);
+        void onItemCickFilter(int position, JoinModel data);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
-    CartOperations cartOperations;
-    ShopOperations shopOperations;
-
-    public AdapterShopItem(Context context, List<JoinModel> items, ShopFragment fragment) {
-        this.context = context;
-        this.items = items;
-        cartOperations = new CartOperations(context);
-        shopOperations = new ShopOperations(context);
-        this.fragment = fragment;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shop_item, viewGroup,
-                false);
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shop_item, viewGroup, false);
         return new ViewHolder(itemView, mListener);
     }
 
@@ -153,12 +146,12 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     private void deleteRowCart(int position) {
-        try {
+        try{
             cartOperations.openDb();
             cartOperations.deleteRow(String.valueOf(items.get(position).getIdproduk()));
             Log.i("DeleteRow", "Masuk");
             cartOperations.closeDb();
-        } catch (SQLException e) {
+        }catch (SQLException e){
             Log.i("DeleteRowError", e.getMessage());
         }
     }
@@ -179,7 +172,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     public void refreshView(int position) {
         if (joinData()) {
             notifyItemChanged(position);
-            fragment.onResume();
+            //fragment.onResume();
         }
     }
 
@@ -210,8 +203,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         Log.i("QuantityCart", String.valueOf(quantity));
         return quantity;
     }
-
-
     private void displayText(ViewHolder viewHolder, int position, int quantity) {
         updateQuantity(position, quantity);
         viewHolder.textQuantity.setText(String.valueOf(checkQuantity(position)));
@@ -238,23 +229,20 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         context.startActivity(intent);
     }
 
-
     @Override
     public int getItemCount() {
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView nama, harga, textQuantity, textStokNull;
         Button beli;
         CardView lihat;
         RelativeLayout layoutCart;
         ImageButton btnAdd, btnMinus;
-
-        public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        public ViewHolder(@NonNull View itemView,final OnItemClickListener listener) {
             super(itemView);
-
             imageView = itemView.findViewById(R.id.imgv_listItem_shop);
             nama = itemView.findViewById(R.id.tv_namaBarangListItem_shop);
             harga = itemView.findViewById(R.id.tv_hargaBarangListItem_shop);
@@ -272,13 +260,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemCick(position, items.get(position));
+                            listener.onItemCickFilter(position, items.get(position));
                         }
                     }
                 }
             });
         }
     }
-
-
 }

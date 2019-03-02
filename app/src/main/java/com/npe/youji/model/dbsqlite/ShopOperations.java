@@ -215,4 +215,8 @@ public class ShopOperations {
     public void dropTable(){
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_SHOP);
     }
+
+    public void deleteRecord(){
+        sqLiteDatabase.execSQL("DELETE FROM " + DatabaseHelper.TABLE_SHOP);
+    }
 }

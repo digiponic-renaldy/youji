@@ -77,7 +77,18 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     private void toDetail(int position) {
         Intent intent = new Intent(context, ListKategoriShopActivity.class);
         intent.putExtra("KATEGORI", items.get(position).getKeterangan());
+        truncateShop();
         context.startActivity(intent);
+    }
+
+    private void truncateShop() {
+        try{
+            shopOperations.openDb();
+            shopOperations.deleteRecord();
+            shopOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorTruncateTableShop", e.getMessage());
+        }
     }
 
     @Override

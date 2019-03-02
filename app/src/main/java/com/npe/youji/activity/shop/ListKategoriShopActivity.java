@@ -1,18 +1,22 @@
 package com.npe.youji.activity.shop;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.google.gson.JsonObject;
+import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.fragment.shop.AdapterShopItem;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.ShopOperations;
+import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.shop.RootProdukModel;
 
@@ -30,11 +34,12 @@ public class ListKategoriShopActivity extends AppCompatActivity {
     Retrofit retrofit_local;
     ApiService service_local;
     ShopOperations shopOperations;
-    AdapterShopItem adapterItem;
+    AdapterFilterProduk adapterItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_kategori_shop);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //inisialisasi
         rvListFilter = findViewById(R.id.rvListKategori);
         shopOperations = new ShopOperations(getApplicationContext());
@@ -87,22 +92,89 @@ public class ListKategoriShopActivity extends AppCompatActivity {
 
     private void listItemShop(ArrayList<JoinModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
-//        rvListFilter.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-//        adapterItem = new AdapterShopItem(getApplicationContext(), dataItem, );
-//        rvListFilter.setAdapter(adapterItem);
-//        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
-//            @Override
-//            public void onItemCick(int position, JoinModel data) {
-//                adapterItem.detailItem(data);
-//            }
-//        });
+        rvListFilter.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        adapterItem = new AdapterFilterProduk(getApplicationContext(), dataItem);
+        rvListFilter.setAdapter(adapterItem);
+        adapterItem.setOnItemClickListener(new AdapterFilterProduk.OnItemClickListener() {
+
+            @Override
+            public void onItemCickFilter(int position, JoinModel data) {
+                adapterItem.detailItem(data);
+            }
+        });
     }
 
     private void checkIsiSqlShop() {
+        try {
+            shopOperations.openDb();
+            shopOperations.getAllShop();
+            Log.i("CheckAllDataShop", String.valueOf(shopOperations.getAllShop()));
+            shopOperations.closeDb();
+        } catch (SQLException e) {
+            Log.i("CheckErrorAll", e.getMessage());
+        }
     }
 
-    private void insertAllDataShopLocal(List<RootProdukModel> data) {
+    private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
+        String imgUrl = "https://i.imgur.com/kTRJDky.png";
+        for (int i = 0; i < dataItem.size(); i++) {
+            if (dataItem.get(i).getGambar() == null) {
+                dataItem.get(i).setGambar(imgUrl);
+            }
+            Log.i("DataItemSize", String.valueOf(dataItem.size()));
+
+            Log.i("DataProduk", String.valueOf(dataItem.get(i).getStok()));
+            DataShopModel data = new DataShopModel(
+                    dataItem.get(i).getId(),
+                    dataItem.get(i).getCabang(),
+                    dataItem.get(i).getKode(),
+                    dataItem.get(i).getKeterangan(),
+                    dataItem.get(i).getKategori(),
+                    dataItem.get(i).getJenis(),
+                    dataItem.get(i).getSatuan(),
+                    dataItem.get(i).getStok(),
+                    dataItem.get(i).getHarga(),
+                    dataItem.get(i).getGambar(),
+                    dataItem.get(i).getCreated_at(),
+                    dataItem.get(i).getUpdated_at(),
+                    dataItem.get(i).getDeleted_at());
+            try {
+                shopOperations.openDb();
+                shopOperations.insertShop(data);
+                Log.i("DataNamaProdukInsert", data.getKeterangan());
+                shopOperations.closeDb();
+                Log.i("INSERTSQL", "SUCCESS");
+            } catch (SQLException e) {
+                Log.i("ERRORINSERT", e.getMessage() + " ERROR");
+            }
+        }
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                toMain();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void toMain() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        truncateShop();
+        startActivity(intent);
+    }
+
+    private void truncateShop() {
+        try{
+            shopOperations.openDb();
+            shopOperations.deleteRecord();
+            shopOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorTruncateFilter", e.getMessage());
+        }
+    }
 }
