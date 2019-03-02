@@ -6,10 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.shop.ListKategoriShopActivity">
-
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/shimmer_shopFilter"
+        app:shimmer_demo_layout="@layout/layout_shimmer_shopitem"
+        app:shimmer_demo_layout_manager_type="linear_vertical"
+        />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvListKategori"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:id="@+id/tvKetegoriNull"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/lato_bold"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

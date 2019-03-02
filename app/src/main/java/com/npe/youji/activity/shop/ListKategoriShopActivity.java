@@ -8,7 +8,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.JsonObject;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
@@ -35,6 +38,8 @@ public class ListKategoriShopActivity extends AppCompatActivity {
     ApiService service_local;
     ShopOperations shopOperations;
     AdapterFilterProduk adapterItem;
+    ShimmerRecyclerView shimmerRecyclerShopFilter;
+    TextView tvKategoriNull;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +47,12 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //inisialisasi
         rvListFilter = findViewById(R.id.rvListKategori);
+        tvKategoriNull = findViewById(R.id.tvKetegoriNull);
+        shimmerRecyclerShopFilter = findViewById(R.id.shimmer_shopFilter);
         shopOperations = new ShopOperations(getApplicationContext());
+
+        //shimmer
+        shimmerBehavior();
         //retorgfit
         retrofit_local = NetworkClient.getRetrofitClientLocal();
         service_local = retrofit_local.create(ApiService.class);
@@ -56,7 +66,15 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         Log.i("KategoriList", kategori);
     }
 
-    private void getDataFilter(String kategori) {
+    private void shimmerBehavior() {
+        shimmerRecyclerShopFilter.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        shimmerRecyclerShopFilter.setAdapter(adapterItem);
+        shimmerRecyclerShopFilter.showShimmerAdapter();
+    }
+
+    private void getDataFilter(final String kategori) {
+        shimmerRecyclerShopFilter.showShimmerAdapter();
+
         JsonObject requet = new JsonObject();
         requet.addProperty("kategori", kategori);
         service_local.listDetailFilterProduk(requet).enqueue(new Callback<List<RootProdukModel>>() {
@@ -68,6 +86,12 @@ public class ListKategoriShopActivity extends AppCompatActivity {
                     insertAllDataShopLocal(data);
                     checkIsiSqlShop();
                     joinData();
+                    shimmerRecyclerShopFilter.hideShimmerAdapter();
+                }
+                if(data.isEmpty()) {
+                    Log.i("DataNullKategori", kategori);
+                    tvKategoriNull.setVisibility(View.VISIBLE);
+                    tvKategoriNull.setText("Barang dengan Kategori "+kategori + " \n tidak tersedia");
                 }
             }
 
