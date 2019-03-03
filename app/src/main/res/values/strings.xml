@@ -108,4 +108,6 @@
     <string name="category">Category</string>
     <string name="lorem">lorem</string>
     <string name="add_to_cart">Add to Cart</string>
+    <string name="inbox">Inbox</string>
+    <string name="chat">Chat</string>
 </resources>

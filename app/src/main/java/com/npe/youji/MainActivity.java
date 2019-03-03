@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         //shop
-        bottomNavigation.getMenu().getItem(0).setCheckable(false);
         Fragment fragment = new ShopFragment();
         loadFragment(fragment);
 

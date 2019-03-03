@@ -3,16 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_shop"
+        android:title="@string/shop"
+        android:checkable="true"
+        android:icon="@drawable/ic_shopping_cart"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/menu_order"
         android:title="@string/myorder"
         android:checkable="true"
         android:icon="@drawable/ic_description"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/menu_shop"
-        android:title="@string/shop"
+        android:id="@+id/menu_inbox"
+        android:title="@string/inbox"
         android:checkable="true"
-        android:icon="@drawable/ic_shopping_cart"
+        android:icon="@drawable/ic_message"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_chat"
+        android:title="@string/chat"
+        android:checkable="true"
+        android:icon="@drawable/ic_message"
         app:showAsAction="always"/>
     <item
         android:id="@+id/menu_login"
