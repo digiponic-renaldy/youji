@@ -1,83 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.shop.ShopFragment">
-    <RelativeLayout
-        android:id="@+id/layoutShop"
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v7.widget.CardView
-            app:cardUseCompatPadding="true"
-            app:cardElevation="2dp"
-            app:cardCornerRadius="2dp"
-            android:id="@+id/card_recyclerMenu_shop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <android.support.v7.widget.RecyclerView
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:id="@+id/recycler_menu_shop"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
-        </android.support.v7.widget.CardView>
-
-
-
-        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:id="@+id/shimmer_shopMenu"
-            app:shimmer_demo_layout="@layout/layout_shimmer_shopmenu"
-            app:shimmer_demo_layout_manager_type="linear_vertical"
-            />
-
-
-        <!--shimmer shop item-->
-
-        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/shimmer_shopItem"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/shimmer_shopMenu"
-            app:shimmer_demo_layout="@layout/layout_shimmer_shopitem"
-            app:shimmer_demo_layout_manager_type="grid"
-            />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/card_recyclerMenu_shop"
-            android:id="@+id/recycler_all_list_shop"
+        <RelativeLayout
+            android:id="@+id/layoutShop"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_recyclerMenu_shop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_menu_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"></android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.CardView>
 
 
-        <at.markushi.ui.CircleButton
-            android:visibility="gone"
-            android:id="@+id/floatBtn_checkout"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="35dp"
-            android:layout_marginBottom="42dp"
-            android:src="@drawable/ic_shopping_cart"
-            android:tint="@color/colorWhite"
-            app:cb_color="@color/colorGreenSoft"
-            app:cb_pressedRingWidth="5dp" />
-        <android.support.design.widget.CoordinatorLayout
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                android:id="@+id/shimmer_shopMenu"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:shimmer_demo_layout="@layout/layout_shimmer_shopmenu"
+                app:shimmer_demo_layout_manager_type="linear_vertical" />
 
-            <include layout="@layout/bottom_sheet"/>
-        </android.support.design.widget.CoordinatorLayout>
-    </RelativeLayout>
+
+            <!--shimmer shop item-->
+
+            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                android:id="@+id/shimmer_shopItem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/shimmer_shopMenu"
+                android:layout_marginTop="10dp"
+                app:shimmer_demo_layout="@layout/layout_shimmer_shopitem"
+                app:shimmer_demo_layout_manager_type="grid" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutRekomendasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_recyclerMenu_shop"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvRecomShopItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="7dp"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Recommendation"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:drawableRight="@drawable/ic_arrow_kanan"
+                        android:drawableTint="@color/colorGreenSoft"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Lihat Semua"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorGreenSoft" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_all_list_shop"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/tvRecomShopItem"
+                        android:layout_marginTop="10dp">
+
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutNewsitem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutRekomendasi"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvNewsShopItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="7dp"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Newest items"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:drawableRight="@drawable/ic_arrow_kanan"
+                        android:drawableTint="@color/colorGreenSoft"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Lihat Semua"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorGreenSoft" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_all_list_shopNewest"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/tvNewsShopItem"
+                        android:layout_marginTop="10dp">
+
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutBestSaller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutNewsitem"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvBestShopItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="7dp"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Best Seller"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:drawableRight="@drawable/ic_arrow_kanan"
+                        android:drawableTint="@color/colorGreenSoft"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Lihat Semua"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorGreenSoft" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_all_list_shopBest"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/tvBestShopItem"
+                        android:layout_marginTop="10dp">
+
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutAllItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutBestSaller"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvAllItemShopItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="7dp"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="All Items"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:drawableRight="@drawable/ic_arrow_kanan"
+                        android:drawableTint="@color/colorGreenSoft"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Lihat Semua"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorGreenSoft" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_all_list_shopAll"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/tvAllItemShopItem"
+                        android:layout_marginTop="10dp">
+
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <at.markushi.ui.CircleButton
+                android:id="@+id/floatBtn_checkout"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="35dp"
+                android:layout_marginBottom="42dp"
+                android:src="@drawable/ic_shopping_cart"
+                android:tint="@color/colorWhite"
+                android:visibility="gone"
+                app:cb_color="@color/colorGreenSoft"
+                app:cb_pressedRingWidth="5dp" />
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <include layout="@layout/bottom_sheet" />
+            </android.support.design.widget.CoordinatorLayout>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

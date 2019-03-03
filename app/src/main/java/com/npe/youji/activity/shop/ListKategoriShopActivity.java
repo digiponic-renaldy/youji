@@ -159,6 +159,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
                     dataItem.get(i).getStok(),
                     dataItem.get(i).getHarga(),
                     dataItem.get(i).getGambar(),
+                    dataItem.get(i).getDeskripsi(),
                     dataItem.get(i).getCreated_at(),
                     dataItem.get(i).getUpdated_at(),
                     dataItem.get(i).getDeleted_at());

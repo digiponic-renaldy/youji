@@ -41,7 +41,7 @@ import retrofit2.Retrofit;
  */
 public class ShopFragment extends Fragment {
 
-    private RecyclerView recyclerItem, recyclerCategory;
+    private RecyclerView recyclerItem, recyclerCategory, recyclerNewest, recyclerBest, recyclerAll;
     private AdapterShopItem adapterItem;
     private AdapterCategory adapterCategory;
     private ArrayList<DataCategory> listCategories;
@@ -72,6 +72,9 @@ public class ShopFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_shop, container, false);
         recyclerItem = v.findViewById(R.id.recycler_all_list_shop);
         recyclerCategory = v.findViewById(R.id.recycler_menu_shop);
+        recyclerNewest = v.findViewById(R.id.recycler_all_list_shopNewest);
+        recyclerBest = v.findViewById(R.id.recycler_all_list_shopBest);
+        recyclerAll = v.findViewById(R.id.recycler_all_list_shopAll);
         layoutBottomSheet = v.findViewById(R.id.bottom_sheet);
         shopOperations = new ShopOperations(getContext());
         cartOperations = new CartOperations(getContext());
@@ -85,7 +88,8 @@ public class ShopFragment extends Fragment {
 
         //bottom sheet
         botomSheet = BottomSheetBehavior.from(layoutBottomSheet);
-        botomSheet.setHideable(false);
+        //botomSheet.setHideable(false);
+        botomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
         btnFloatCheckout = v.findViewById(R.id.floatBtn_checkout);
 
 
@@ -118,7 +122,7 @@ public class ShopFragment extends Fragment {
     }
 
     private void shimmerBehavior() {
-        shimmerRecyclerShopItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        shimmerRecyclerShopItem.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         shimmerRecyclerShopItem.setAdapter(adapterItem);
         shimmerRecyclerShopItem.showShimmerAdapter();
 
@@ -169,6 +173,7 @@ public class ShopFragment extends Fragment {
                     dataItem.get(i).getStok(),
                     dataItem.get(i).getHarga(),
                     dataItem.get(i).getGambar(),
+                    dataItem.get(i).getDeskripsi(),
                     dataItem.get(i).getCreated_at(),
                     dataItem.get(i).getUpdated_at(),
                     dataItem.get(i).getDeleted_at());
@@ -199,7 +204,7 @@ public class ShopFragment extends Fragment {
 
     private void listItemShop(ArrayList<JoinModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
-        recyclerItem.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerItem.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false));
         adapterItem = new AdapterShopItem(getContext(), dataItem, ShopFragment.this);
         recyclerItem.setAdapter(adapterItem);
         adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
@@ -208,6 +213,15 @@ public class ShopFragment extends Fragment {
                 adapterItem.detailItem(data);
             }
         });
+        //newest
+        recyclerNewest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false));
+        recyclerNewest.setAdapter(adapterItem);
+        //best
+        recyclerBest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerBest.setAdapter(adapterItem);
+        //all item
+        recyclerAll.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerAll.setAdapter(adapterItem);
     }
 
     public void checkIsiSqlShop() {

@@ -29,11 +29,13 @@ public class RootProdukModel {
     String deleted_at;
     @SerializedName("gambar")
     String gambar;
+    @SerializedName("deskripsi")
+    String deskripsi;
 
     public RootProdukModel() {
     }
 
-    public RootProdukModel(int id, String cabang, String kode, String keterangan, String kategori, String jenis, String satuan, int stok, int harga, String created_at, String updated_at, String deleted_at, String gambar) {
+    public RootProdukModel(int id, String cabang, String kode, String keterangan, String kategori, String jenis, String satuan, int stok, int harga, String created_at, String updated_at, String deleted_at, String gambar, String deskripsi) {
         this.id = id;
         this.cabang = cabang;
         this.kode = kode;
@@ -47,6 +49,7 @@ public class RootProdukModel {
         this.updated_at = updated_at;
         this.deleted_at = deleted_at;
         this.gambar = gambar;
+        this.deskripsi = deskripsi;
     }
 
     public int getId() {
@@ -151,5 +154,13 @@ public class RootProdukModel {
 
     public void setGambar(String gambar) {
         this.gambar = gambar;
+    }
+
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+
+    public void setDeskripsi(String deskripsi) {
+        this.deskripsi = deskripsi;
     }
 }

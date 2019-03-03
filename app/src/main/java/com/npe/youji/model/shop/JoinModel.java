@@ -11,6 +11,7 @@ public class JoinModel {
     int stok;
     int harga;
     String gambar;
+    String deskripsi;
     String created_at;
     String updated_at;
     String deleted_at;
@@ -19,7 +20,7 @@ public class JoinModel {
     public JoinModel() {
     }
 
-    public JoinModel(int idproduk, String cabang, String kode, String keterangan, String kategori, String jenis, String satuan, int stok, int harga, String gambar, String created_at, String updated_at, String deleted_at, int quantity) {
+    public JoinModel(int idproduk, String cabang, String kode, String keterangan, String kategori, String jenis, String satuan, int stok, int harga, String gambar, String deskripsi, String created_at, String updated_at, String deleted_at, int quantity) {
         this.idproduk = idproduk;
         this.cabang = cabang;
         this.kode = kode;
@@ -30,6 +31,7 @@ public class JoinModel {
         this.stok = stok;
         this.harga = harga;
         this.gambar = gambar;
+        this.deskripsi = deskripsi;
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.deleted_at = deleted_at;
@@ -114,6 +116,14 @@ public class JoinModel {
 
     public void setGambar(String gambar) {
         this.gambar = gambar;
+    }
+
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+
+    public void setDeskripsi(String deskripsi) {
+        this.deskripsi = deskripsi;
     }
 
     public String getCreated_at() {

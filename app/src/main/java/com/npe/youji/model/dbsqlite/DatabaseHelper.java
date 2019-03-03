@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_STOKPRODUCT = "stokProduct";
     public static final String COLUMN_HARGAPRODUCT = "hargaProduct";
     public static final String COLUMN_GAMBARPRODUCT = "gambarProduct";
+    public static final String COLUMN_DESKRIPSIPRODUCT = "deskripsiProduct";
     public static final String COLUMN_CREATEDPRODUCT = "createdProduct";
     public static final String COLUMN_UPDATEDPRODUCT = "updatedProduct";
     public static final String COLUMN_DELETEDPRODUCT = "deletedProduct";
@@ -49,6 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_STOKPRODUCT + " INTEGER NOT NULL, " +
                     COLUMN_HARGAPRODUCT + " INTEGER NOT NULL, " +
                     COLUMN_GAMBARPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_DESKRIPSIPRODUCT + " TEXT NOT NULL, " +
                     COLUMN_CREATEDPRODUCT + " TEXT NOT NULL, " +
                     COLUMN_UPDATEDPRODUCT + " TEXT , " +
                     COLUMN_DELETEDPRODUCT + " TEXT )";

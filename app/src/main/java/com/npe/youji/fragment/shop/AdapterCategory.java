@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.npe.youji.R;
 import com.npe.youji.activity.shop.ListKategoriShopActivity;
 import com.npe.youji.model.dbsqlite.ShopOperations;
@@ -47,9 +48,9 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
         //join data
         getDataJoin();
 
-//        Glide.with(context)
-//                .load(data.get)
-//                .into(viewHolder.image);
+        Glide.with(context)
+                .load(data.getGambar())
+                .into(viewHolder.image);
 
         viewHolder.nama.setText(data.getKeterangan()    );
 

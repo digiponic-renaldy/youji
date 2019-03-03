@@ -53,4 +53,6 @@ dependencies {
 
     //spin kit
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+    //runnig text
+    implementation 'com.github.chuross:extra-textview:1.1.3'
 }

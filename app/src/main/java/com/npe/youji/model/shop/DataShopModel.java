@@ -11,6 +11,7 @@ public class DataShopModel {
     int stok;
     int harga;
     String gambar;
+    String deskripsi;
     String created_at;
     String updated_at;
     String deleted_at;
@@ -19,12 +20,7 @@ public class DataShopModel {
     }
 
 
-    public DataShopModel(int idproduk, String cabang, String kode,
-                         String keterangan, String kategori,
-                         String jenis, String satuan,
-                         int stok, int harga,
-                         String gambar, String created_at,
-                         String updated_at, String deleted_at) {
+    public DataShopModel(int idproduk, String cabang, String kode, String keterangan, String kategori, String jenis, String satuan, int stok, int harga, String gambar, String deskripsi, String created_at, String updated_at, String deleted_at) {
         this.idproduk = idproduk;
         this.cabang = cabang;
         this.kode = kode;
@@ -35,6 +31,7 @@ public class DataShopModel {
         this.stok = stok;
         this.harga = harga;
         this.gambar = gambar;
+        this.deskripsi = deskripsi;
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.deleted_at = deleted_at;
@@ -120,6 +117,14 @@ public class DataShopModel {
         this.gambar = gambar;
     }
 
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+
+    public void setDeskripsi(String deskripsi) {
+        this.deskripsi = deskripsi;
+    }
+
     public String getCreated_at() {
         return created_at;
     }
@@ -154,6 +159,7 @@ public class DataShopModel {
                 "Stok Product : " + getStok() + "\n" +
                 "Harga Product : " + getHarga() + "\n" +
                 "Gambar Product : " + getGambar() + "\n" +
+                "Desktripsi Product : " + getDeskripsi() + "\n" +
                 "Created Product : " + getCreated_at() + "\n" +
                 "Updated Product : " + getUpdated_at() + "\n" +
                 "Deleted Product : " + getDeleted_at() + "\n";

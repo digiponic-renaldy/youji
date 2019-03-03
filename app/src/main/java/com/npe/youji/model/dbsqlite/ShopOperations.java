@@ -32,6 +32,7 @@ public class ShopOperations {
             DatabaseHelper.COLUMN_STOKPRODUCT,
             DatabaseHelper.COLUMN_HARGAPRODUCT,
             DatabaseHelper.COLUMN_GAMBARPRODUCT,
+            DatabaseHelper.COLUMN_DESKRIPSIPRODUCT,
             DatabaseHelper.COLUMN_CREATEDPRODUCT,
             DatabaseHelper.COLUMN_UPDATEDPRODUCT,
             DatabaseHelper.COLUMN_DELETEDPRODUCT
@@ -64,6 +65,7 @@ public class ShopOperations {
         values.put(DatabaseHelper.COLUMN_STOKPRODUCT, data.getStok());
         values.put(DatabaseHelper.COLUMN_HARGAPRODUCT, data.getHarga());
         values.put(DatabaseHelper.COLUMN_GAMBARPRODUCT, data.getGambar());
+        values.put(DatabaseHelper.COLUMN_DESKRIPSIPRODUCT, data.getDeskripsi());
         values.put(DatabaseHelper.COLUMN_CREATEDPRODUCT, data.getCreated_at());
         values.put(DatabaseHelper.COLUMN_UPDATEDPRODUCT, data.getUpdated_at());
         values.put(DatabaseHelper.COLUMN_DELETEDPRODUCT, data.getDeleted_at());
@@ -92,8 +94,8 @@ public class ShopOperations {
                 cursor.getString(9),
                 cursor.getString(10),
                 cursor.getString(11),
-                cursor.getString(12)
-        );
+                cursor.getString(12),
+                cursor.getString(13));
         // return Cart
         return e;
     }
@@ -117,6 +119,7 @@ public class ShopOperations {
                 cart.setStok(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_STOKPRODUCT)));
                 cart.setHarga(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_HARGAPRODUCT)));
                 cart.setGambar(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_GAMBARPRODUCT)));
+                cart.setDeskripsi(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DESKRIPSIPRODUCT)));
                 cart.setCreated_at(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CREATEDPRODUCT)));
                 cart.setUpdated_at(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_UPDATEDPRODUCT)));
                 cart.setDeleted_at(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DELETEDPRODUCT)));
@@ -141,6 +144,7 @@ public class ShopOperations {
         values.put(DatabaseHelper.COLUMN_STOKPRODUCT, data.getStok());
         values.put(DatabaseHelper.COLUMN_HARGAPRODUCT, data.getHarga());
         values.put(DatabaseHelper.COLUMN_GAMBARPRODUCT, data.getGambar());
+        values.put(DatabaseHelper.COLUMN_DESKRIPSIPRODUCT, data.getDeskripsi());
         values.put(DatabaseHelper.COLUMN_CREATEDPRODUCT, data.getCreated_at());
         values.put(DatabaseHelper.COLUMN_UPDATEDPRODUCT, data.getUpdated_at());
         values.put(DatabaseHelper.COLUMN_DELETEDPRODUCT, data.getDeleted_at());
@@ -154,7 +158,7 @@ public class ShopOperations {
         String query = "SELECT S." + DatabaseHelper.COLUMN_IDPRODUCTSHOP + ",S." + DatabaseHelper.COLUMN_CABANGPRODUCT +
                 ", S."+ DatabaseHelper.COLUMN_KODEPRODUCT + " , S."+ DatabaseHelper.COLUMN_KETERANGANPRODUCT + ", S."+DatabaseHelper.COLUMN_KATEGORIPRODUCT 
                 + " ,S."+DatabaseHelper.COLUMN_JENISPRODUCT+" ,S."+DatabaseHelper.COLUMN_SATUANPRODUCT + " ,S."+DatabaseHelper.COLUMN_STOKPRODUCT+
-                ",S." + DatabaseHelper.COLUMN_HARGAPRODUCT + ",S." + DatabaseHelper.COLUMN_GAMBARPRODUCT + ",S." +
+                ",S." + DatabaseHelper.COLUMN_HARGAPRODUCT + ",S." + DatabaseHelper.COLUMN_GAMBARPRODUCT + ",S." + DatabaseHelper.COLUMN_DESKRIPSIPRODUCT + " ,S."+
                 DatabaseHelper.COLUMN_CREATEDPRODUCT + " ,S."+DatabaseHelper.COLUMN_UPDATEDPRODUCT + " ,S."+DatabaseHelper.COLUMN_DELETEDPRODUCT +
                 ",C." + DatabaseHelper.COLUMN_QUANTITY +
                 " FROM " + DatabaseHelper.TABLE_SHOP + " as S LEFT OUTER JOIN " + DatabaseHelper.TABLE_CART + " as C ON S." +
@@ -182,6 +186,7 @@ public class ShopOperations {
                 cart.setStok(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_STOKPRODUCT)));
                 cart.setHarga(c.getInt(c.getColumnIndex(DatabaseHelper.COLUMN_HARGAPRODUCT)));
                 cart.setGambar(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_GAMBARPRODUCT)));
+                cart.setDeskripsi(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_DESKRIPSIPRODUCT)));
                 cart.setCreated_at(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_CREATEDPRODUCT)));
                 cart.setUpdated_at(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_UPDATEDPRODUCT)));
                 cart.setDeleted_at(c.getString(c.getColumnIndex(DatabaseHelper.COLUMN_DELETEDPRODUCT)));
