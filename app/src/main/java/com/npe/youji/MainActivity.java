@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.npe.youji.activity.LoginActivity;
+import com.npe.youji.fragment.chat.ChatFragment;
 import com.npe.youji.fragment.inbox.InboxFragmenet;
 import com.npe.youji.fragment.order.OrderFragment;
 import com.npe.youji.fragment.auth.AccountFragment;
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new InboxFragmenet();
                         loadFragment(fragment);
                     case R.id.menu_chat:
-                        break;
+                        fragment = new ChatFragment();
+                        loadFragment(fragment);
                 }
                 return false;
             }
