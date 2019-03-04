@@ -68,9 +68,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_inbox:
                         fragment = new InboxFragmenet();
                         loadFragment(fragment);
+                        return true;
                     case R.id.menu_chat:
                         fragment = new ChatFragment();
                         loadFragment(fragment);
+                        return true;
                 }
                 return false;
             }
