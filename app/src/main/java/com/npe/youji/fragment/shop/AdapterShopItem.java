@@ -39,6 +39,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private Gson gson;
     private OnItemClickListener mListener;
     private Fragment fragment;
+    int limit = 2;
 
     public interface OnItemClickListener {
         void onItemCick(int position, JoinModel data);
@@ -80,10 +81,10 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 .into(viewHolder.imageView);
         viewHolder.nama.setText(data.getKeterangan());
         viewHolder.nama.setSelected(true);
-        DecimalFormat decimalFormat = new DecimalFormat("#,###,###",DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        viewHolder.harga.setText("Rp "+ String.valueOf(decimalFormat.format(data.getHarga())));
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        viewHolder.harga.setText("Rp " + String.valueOf(decimalFormat.format(data.getHarga())));
         viewHolder.label.setText(String.valueOf(data.getKategori()));
-        viewHolder.satuan.setText("/ "+String.valueOf(data.getSatuan()));
+        viewHolder.satuan.setText("/ " + String.valueOf(data.getSatuan()));
         viewHolder.des.setText(String.valueOf(data.getDeskripsi()));
         //check quantity
         if (checkQuantity(i) > 0) {
@@ -249,7 +250,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     @Override
     public int getItemCount() {
-        return items.size();
+//        if (items.size() > limit) {
+//            return limit;
+//        } else {
+            return items.size();
+//        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

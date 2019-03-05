@@ -9,7 +9,7 @@
     tools:context=".activity.LoginActivity">
 
     <ImageView
-        android:src="@drawable/logogalaksiorganik"
+        android:src="@drawable/youji_wt_text"
         android:layout_marginTop="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="150dp"
