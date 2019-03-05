@@ -1,6 +1,7 @@
 package com.npe.youji.fragment.shop;
 
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.npe.youji.R;
+import com.npe.youji.activity.shop.ShopAllItem;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.CartOperations;
@@ -57,7 +60,7 @@ public class ShopFragment extends Fragment {
     private RelativeLayout layoutShop;
 
     private CardView cardRekom, cardNews, cardBest, cardAllItem;
-
+    Button btnLihatSemua;
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
     CircleButton btnFloatCheckout;
@@ -88,6 +91,7 @@ public class ShopFragment extends Fragment {
         cardNews = v.findViewById(R.id.layoutNewsitem);
         cardBest = v.findViewById(R.id.layoutBestSaller);
         cardAllItem = v.findViewById(R.id.layoutAllItem);
+        btnLihatSemua = v.findViewById(R.id.lihatSemuaData);
 
         //shimmer
         shimmerBehavior();
@@ -106,7 +110,6 @@ public class ShopFragment extends Fragment {
         getCategory();
         getItemProduk_local();
 
-
         //float sheet
         btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,10 +118,21 @@ public class ShopFragment extends Fragment {
             }
         });
         //bottom sheet
-
+        btnLihatSemua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toAllItem();
+            }
+        });
         bottomSheetBehavior();
 
         return v;
+    }
+
+    private void toAllItem() {
+        Intent intent = new Intent(getContext(), ShopAllItem.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void initRetrofit() {

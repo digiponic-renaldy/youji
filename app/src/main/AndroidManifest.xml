@@ -28,7 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.shop.ListKategoriShopActivity" />
-        <activity android:name=".fragment.order.DetailOrder"></activity>
+        <activity android:name=".fragment.order.DetailOrder" />
+        <activity android:name=".activity.shop.ShopAllItem"></activity>
     </application>
 
 </manifest>
