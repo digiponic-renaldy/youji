@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +56,8 @@ public class ShopFragment extends Fragment {
     private ShopOperations shopOperations;
     private RelativeLayout layoutShop;
 
+    private CardView cardRekom, cardNews, cardBest, cardAllItem;
+
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
     CircleButton btnFloatCheckout;
@@ -81,6 +84,10 @@ public class ShopFragment extends Fragment {
         layoutShop = v.findViewById(R.id.layoutShop);
         shimmerRecyclerShopItem = v.findViewById(R.id.shimmer_shopItem);
         shimmerRecyclerShopMenu = v.findViewById(R.id.shimmer_shopMenu);
+        cardRekom = v.findViewById(R.id.layoutRekomendasi);
+        cardNews = v.findViewById(R.id.layoutNewsitem);
+        cardBest = v.findViewById(R.id.layoutBestSaller);
+        cardAllItem = v.findViewById(R.id.layoutAllItem);
 
         //shimmer
         shimmerBehavior();
@@ -129,6 +136,11 @@ public class ShopFragment extends Fragment {
         shimmerRecyclerShopMenu.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         shimmerRecyclerShopMenu.setAdapter(adapterCategory);
         shimmerRecyclerShopMenu.showShimmerAdapter();
+
+        cardRekom.setVisibility(View.GONE);
+        cardBest.setVisibility(View.GONE);
+        cardNews.setVisibility(View.GONE);
+        cardAllItem.setVisibility(View.GONE);
     }
 
     private void getItemProduk_local() {
@@ -258,6 +270,10 @@ public class ShopFragment extends Fragment {
         adapterCategory = new AdapterCategory(getContext(), dataCategories);
         recyclerCategory.setAdapter(adapterCategory);
         shimmerRecyclerShopMenu.hideShimmerAdapter();
+        cardRekom.setVisibility(View.VISIBLE);
+        cardBest.setVisibility(View.VISIBLE);
+        cardNews.setVisibility(View.VISIBLE);
+        cardAllItem.setVisibility(View.VISIBLE);
     }
 
     private void bottomSheetBehavior() {
