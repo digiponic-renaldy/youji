@@ -26,7 +26,6 @@
 
                 <ImageView
                     android:padding="5dp"
-                    android:background="@color/colorGreenSoft"
                     android:id="@+id/imgv_listItem_shop"
                     android:scaleType="fitCenter"
                     android:layout_width="match_parent"
