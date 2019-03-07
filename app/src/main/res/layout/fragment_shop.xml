@@ -164,19 +164,20 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/tvBestShopItem"
+                        android:id="@+id/tvBuahItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="7dp"
                         android:fontFamily="@font/lato_bold"
-                        android:text="Best Seller"
+                        android:text="Buah"
                         android:textColor="@color/colorBlack"
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
                     <Button
+                        android:id="@+id/btnLihatBuah"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -192,7 +193,7 @@
                         android:id="@+id/recycler_all_list_shopBest"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/tvBestShopItem"
+                        android:layout_below="@id/tvBuahItem"
                         android:layout_marginTop="10dp">
 
                     </android.support.v7.widget.RecyclerView>

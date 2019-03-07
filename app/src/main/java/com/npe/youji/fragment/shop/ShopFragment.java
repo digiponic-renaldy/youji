@@ -61,7 +61,7 @@ public class ShopFragment extends Fragment {
     private RelativeLayout layoutShop;
 
     private CardView cardRekom, cardNews, cardBest, cardAllItem;
-    Button btnLihatSemua, btnLihatSayuran;
+    Button btnLihatSemua, btnLihatSayuran, btnLihatBuah;
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
     CircleButton btnFloatCheckout;
@@ -94,6 +94,7 @@ public class ShopFragment extends Fragment {
         cardAllItem = v.findViewById(R.id.layoutAllItem);
         btnLihatSemua = v.findViewById(R.id.lihatSemuaData);
         btnLihatSayuran = v.findViewById(R.id.btnLihatSayuran);
+        btnLihatBuah = v.findViewById(R.id.btnLihatBuah);
 
         //shimmer
         shimmerBehavior();
@@ -133,9 +134,23 @@ public class ShopFragment extends Fragment {
                 toAllSayuran();
             }
         });
+
+        btnLihatBuah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toAllBuah();
+            }
+        });
         bottomSheetBehavior();
 
         return v;
+    }
+
+    private void toAllBuah() {
+        Intent intent= new Intent(getContext(), ListKategoriShopActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("KATEGORI", "Buah");
+        startActivity(intent);
     }
 
     private void toAllSayuran() {
