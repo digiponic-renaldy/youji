@@ -219,7 +219,9 @@ public class DetailShop extends AppCompatActivity {
             hargaBarang.setText("Rp " + String.valueOf(dataItem.getHarga()));
             satuan.setText("/"+String.valueOf(dataItem.getSatuan()));
             kategori.setText(String.valueOf(dataItem.getKategori()));
-            //descBarang.setText(String.valueOf(dataItem.getDescription()));
+            descBarang.setText(String.valueOf(dataItem.getDeskripsi()));
+ 
+            kategori.setVisibility(View.INVISIBLE);
 
             //stok
             this.stok = dataItem.getStok();

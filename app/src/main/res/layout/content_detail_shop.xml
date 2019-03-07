@@ -95,6 +95,7 @@
                 android:layout_alignParentEnd="true">
 
                 <ImageButton
+                    android:background="@android:color/transparent"
                     android:id="@+id/btn_minusCart_detailItem"
                     android:src="@drawable/icon_rouded_minus"
                     android:layout_width="40dp"
@@ -111,6 +112,7 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageButton
+                    android:background="@android:color/transparent"
                     android:id="@+id/btn_addCart_detailItem"
                     android:src="@drawable/icon_rouded_add"
                     android:layout_width="40dp"
