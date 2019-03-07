@@ -60,6 +60,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         if(extra!= null){
             kategori = extra.getString("KATEGORI");
+            getSupportActionBar().setTitle(kategori);
             getDataFilter(kategori);
         }
 

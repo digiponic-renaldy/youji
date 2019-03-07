@@ -35,6 +35,7 @@ public class ShopAllItem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_all_item);
+        getSupportActionBar().setTitle("Rekomendasi");
         //inisialisasi
         recyclerView = findViewById(R.id.recycler_allItem_activity);
         shimmerRecyclerView = findViewById(R.id.shimmer_shopAllitem_activity);
