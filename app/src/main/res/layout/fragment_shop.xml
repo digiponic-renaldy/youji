@@ -114,19 +114,20 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/tvNewsShopItem"
+                        android:id="@+id/tvSayuranItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="7dp"
                         android:fontFamily="@font/lato_bold"
-                        android:text="Newest items"
+                        android:text="Sayuran"
                         android:textColor="@color/colorBlack"
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
                     <Button
+                        android:id="@+id/btnLihatSayuran"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -142,7 +143,7 @@
                         android:id="@+id/recycler_all_list_shopNewest"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/tvNewsShopItem"
+                        android:layout_below="@id/tvSayuranItem"
                         android:layout_marginTop="10dp">
 
                     </android.support.v7.widget.RecyclerView>

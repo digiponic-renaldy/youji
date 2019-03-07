@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.npe.youji.R;
+import com.npe.youji.activity.shop.ListKategoriShopActivity;
 import com.npe.youji.activity.shop.ShopAllItem;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
@@ -60,7 +61,7 @@ public class ShopFragment extends Fragment {
     private RelativeLayout layoutShop;
 
     private CardView cardRekom, cardNews, cardBest, cardAllItem;
-    Button btnLihatSemua;
+    Button btnLihatSemua, btnLihatSayuran;
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
     CircleButton btnFloatCheckout;
@@ -92,6 +93,7 @@ public class ShopFragment extends Fragment {
         cardBest = v.findViewById(R.id.layoutBestSaller);
         cardAllItem = v.findViewById(R.id.layoutAllItem);
         btnLihatSemua = v.findViewById(R.id.lihatSemuaData);
+        btnLihatSayuran = v.findViewById(R.id.btnLihatSayuran);
 
         //shimmer
         shimmerBehavior();
@@ -124,9 +126,23 @@ public class ShopFragment extends Fragment {
                 toAllItem();
             }
         });
+
+        btnLihatSayuran.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toAllSayuran();
+            }
+        });
         bottomSheetBehavior();
 
         return v;
+    }
+
+    private void toAllSayuran() {
+        Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("KATEGORI", "Sayuran");
+        startActivity(intent);
     }
 
     private void toAllItem() {
