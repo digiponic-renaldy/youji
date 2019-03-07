@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.npe.youji.activity.LoginActivity;
+import com.npe.youji.fragment.auth.LoginFirstFragment;
 import com.npe.youji.fragment.chat.ChatFragment;
 import com.npe.youji.fragment.inbox.InboxFragmenet;
 import com.npe.youji.fragment.order.OrderFragment;
@@ -56,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_order:
                         if (mUser != null) {
                             fragment = new OrderFragment();
-                            loadFragment(fragment);
                         } else {
-                            toLogin();
+                            fragment = new LoginFirstFragment();
                         }
+                        loadFragment(fragment);
                         return true;
                     case R.id.menu_shop:
                         fragment = new ShopFragment();
@@ -81,11 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void toLogin() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
+
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

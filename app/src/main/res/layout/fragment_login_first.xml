@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".fragment.auth.LoginFirstFragment">
+
+    <ImageView
+        android:src="@drawable/youji_wt_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+
+    <TextView
+        android:fontFamily="@font/lato_bold"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:text="Silahkan Login Terlebih Dahulu"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnToLogin"
+        android:textColor="@color/colorWhite"
+        android:text="Login"
+        android:background="@drawable/rounded_button_green"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="200dp"
+        android:layout_height="40dp" />
+
+</LinearLayout>
