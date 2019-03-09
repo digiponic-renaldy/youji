@@ -37,24 +37,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!--<com.facebook.login.widget.LoginButton
+                <com.facebook.login.widget.LoginButton
                     android:visibility="invisible"
                     android:id="@+id/login_button_facebook"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>-->
+                    android:layout_height="match_parent"/>
 
                 <Button
                     android:id="@+id/btn_login_facebook"
-                    android:paddingLeft="5dp"
-                    android:drawableLeft="@drawable/icon_facebook"
-                    android:background="@color/colorBlue"
                     android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlue"
+                    android:drawableLeft="@drawable/icon_facebook"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:text="@string/facebook"
-                    android:textStyle="bold"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                     android:textColor="@color/colorWhite"
-                    android:paddingRight="5dp"
-                    android:layout_height="40dp"/>
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
