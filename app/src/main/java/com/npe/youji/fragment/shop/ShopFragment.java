@@ -209,7 +209,6 @@ public class ShopFragment extends Fragment {
         });
     }
 
-
     private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
         String imgUrl = "https://i.imgur.com/kTRJDky.png";
         for (int i = 0; i < dataItem.size(); i++) {
@@ -292,7 +291,6 @@ public class ShopFragment extends Fragment {
         }
     }
 
-
     private void getCategory() {
         service_local.listCategory().enqueue(new Callback<List<RootTipeKategoriModel>>() {
             @Override
@@ -372,4 +370,6 @@ public class ShopFragment extends Fragment {
         getCategory();
         getItemProduk_local();
     }
+
+
 }

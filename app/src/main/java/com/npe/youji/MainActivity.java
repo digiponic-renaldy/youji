@@ -1,6 +1,5 @@
 package com.npe.youji;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,13 +12,12 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.npe.youji.activity.LoginActivity;
+import com.npe.youji.fragment.auth.AccountFragment;
 import com.npe.youji.fragment.auth.LoginFirstFragment;
+import com.npe.youji.fragment.auth.LoginFragment;
 import com.npe.youji.fragment.chat.ChatFragment;
 import com.npe.youji.fragment.inbox.InboxFragmenet;
 import com.npe.youji.fragment.order.OrderFragment;
-import com.npe.youji.fragment.auth.AccountFragment;
-import com.npe.youji.fragment.auth.LoginFragment;
 import com.npe.youji.fragment.shop.ShopFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
     private FirebaseAuth auth;
     private FirebaseUser mUser;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_frame, fragment);
@@ -102,6 +100,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkLogin();
+        this.doubleBackToExitPressedOnce = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press twice to exit", Toast.LENGTH_SHORT).show();
     }
 
     private void checkLogin() {
