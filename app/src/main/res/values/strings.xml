@@ -110,4 +110,9 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="inbox">Inbox</string>
     <string name="chat">Chat</string>
+
+
+    <string name="facebook_app_id">315372439109530</string>
+    <string name="fb_login_protocol_scheme">fb315372439109530</string>
+
 </resources>

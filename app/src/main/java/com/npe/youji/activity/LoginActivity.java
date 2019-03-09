@@ -3,16 +3,23 @@ package com.npe.youji.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.SQLException;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -48,26 +56,32 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9002;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private Button btnLoginGoogle;
+    private Button btnLoginGoogle, btnLoginFacebook;
+    //facebook
+    LoginButton btnFacebook;
+    CallbackManager callbackManager;
     private Retrofit retrofit;
     private ApiService service;
     private UserOperations userOperations;
     List<DataUserModel> listUser;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        //inisialisasi
         btnLoginGoogle = findViewById(R.id.btn_login_google_first);
-
+        btnLoginFacebook = findViewById(R.id.btn_login_facebook_first);
+        btnFacebook = findViewById(R.id.login_button_facebook_first);
         //progress dialog
-        progressDialog = new ProgressDialog(this,  R.style.full_screen_dialog){
+        progressDialog = new ProgressDialog(this, R.style.full_screen_dialog) {
             @Override
             protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.progress_dialog);
-                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             }
         };
         progressDialog.setCancelable(false);
@@ -93,6 +107,57 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+
+        btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInFacebook();
+            }
+        });
+    }
+
+    private void signInFacebook() {
+        callbackManager = CallbackManager.Factory.create();
+        btnFacebook.setReadPermissions("email");
+        btnFacebook.performClick();
+        btnFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                updateUI(null);
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                updateUI(null);
+            }
+        });
+    }
+
+    private void handleFacebookAccessToken(AccessToken accessToken) {
+        progressDialog.show();
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+
+                        progressDialog.dismiss();
+                    }
+                });
     }
 
     @Override
@@ -111,31 +176,39 @@ public class LoginActivity extends AppCompatActivity {
                 updateUI(null);
                 // [END_EXCLUDE]
             }
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     private void updateUI(FirebaseUser user) {
-        RequestBodyUser bodyUser = new RequestBodyUser(user.getDisplayName().toString(), user.getEmail().toString());
-        service.apiUser(bodyUser).enqueue(new Callback<RootUserModel>() {
-            @Override
-            public void onResponse(Call<RootUserModel> call, Response<RootUserModel> response) {
-                RootUserModel data = response.body();
-                if(data != null){
-                    if(data.getApi_message().equalsIgnoreCase("success")){
-                        listUser = data.getData();
-                        if(insertDataUser(listUser)){
-                            toMain();
+        if (user != null) {
+            RequestBodyUser bodyUser = new RequestBodyUser(user.getDisplayName().toString(), user.getEmail().toString());
+            Log.i("Nama", user.getDisplayName().toString());
+            Log.i("Email", user.getEmail().toString());
+
+            service.apiUser(bodyUser).enqueue(new Callback<RootUserModel>() {
+                @Override
+                public void onResponse(Call<RootUserModel> call, Response<RootUserModel> response) {
+                    RootUserModel data = response.body();
+                    if (data != null) {
+                        if (data.getApi_message().equalsIgnoreCase("success")) {
+                            listUser = data.getData();
+                            if (insertDataUser(listUser)) {
+                                toMain();
+                            }
+                            Log.i("listUser", String.valueOf(listUser.get(0).getEmail()));
                         }
-                        Log.i("listUser", String.valueOf(listUser.get(0).getEmail()));
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<RootUserModel> call, Throwable t) {
-                Log.i("GagalApiCustomer", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<RootUserModel> call, Throwable t) {
+                    Log.i("GagalApiCustomer", t.getMessage());
+                }
+            });
+
+        }
     }
 
     private void toMain() {
@@ -147,13 +220,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean insertDataUser(List<DataUserModel> listUser) {
         boolean cek = false;
-        try{
+        try {
             userOperations.openDb();
             UserModel userModel = new UserModel(listUser.get(0).getId(), listUser.get(0).getName(), listUser.get(0).getEmail());
             userOperations.insertUser(userModel);
             cek = true;
             userOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("ErrorInsertUser", e.getMessage());
         }
 
