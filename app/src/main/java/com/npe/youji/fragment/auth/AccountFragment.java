@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -142,7 +143,7 @@ public class AccountFragment extends Fragment {
     private void revokeAccess() {
         // Firebase sign out
         mAuth.signOut();
-
+        LoginManager.getInstance().logOut();
         // Google revoke access
         mGoogleSignInClient.revokeAccess().addOnCompleteListener(requireActivity(),
                 new OnCompleteListener<Void>() {
