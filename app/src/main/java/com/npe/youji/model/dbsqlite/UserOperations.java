@@ -118,7 +118,6 @@ public class UserOperations {
 
     // Deleting user
     public void removeuser(UserModel userModel) {
-
         sqLiteDatabase.delete(DatabaseHelper.TABLE_USER, DatabaseHelper.COLUMN_IDUSER + "=" +
                 userModel.getId(), null);
     }
@@ -134,5 +133,9 @@ public class UserOperations {
                 + "=" + id);
     }
 
+    //truncate
+    public void truncateUser(){
+        sqLiteDatabase.execSQL("DELETE FROM "+DatabaseHelper.TABLE_USER);
+    }
 
 }

@@ -51,6 +51,7 @@ public class AccountFragment extends Fragment {
         userOperations = new UserOperations(getContext());
 
         if(checkUser()){
+            Log.i("CheckUserAuth", "Masuk");
             getDataUser();
         }
 
@@ -128,7 +129,7 @@ public class AccountFragment extends Fragment {
         boolean cek = false;
         try {
             userOperations.openDb();
-            userOperations.dropUser();
+            userOperations.truncateUser();
             cek = true;
             userOperations.closeDb();
             Log.i("DeleteDataUser", "Berhasil");
@@ -141,6 +142,7 @@ public class AccountFragment extends Fragment {
     private void revokeAccess() {
         // Firebase sign out
         mAuth.signOut();
+
         // Google revoke access
         mGoogleSignInClient.revokeAccess().addOnCompleteListener(requireActivity(),
                 new OnCompleteListener<Void>() {
@@ -150,5 +152,7 @@ public class AccountFragment extends Fragment {
                     }
                 });
     }
+
+
 
 }
