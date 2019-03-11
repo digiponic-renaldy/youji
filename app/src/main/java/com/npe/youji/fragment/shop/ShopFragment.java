@@ -261,6 +261,7 @@ public class ShopFragment extends Fragment {
     private void listItemShop(ArrayList<JoinModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
         recyclerItem.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false));
+        Log.i("DataModel", String.valueOf(dataItem));
         adapterItem = new AdapterShopItem(getContext(), dataItem, ShopFragment.this);
         recyclerItem.setAdapter(adapterItem);
         adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
