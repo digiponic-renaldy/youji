@@ -64,6 +64,7 @@ public class LoginFragment extends Fragment {
     //facebook
     LoginButton btnFacebook;
     CallbackManager callbackManager;
+    //retrofit
     private Retrofit retrofit_local;
     private ApiService service_local;
     private UserOperations userOperations;
