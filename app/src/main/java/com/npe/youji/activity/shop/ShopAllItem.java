@@ -36,6 +36,7 @@ public class ShopAllItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_all_item);
         getSupportActionBar().setTitle("Rekomendasi");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //inisialisasi
         recyclerView = findViewById(R.id.recycler_allItem_activity);
         shimmerRecyclerView = findViewById(R.id.shimmer_shopAllitem_activity);
@@ -99,5 +100,11 @@ public class ShopAllItem extends AppCompatActivity {
         shimmerRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         shimmerRecyclerView.setAdapter(adapterItem);
         shimmerRecyclerView.showShimmerAdapter();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
