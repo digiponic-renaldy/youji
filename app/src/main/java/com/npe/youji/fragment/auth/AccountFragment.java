@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
+import com.npe.youji.activity.auth.EditProfile;
 import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.user.UserModel;
 
@@ -84,6 +85,9 @@ public class AccountFragment extends Fragment {
     }
 
     private void editProfile() {
+        Intent intent = new Intent(getContext(), EditProfile.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private boolean checkUser() {
