@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.npe.youji.R;
-import com.npe.youji.activity.LoginActivity;
+import com.npe.youji.activity.auth.LoginActivity;
 import com.npe.youji.activity.checkout.CheckoutActivity;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.UserOperations;

@@ -1,4 +1,4 @@
-package com.npe.youji.activity;
+package com.npe.youji.activity.auth;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

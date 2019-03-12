@@ -14,10 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:padding="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/imgAccountUser"
                 android:src="@drawable/avatar"
                 android:layout_width="100dp"
@@ -76,6 +77,17 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btnEditProfile"
+                android:drawableRight="@drawable/ic_arrow_kanan"
+                android:padding="10dp"
+                android:textAlignment="viewStart"
+                android:background="@color/colorWhite"
+                android:textAllCaps="true"
+                android:text="Edit Profile"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
 
             <Button
                 android:id="@+id/btnPrivacy"

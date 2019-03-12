@@ -10,12 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icons"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+            android:value="@string/facebook_app_id" />
 
         <activity android:name=".MainActivity" />
         <activity
@@ -23,7 +22,7 @@
             android:label="@string/title_activity_detail_shop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.checkout.CheckoutActivity" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.auth.LoginActivity" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme.NoActionBar">
@@ -35,6 +34,8 @@
         </activity>
         <activity android:name=".activity.shop.ListKategoriShopActivity" />
         <activity android:name=".fragment.order.DetailOrder" />
-        <activity android:name=".activity.shop.ShopAllItem"></activity>
+        <activity android:name=".activity.shop.ShopAllItem" />
+        <activity android:name=".activity.auth.EditProfile"></activity>
     </application>
+
 </manifest>

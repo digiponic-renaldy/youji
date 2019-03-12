@@ -32,7 +32,7 @@ public class AccountFragment extends Fragment {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private UserOperations userOperations;
-    private Button btnLogout;
+    private Button btnLogout,btnEditProfile;
     private TextView tvNama, tvEmail;
 
     public AccountFragment() {
@@ -50,7 +50,9 @@ public class AccountFragment extends Fragment {
         tvNama = v.findViewById(R.id.tvNamaProfile);
         tvEmail = v.findViewById(R.id.tvEmailProfile);
         userOperations = new UserOperations(getContext());
-
+        btnLogout = v.findViewById(R.id.btnLogout);
+        btnEditProfile = v.findViewById(R.id.btnEditProfile);
+        
         if(checkUser()){
             Log.i("CheckUserAuth", "Masuk");
             getDataUser();
@@ -62,7 +64,7 @@ public class AccountFragment extends Fragment {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
-        btnLogout = v.findViewById(R.id.btnLogout);
+        
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +72,18 @@ public class AccountFragment extends Fragment {
                 signOut();
             }
         });
+        
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editProfile();
+            }
+        });
 
         return v;
+    }
+
+    private void editProfile() {
     }
 
     private boolean checkUser() {

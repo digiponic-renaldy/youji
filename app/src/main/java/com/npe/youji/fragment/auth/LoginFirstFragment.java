@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.npe.youji.R;
-import com.npe.youji.activity.LoginActivity;
+import com.npe.youji.activity.auth.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
