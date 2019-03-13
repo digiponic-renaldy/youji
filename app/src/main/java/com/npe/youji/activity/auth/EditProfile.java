@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
@@ -65,7 +67,45 @@ public class EditProfile extends AppCompatActivity {
                 getUser();
             }
         }, 30000);
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fullname, adress, notelp;
+                fullname = etFullname.getText().toString();
+                notelp = etPhone.getText().toString();
+                adress = etAlamat.getText().toString();
+                if (checkMasukkan(fullname, adress, notelp)) {
+                    Toast.makeText(getApplicationContext(), "Berhasil update", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
+    private boolean checkMasukkan(String fullname, String adress, String notelp) {
+        boolean valid;
+        if (!fullname.isEmpty()) {
+            if (!notelp.isEmpty()) {
+                if (!adress.isEmpty()) {
+                    valid = true;
+                } else {
+                    etAlamat.setError("Alamat Belum Terisi");
+                    etAlamat.requestFocus();
+                    valid = false;
+                }
+            } else {
+                etPhone.setError("Nomor Telepon Belum Terisi");
+                etPhone.requestFocus();
+                valid = false;
+            }
+        } else {
+            etFullname.setError("Nama Lengkap Belum Terisi");
+            etFullname.requestFocus();
+            valid = false;
+        }
+        return valid;
+    }
+
 
     private void dialogWait() {
         progressDialog = new ProgressDialog(this, R.style.full_screen_dialog) {
