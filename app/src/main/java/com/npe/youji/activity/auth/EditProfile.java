@@ -1,6 +1,7 @@
 package com.npe.youji.activity.auth;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,14 +14,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.UserOperations;
+import com.npe.youji.model.user.RootPerbaruiUser;
 import com.npe.youji.model.user.UserModel;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class EditProfile extends AppCompatActivity {
@@ -71,16 +78,56 @@ public class EditProfile extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fullname, adress, notelp;
+                String fullname, adress, notelp, username, email;
                 fullname = etFullname.getText().toString();
                 notelp = etPhone.getText().toString();
                 adress = etAlamat.getText().toString();
+                username = tvNama.getText().toString();
+                email = etEmail.getText().toString();
                 if (checkMasukkan(fullname, adress, notelp)) {
-                    Toast.makeText(getApplicationContext(), "Berhasil update", Toast.LENGTH_SHORT).show();
+                    progressDialog.show();
+
+                    updateProfile(fullname, adress, notelp, username, email);
+//                    Toast.makeText(getApplicationContext(), "Berhasil update", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
+    private void updateProfile(String fullname, String adress, String notelp, String username, String email) {
+        //body json
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", username);
+        jsonObject.addProperty("fullname", fullname);
+        jsonObject.addProperty("email", email);
+        jsonObject.addProperty("phone", notelp);
+        jsonObject.addProperty("address", adress);
+        //update user
+        service.updateUser(jsonObject).enqueue(new Callback<RootPerbaruiUser>() {
+            @Override
+            public void onResponse(Call<RootPerbaruiUser> call, Response<RootPerbaruiUser> response) {
+                RootPerbaruiUser data = response.body();
+                if(data != null){
+                    progressDialog.dismiss();
+                    toMain();
+                    Toast.makeText(getApplicationContext(), "Berhasil Update Data User", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RootPerbaruiUser> call, Throwable t) {
+                progressDialog.dismiss();
+                Log.i("ErrorUpdateUser", t.getMessage());
+            }
+        });
+    }
+
+    private void toMain() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 
     private boolean checkMasukkan(String fullname, String adress, String notelp) {
         boolean valid;
