@@ -10,6 +10,7 @@ import com.npe.youji.model.shop.menu.RootDetailProdukModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 import com.npe.youji.model.user.RequestBodyUser;
 import com.npe.youji.model.user.RootPelangganModel;
+import com.npe.youji.model.user.RootPerbaruiUser;
 import com.npe.youji.model.user.RootUserModel;
 
 import java.util.List;
@@ -59,4 +60,7 @@ public interface ApiService {
 
     @POST("transaksi/data/detil")
     Call<List<RootDetailTransaksiModel>> getDetailTransaksi(@Body JsonObject jsonObject);
+
+    @POST("pelanggan/perbarui")
+    Call<RootPerbaruiUser> updateUser(@Body JsonObject jsonObject);
 }
