@@ -40,6 +40,7 @@ public class EditProfile extends AppCompatActivity {
     UserOperations userOperations;
     List<UserModel> userModels;
     ProgressDialog progressDialog;
+    int id_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class EditProfile extends AppCompatActivity {
             public void run() {
                 getUser();
             }
-        }, 30000);
+        }, 2000);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +95,7 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
-    private void updateProfile(String fullname, String adress, String notelp, String username, String email) {
+    private void updateProfile(final String fullname, final String adress, final String notelp, final String username, final String email) {
         //body json
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("name", username);
@@ -109,6 +110,7 @@ public class EditProfile extends AppCompatActivity {
                 RootPerbaruiUser data = response.body();
                 if (data != null) {
                     progressDialog.dismiss();
+                    updateUser(id_user, username, fullname, email, notelp, adress);
                     toMain();
                     Toast.makeText(getApplicationContext(), "Berhasil Update Data User", Toast.LENGTH_SHORT).show();
                 }
@@ -120,6 +122,17 @@ public class EditProfile extends AppCompatActivity {
                 Log.i("ErrorUpdateUser", t.getMessage());
             }
         });
+    }
+
+    private void updateUser(int id_user, String username, String fullname, String email, String notelp, String adress) {
+        try {
+            userOperations.openDb();
+            UserModel userModel = new UserModel(id_user, username, email, fullname, adress, notelp);
+            userOperations.updateuser(userModel);
+            userOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorUpdateUser", e.getMessage());
+        }
     }
 
     private void toMain() {
@@ -181,6 +194,8 @@ public class EditProfile extends AppCompatActivity {
 
     private void initUser(List<UserModel> userModels) {
         if (userModels != null) {
+            this.id_user = userModels.get(0).getId();
+
             if (userModels.get(0).getFullname() != null) {
                 Log.i("Fullname", userModels.get(0).getFullname());
                 etFullname.setText(userModels.get(0).getFullname());
