@@ -8,10 +8,8 @@ import com.npe.youji.model.order.RootListTransaksiModel;
 import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.menu.RootDetailProdukModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
-import com.npe.youji.model.user.RequestBodyUser;
 import com.npe.youji.model.user.RootPelangganModel;
 import com.npe.youji.model.user.RootPerbaruiUser;
-import com.npe.youji.model.user.RootUserModel;
 
 import java.util.List;
 
@@ -31,8 +29,8 @@ public interface ApiService {
 //    @GET("categories")
 //    Call<RootCategoryModel> listCategory();
 
-    @POST("customers")
-    Call<RootUserModel> apiUser(@Body RequestBodyUser request);
+//    @POST("customers")
+//    Call<RootUserModel> apiUser(@Body RequestBodyUser request);
 
     @GET("cities")
     Call<RootCitiesModel> listCity();

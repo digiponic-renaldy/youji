@@ -21,7 +21,10 @@ public class UserOperations {
     private static final String[] allColumns = {
             DatabaseHelper.COLUMN_IDUSER,
             DatabaseHelper.COLUMN_NAMAUSER,
-            DatabaseHelper.COLUMN_EMAILUSER
+            DatabaseHelper.COLUMN_EMAILUSER,
+            DatabaseHelper.COLUMN_FULLNAMEUSER,
+            DatabaseHelper.COLUMN_ALAMATUSER,
+            DatabaseHelper.COLUMN_NOTELPUSER
     };
 
     public UserOperations(Context context) {
@@ -43,6 +46,9 @@ public class UserOperations {
         values.put(DatabaseHelper.COLUMN_IDUSER, users.getId());
         values.put(DatabaseHelper.COLUMN_NAMAUSER, users.getNama());
         values.put(DatabaseHelper.COLUMN_EMAILUSER, users.getEmail());
+        values.put(DatabaseHelper.COLUMN_FULLNAMEUSER, users.getFullname());
+        values.put(DatabaseHelper.COLUMN_ALAMATUSER , users.getAlamat());
+        values.put(DatabaseHelper.COLUMN_NOTELPUSER, users.getNotelp());
 
         int insertId = (int) sqLiteDatabase.insert(DatabaseHelper.TABLE_USER, null,
                 values);
@@ -78,7 +84,10 @@ public class UserOperations {
         UserModel e = new UserModel(
                 Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1),
-                cursor.getString(2)
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4),
+                cursor.getString(5)
         );
         return e;
     }
@@ -96,6 +105,9 @@ public class UserOperations {
                 user.setId(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_IDUSER)));
                 user.setNama(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAMAUSER)));
                 user.setEmail(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_EMAILUSER)));
+                user.setFullname(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_FULLNAMEUSER)));
+                user.setAlamat(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_ALAMATUSER)));
+                user.setNotelp(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NOTELPUSER)));
                 users.add(user);
             }
         }
@@ -110,6 +122,9 @@ public class UserOperations {
         values.put(DatabaseHelper.COLUMN_IDUSER, user.getId());
         values.put(DatabaseHelper.COLUMN_NAMAUSER, user.getNama());
         values.put(DatabaseHelper.COLUMN_EMAILUSER, user.getEmail());
+        values.put(DatabaseHelper.COLUMN_FULLNAMEUSER, user.getFullname());
+        values.put(DatabaseHelper.COLUMN_ALAMATUSER, user.getAlamat());
+        values.put(DatabaseHelper.COLUMN_NOTELPUSER, user.getNotelp());
 
         // updating row
         return sqLiteDatabase.update(DatabaseHelper.TABLE_USER, values,

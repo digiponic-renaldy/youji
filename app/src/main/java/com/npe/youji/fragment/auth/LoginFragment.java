@@ -42,7 +42,6 @@ import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.UserOperations;
-import com.npe.youji.model.user.DataUserModel;
 import com.npe.youji.model.user.RootPelangganModel;
 import com.npe.youji.model.user.UserModel;
 
@@ -68,7 +67,6 @@ public class LoginFragment extends Fragment {
     private Retrofit retrofit_local;
     private ApiService service_local;
     private UserOperations userOperations;
-    List<DataUserModel> listUser;
     UserModel mUserModel;
     ProgressDialog progressDialog;
     public LoginFragment() {
@@ -224,9 +222,25 @@ public class LoginFragment extends Fragment {
     }
 
     private UserModel insertDataUser(List<RootPelangganModel> listUser) {
+        String fullname = "";
+        String alamat = "";
+        String notelp = "";
+
+        if(listUser.get(0).getFullname()!= null){
+            fullname = listUser.get(0).getFullname();
+        }
+        if(listUser.get(0).getAddress()!= null){
+            alamat = listUser.get(0).getAddress();
+        }
+        if(listUser.get(0).getPhone()!= null){
+            notelp = listUser.get(0).getPhone();
+        }
+
         try{
             userOperations.openDb();
-            UserModel userModel = new UserModel(listUser.get(0).getId(), listUser.get(0).getName(), listUser.get(0).getEmail());
+            UserModel userModel = new UserModel(listUser.get(0).getId(),
+                    listUser.get(0).getName(), listUser.get(0).getEmail(),
+                    fullname, alamat, notelp);
             mUserModel = userOperations.insertUser(userModel);
             userOperations.closeDb();
         }catch (SQLException e){

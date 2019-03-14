@@ -60,12 +60,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_IDUSER = "iduser";
     public static final String COLUMN_NAMAUSER = "namaUser";
     public static final String COLUMN_EMAILUSER = "emailUser";
+    public static final String COLUMN_FULLNAMEUSER = "fullNameUser";
+    public static final String COLUMN_ALAMATUSER = "alamatUser";
+    public static final String COLUMN_NOTELPUSER = "notelpUser";
 
     private static final String CREATE_TABLEUSER =
             "CREATE TABLE " + TABLE_USER + " ( " +
                     COLUMN_IDUSER + " INTEGER UNIQUE NOT NULL, " +
                     COLUMN_NAMAUSER + " TEXT NOT NULL, " +
-                    COLUMN_EMAILUSER + " TEXT NOT NULL) ";
+                    COLUMN_EMAILUSER + " TEXT NOT NULL, " +
+                    COLUMN_FULLNAMEUSER + " TEXT , " +
+                    COLUMN_ALAMATUSER + " TEXT , " +
+                    COLUMN_NOTELPUSER + " TEXT)";
 
 
     public DatabaseHelper(Context context) {

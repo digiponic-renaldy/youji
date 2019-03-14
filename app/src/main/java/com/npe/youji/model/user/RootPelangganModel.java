@@ -21,12 +21,14 @@ public class RootPelangganModel {
     String phone;
     @SerializedName("phone_other")
     String phone_other;
+    @SerializedName("fullname")
+    String fullname;
 
     public RootPelangganModel() {
 
     }
 
-    public RootPelangganModel(int id, String created_at, String updated_at, String deleted_at, String name, String email, String address, String phone, String phone_other) {
+    public RootPelangganModel(int id, String created_at, String updated_at, String deleted_at, String name, String email, String address, String phone, String phone_other, String fullname) {
         this.id = id;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -36,6 +38,15 @@ public class RootPelangganModel {
         this.address = address;
         this.phone = phone;
         this.phone_other = phone_other;
+        this.fullname = fullname;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public int getId() {

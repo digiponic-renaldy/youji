@@ -33,7 +33,7 @@ public class AccountFragment extends Fragment {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private UserOperations userOperations;
-    private Button btnLogout,btnEditProfile;
+    private Button btnLogout, btnEditProfile;
     private TextView tvNama, tvEmail;
 
     public AccountFragment() {
@@ -53,8 +53,8 @@ public class AccountFragment extends Fragment {
         userOperations = new UserOperations(getContext());
         btnLogout = v.findViewById(R.id.btnLogout);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
-        
-        if(checkUser()){
+
+        if (checkUser()) {
             Log.i("CheckUserAuth", "Masuk");
             getDataUser();
         }
@@ -65,7 +65,7 @@ public class AccountFragment extends Fragment {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
-        
+
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class AccountFragment extends Fragment {
                 signOut();
             }
         });
-        
+
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,18 +104,18 @@ public class AccountFragment extends Fragment {
     }
 
     private void getDataUser() {
-        try{
+        try {
             userOperations.openDb();
             userOperations.getAllUser();
             initDataUser(userOperations.getAllUser());
             userOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("ErrorGetDataUser", e.getMessage());
         }
     }
 
     private void initDataUser(List<UserModel> allUser) {
-        if(allUser != null){
+        if (allUser != null) {
             tvNama.setText(allUser.get(0).getNama());
             tvEmail.setText(allUser.get(0).getEmail());
         }
@@ -169,7 +169,6 @@ public class AccountFragment extends Fragment {
                     }
                 });
     }
-
 
 
 }

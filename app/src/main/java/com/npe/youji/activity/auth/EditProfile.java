@@ -107,7 +107,7 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onResponse(Call<RootPerbaruiUser> call, Response<RootPerbaruiUser> response) {
                 RootPerbaruiUser data = response.body();
-                if(data != null){
+                if (data != null) {
                     progressDialog.dismiss();
                     toMain();
                     Toast.makeText(getApplicationContext(), "Berhasil Update Data User", Toast.LENGTH_SHORT).show();
@@ -181,6 +181,19 @@ public class EditProfile extends AppCompatActivity {
 
     private void initUser(List<UserModel> userModels) {
         if (userModels != null) {
+            if (userModels.get(0).getFullname() != null) {
+                Log.i("Fullname", userModels.get(0).getFullname());
+                etFullname.setText(userModels.get(0).getFullname());
+            }
+            if (userModels.get(0).getAlamat() != null) {
+                Log.i("Alamat", userModels.get(0).getAlamat());
+                etAlamat.setText(userModels.get(0).getAlamat());
+            }
+            if (userModels.get(0).getNotelp() != null) {
+                Log.i("Phone", userModels.get(0).getNotelp());
+                etPhone.setText(userModels.get(0).getNotelp());
+            }
+
             tvNama.setText(userModels.get(0).getNama());
             etEmail.setText(userModels.get(0).getEmail());
         }
