@@ -9,7 +9,7 @@
 
     <ImageView
         android:src="@drawable/youji_wt_text"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="150dp"
         android:layout_height="150dp"/>
@@ -23,14 +23,27 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center_horizontal"
-                android:textStyle="bold"
-                android:justificationMode="inter_word"
-                android:text="@string/header_login"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/lato_bold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:text="Login untuk mempermudah anda melacak order"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:fontFamily="@font/lato_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center"
+                android:layout_marginTop="5dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:text="Anda dapat melanjutkan belanja dengan login menggunakan social media"
+                android:textSize="16sp" />
 
             <FrameLayout
                 android:layout_marginTop="30dp"
