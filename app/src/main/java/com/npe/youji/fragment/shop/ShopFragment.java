@@ -4,6 +4,7 @@ package com.npe.youji.fragment.shop;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
@@ -147,7 +148,7 @@ public class ShopFragment extends Fragment {
     }
 
     private void toAllBuah() {
-        Intent intent= new Intent(getContext(), ListKategoriShopActivity.class);
+        Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("KATEGORI", "Buah");
         startActivity(intent);
@@ -196,9 +197,15 @@ public class ShopFragment extends Fragment {
                 if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
                     insertAllDataShopLocal(data);
-                    checkIsiSqlShop();
-                    joinData();
-                    shimmerRecyclerShopItem.hideShimmerAdapter();
+                    if (checkIsiSqlShop()) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                joinData();
+                            }
+                        }, 2000);
+                    }
+
                 }
             }
 
@@ -260,7 +267,7 @@ public class ShopFragment extends Fragment {
 
     private void listItemShop(ArrayList<JoinModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
-        recyclerItem.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false));
+        recyclerItem.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         Log.i("DataModel", String.valueOf(dataItem));
         adapterItem = new AdapterShopItem(getContext(), dataItem, ShopFragment.this);
         recyclerItem.setAdapter(adapterItem);
@@ -270,26 +277,39 @@ public class ShopFragment extends Fragment {
                 adapterItem.detailItem(data);
             }
         });
+
         //newest
-        recyclerNewest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false));
+        recyclerNewest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerNewest.setAdapter(adapterItem);
+
         //best
         recyclerBest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerBest.setAdapter(adapterItem);
+
         //all item
         recyclerAll.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerAll.setAdapter(adapterItem);
+
+        adapterItem.notifyDataSetChanged();
+
+        shimmerRecyclerShopItem.hideShimmerAdapter();
+        cardRekom.setVisibility(View.VISIBLE);
+        cardBest.setVisibility(View.VISIBLE);
+        cardNews.setVisibility(View.VISIBLE);
+        cardAllItem.setVisibility(View.VISIBLE);
     }
 
-    public void checkIsiSqlShop() {
+    public boolean checkIsiSqlShop() {
+        boolean valid = false;
         try {
             shopOperations.openDb();
-            shopOperations.getAllShop();
-            Log.i("CheckAllDataShop", String.valueOf(shopOperations.getAllShop()));
+            valid = shopOperations.checkRecordShop();
+            Log.i("DataTersedia", "Tersedia");
             shopOperations.closeDb();
         } catch (SQLException e) {
             Log.i("CheckErrorAll", e.getMessage());
         }
+        return valid;
     }
 
     private void getCategory() {
@@ -314,10 +334,7 @@ public class ShopFragment extends Fragment {
         adapterCategory = new AdapterCategory(getContext(), dataCategories);
         recyclerCategory.setAdapter(adapterCategory);
         shimmerRecyclerShopMenu.hideShimmerAdapter();
-        cardRekom.setVisibility(View.VISIBLE);
-        cardBest.setVisibility(View.VISIBLE);
-        cardNews.setVisibility(View.VISIBLE);
-        cardAllItem.setVisibility(View.VISIBLE);
+
     }
 
     private void bottomSheetBehavior() {

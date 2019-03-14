@@ -74,6 +74,23 @@ public class ShopOperations {
         return data;
     }
 
+    //check record user
+    public Boolean checkRecordShop() {
+        String checkRecord = "SELECT * FROM " + DatabaseHelper.TABLE_SHOP;
+        Cursor cursor = sqLiteDatabase.rawQuery(checkRecord, null);
+        boolean hasRecord = false;
+        if (cursor.moveToFirst()) {
+            hasRecord = true;
+            int count = 0;
+            while (cursor.moveToNext()) {
+                count++;
+            }
+        }
+
+        cursor.close();
+        return hasRecord;
+    }
+
     //get single data cart
     public DataShopModel getShop(long id) {
         Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_SHOP, allColumns, DatabaseHelper.COLUMN_IDPRODUCTSHOP

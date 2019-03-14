@@ -41,17 +41,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLESHOP =
             "CREATE TABLE " + TABLE_SHOP + " ( " +
                     COLUMN_IDPRODUCTSHOP + " INTEGER UNIQUE NOT NULL, " +
-                    COLUMN_CABANGPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_KODEPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_KETERANGANPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_KATEGORIPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_JENISPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_SATUANPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_STOKPRODUCT + " INTEGER NOT NULL, " +
-                    COLUMN_HARGAPRODUCT + " INTEGER NOT NULL, " +
-                    COLUMN_GAMBARPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_DESKRIPSIPRODUCT + " TEXT NOT NULL, " +
-                    COLUMN_CREATEDPRODUCT + " TEXT NOT NULL, " +
+                    COLUMN_CABANGPRODUCT + " TEXT , " +
+                    COLUMN_KODEPRODUCT + " TEXT , " +
+                    COLUMN_KETERANGANPRODUCT + " TEXT , " +
+                    COLUMN_KATEGORIPRODUCT + " TEXT , " +
+                    COLUMN_JENISPRODUCT + " TEXT , " +
+                    COLUMN_SATUANPRODUCT + " TEXT , " +
+                    COLUMN_STOKPRODUCT + " INTEGER , " +
+                    COLUMN_HARGAPRODUCT + " INTEGER , " +
+                    COLUMN_GAMBARPRODUCT + " TEXT , " +
+                    COLUMN_DESKRIPSIPRODUCT + " TEXT , " +
+                    COLUMN_CREATEDPRODUCT + " TEXT , " +
                     COLUMN_UPDATEDPRODUCT + " TEXT , " +
                     COLUMN_DELETEDPRODUCT + " TEXT )";
 
