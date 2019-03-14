@@ -74,7 +74,7 @@ public class EditProfile extends AppCompatActivity {
             public void run() {
                 getUser();
             }
-        }, 2000);
+        }, 3000);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
