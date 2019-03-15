@@ -292,6 +292,8 @@ public class ShopFragment extends Fragment {
 
         adapterItem.notifyDataSetChanged();
 
+        //hide shimmer and show card
+        shimmerRecyclerShopMenu.hideShimmerAdapter();
         shimmerRecyclerShopItem.hideShimmerAdapter();
         cardRekom.setVisibility(View.VISIBLE);
         cardBest.setVisibility(View.VISIBLE);
@@ -333,8 +335,6 @@ public class ShopFragment extends Fragment {
         recyclerCategory.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapterCategory = new AdapterCategory(getContext(), dataCategories);
         recyclerCategory.setAdapter(adapterCategory);
-        shimmerRecyclerShopMenu.hideShimmerAdapter();
-
     }
 
     private void bottomSheetBehavior() {
