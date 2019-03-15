@@ -2,8 +2,8 @@ package com.npe.youji.activity.shop;
 
 import android.content.Intent;
 import android.database.SQLException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +15,6 @@ import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.JsonObject;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
-import com.npe.youji.fragment.shop.AdapterShopItem;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.ShopOperations;
@@ -40,6 +39,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
     AdapterFilterProduk adapterItem;
     ShimmerRecyclerView shimmerRecyclerShopFilter;
     TextView tvKategoriNull;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +58,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         service_local = retrofit_local.create(ApiService.class);
 
         Bundle extra = getIntent().getExtras();
-        if(extra!= null){
+        if (extra != null) {
             kategori = extra.getString("KATEGORI");
             getSupportActionBar().setTitle(kategori);
             getDataFilter(kategori);
@@ -82,17 +82,18 @@ public class ListKategoriShopActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<RootProdukModel>> call, Response<List<RootProdukModel>> response) {
                 List<RootProdukModel> data = response.body();
-                if(data != null){
+                if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
                     insertAllDataShopLocal(data);
-                    checkIsiSqlShop();
-                    joinData();
-                    shimmerRecyclerShopFilter.hideShimmerAdapter();
+                    if (checkIsiSqlShop()) {
+                        joinData();
+                        shimmerRecyclerShopFilter.hideShimmerAdapter();
+                    }
                 }
-                if(data.isEmpty()) {
+                if (data.isEmpty()) {
                     Log.i("DataNullKategori", kategori);
                     tvKategoriNull.setVisibility(View.VISIBLE);
-                    tvKategoriNull.setText("Barang dengan Kategori "+kategori + " \n tidak tersedia");
+                    tvKategoriNull.setText("Barang dengan Kategori " + kategori + " \n tidak tersedia");
                 }
             }
 
@@ -102,6 +103,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
             }
         });
     }
+
     private void joinData() {
         try {
             shopOperations.openDb();
@@ -129,15 +131,16 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         });
     }
 
-    private void checkIsiSqlShop() {
+    private boolean checkIsiSqlShop() {
+        boolean valid = false;
         try {
             shopOperations.openDb();
-            shopOperations.getAllShop();
-            Log.i("CheckAllDataShop", String.valueOf(shopOperations.getAllShop()));
+            valid = shopOperations.checkRecordShop();
             shopOperations.closeDb();
         } catch (SQLException e) {
             Log.i("CheckErrorAll", e.getMessage());
         }
+        return valid;
     }
 
     private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
@@ -179,7 +182,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 toMain();
                 return true;
@@ -195,11 +198,11 @@ public class ListKategoriShopActivity extends AppCompatActivity {
     }
 
     private void truncateShop() {
-        try{
+        try {
             shopOperations.openDb();
             shopOperations.deleteRecord();
             shopOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("ErrorTruncateFilter", e.getMessage());
         }
     }
