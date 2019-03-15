@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,17 +31,20 @@ import com.npe.youji.model.shop.JoinModel;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder> {
+public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder> implements Filterable {
 
     private Context context;
     private List<JoinModel> items;
+    private List<JoinModel> itemsFilter;
     private Gson gson;
     private OnItemClickListener mListener;
     private Fragment fragment;
     int limit = 2;
+
 
     public interface OnItemClickListener {
         void onItemCick(int position, JoinModel data);
@@ -57,6 +62,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         this.items = items;
         cartOperations = new CartOperations(context);
         shopOperations = new ShopOperations(context);
+
+        itemsFilter = new ArrayList<>(items);
         this.fragment = fragment;
     }
 
@@ -256,6 +263,41 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             return items.size();
 //        }
     }
+
+    @Override
+    public Filter getFilter() {
+        return produkFilter;
+    }
+
+    private Filter produkFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<JoinModel> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(itemsFilter);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (JoinModel item : itemsFilter) {
+                    if (item.getKategori().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            items.clear();
+            items.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;

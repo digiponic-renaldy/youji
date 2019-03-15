@@ -49,12 +49,11 @@ public class ShopFragment extends Fragment {
 
     private RecyclerView recyclerItem, recyclerCategory, recyclerNewest, recyclerBest, recyclerAll;
     private AdapterShopItem adapterItem;
+    private AdapterShopItem adapterItemSayur;
+    private AdapterShopItem adapterItemBuah;
     private AdapterCategory adapterCategory;
-    private ArrayList<DataCategory> listCategories;
     //retrofit
-    private Retrofit retrofit;
     private Retrofit retrofit_local;
-    private ApiService service;
     private ApiService service_local;
 
     private CartOperations cartOperations;
@@ -168,9 +167,7 @@ public class ShopFragment extends Fragment {
     }
 
     private void initRetrofit() {
-        retrofit = NetworkClient.getRetrofitClient();
         retrofit_local = NetworkClient.getRetrofitClientLocal();
-        service = retrofit.create(ApiService.class);
         service_local = retrofit_local.create(ApiService.class);
     }
 
@@ -278,19 +275,34 @@ public class ShopFragment extends Fragment {
             }
         });
 
-        //newest
-        recyclerNewest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerNewest.setAdapter(adapterItem);
 
-        //best
+        //Sayur
+        adapterItemSayur = new AdapterShopItem(getContext(), dataItem, ShopFragment.this);
+        adapterItemSayur.getFilter().filter("Organic Vegetable");
+        recyclerNewest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerNewest.setAdapter(adapterItemSayur);
+        adapterItemSayur.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
+            @Override
+            public void onItemCick(int position, JoinModel data) {
+                adapterItemSayur.detailItem(data);
+            }
+        });
+
+        //Buah
+        adapterItemBuah = new AdapterShopItem(getContext(), dataItem, ShopFragment.this);
+        adapterItemBuah.getFilter().filter("Organic Fruits");
         recyclerBest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerBest.setAdapter(adapterItem);
+        recyclerBest.setAdapter(adapterItemBuah);
+        adapterItemBuah.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
+            @Override
+            public void onItemCick(int position, JoinModel data) {
+                adapterItemBuah.detailItem(data);
+            }
+        });
 
         //all item
         recyclerAll.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerAll.setAdapter(adapterItem);
-
-        adapterItem.notifyDataSetChanged();
 
         //hide shimmer and show card
         shimmerRecyclerShopMenu.hideShimmerAdapter();
