@@ -20,17 +20,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiService {
-//    @GET("products")
-//    Call<RootShopItemModel> listProduct();
-
-//    @GET("product_category")
-//    Call<RootShopMenuModel> listMenuProduct(@Query("categories_id") int categorys_id);
-
-//    @GET("categories")
-//    Call<RootCategoryModel> listCategory();
-
-//    @POST("customers")
-//    Call<RootUserModel> apiUser(@Body RequestBodyUser request);
 
     @GET("cities")
     Call<RootCitiesModel> listCity();
@@ -38,8 +27,6 @@ public interface ApiService {
     @GET("districs")
     Call<RootDistrikModel> listDistrik(@Query("cities_id") int states_id);
 
-//    @POST("orders")
-//    Call<RootOrderModel> sendOrder(@Body RequestOrder requestOrder);
 
     @GET("produk")
     Call<List<RootProdukModel>> listProduk();
