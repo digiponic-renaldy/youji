@@ -5,13 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     tools:context=".activity.shop.ListKategoriShopActivity">
     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
         android:id="@+id/shimmer_shopFilter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         app:shimmer_demo_layout="@layout/layout_shimmer_shopitem"
-        app:shimmer_demo_layout_manager_type="linear_vertical"
+        app:shimmer_demo_layout_manager_type="grid"
         />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvListKategori"
