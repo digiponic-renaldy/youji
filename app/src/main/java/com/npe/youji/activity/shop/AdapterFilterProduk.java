@@ -230,6 +230,11 @@ public class AdapterFilterProduk extends RecyclerView.Adapter<AdapterFilterProdu
         context.startActivity(intent);
     }
 
+    public void clear(){
+        items.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return items.size();

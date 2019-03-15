@@ -104,6 +104,8 @@ public class ShopAllItem extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        adapterItem.clear();
+
         onBackPressed();
         return true;
     }

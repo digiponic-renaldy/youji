@@ -149,14 +149,14 @@ public class ShopFragment extends Fragment {
     private void toAllBuah() {
         Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("KATEGORI", "Buah");
+        intent.putExtra("KATEGORI", "Organic Fruits");
         startActivity(intent);
     }
 
     private void toAllSayuran() {
         Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("KATEGORI", "Sayuran");
+        intent.putExtra("KATEGORI", "Organic Vegetable");
         startActivity(intent);
     }
 
