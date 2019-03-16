@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder>{
+public class AdapterShopItemSayur extends RecyclerView.Adapter<AdapterShopItemSayur.ViewHolder> {
 
     private Context context;
     private List<JoinModel> items;
@@ -57,7 +57,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     CartOperations cartOperations;
     ShopOperations shopOperations;
 
-    public AdapterShopItem(Context context, List<JoinModel> items, ShopFragment fragment) {
+    public AdapterShopItemSayur(Context context, List<JoinModel> items, ShopFragment fragment) {
         this.context = context;
         this.items = items;
         cartOperations = new CartOperations(context);
@@ -70,7 +70,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shop_item, viewGroup,
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shop_item_buah, viewGroup,
                 false);
         return new ViewHolder(itemView, mListener);
     }
@@ -275,19 +275,19 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
-            imageView = itemView.findViewById(R.id.imgv_listItem_shop);
-            nama = itemView.findViewById(R.id.tv_namaBarangListItem_shop);
-            harga = itemView.findViewById(R.id.tv_hargaBarangListItem_shop);
-            beli = itemView.findViewById(R.id.btn_beliItemShop);
-            lihat = itemView.findViewById(R.id.btnLihat);
-            layoutCart = itemView.findViewById(R.id.layout_addToCart_adapter);
-            btnAdd = itemView.findViewById(R.id.btn_addCart_adapter);
-            btnMinus = itemView.findViewById(R.id.btn_minusCart_adapter);
-            textQuantity = itemView.findViewById(R.id.tv_jumlahBarang_adapter);
-            textStokNull = itemView.findViewById(R.id.tvStokNull);
-            label = itemView.findViewById(R.id.labelListItem);
-            satuan = itemView.findViewById(R.id.tvSatuanListItem);
-            des = itemView.findViewById(R.id.tvDesListItem);
+            imageView = itemView.findViewById(R.id.imgv_listItem_shop_buah);
+            nama = itemView.findViewById(R.id.tv_namaBarangListItem_shop_buah);
+            harga = itemView.findViewById(R.id.tv_hargaBarangListItem_shop_buah);
+            beli = itemView.findViewById(R.id.btn_beliItemShopBuah);
+            lihat = itemView.findViewById(R.id.btnLihatBuah);
+            layoutCart = itemView.findViewById(R.id.layout_addToCart_adapter_buah);
+            btnAdd = itemView.findViewById(R.id.btn_addCart_adapter_buah);
+            btnMinus = itemView.findViewById(R.id.btn_minusCart_adapter_buah);
+            textQuantity = itemView.findViewById(R.id.tv_jumlahBarang_adapter_buah);
+            textStokNull = itemView.findViewById(R.id.tvStokNullBuah);
+            label = itemView.findViewById(R.id.labelListItemBuah);
+            satuan = itemView.findViewById(R.id.tvSatuanListItemBuah);
+            des = itemView.findViewById(R.id.tvDesListItemBuah);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

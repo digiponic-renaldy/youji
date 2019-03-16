@@ -49,8 +49,8 @@ public class ShopFragment extends Fragment {
 
     private RecyclerView recyclerItem, recyclerCategory, recyclerNewest, recyclerBest, recyclerAll;
     private AdapterShopItem adapterItem;
-    private AdapterShopItem adapterItemSayur;
-    private AdapterShopItem adapterItemBuah;
+    private AdapterShopItemSayur adapterItemSayur;
+    private AdapterShopItemBuah adapterItemBuah;
     private AdapterCategory adapterCategory;
     //retrofit
     private Retrofit retrofit_local;
@@ -277,28 +277,10 @@ public class ShopFragment extends Fragment {
 
 
         //Sayur
-        adapterItemSayur = new AdapterShopItem(getContext(), dataItem, ShopFragment.this);
-        adapterItemSayur.getFilter().filter("Organic Vegetable");
-        recyclerNewest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerNewest.setAdapter(adapterItemSayur);
-        adapterItemSayur.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
-            @Override
-            public void onItemCick(int position, JoinModel data) {
-                adapterItemSayur.detailItem(data);
-            }
-        });
+        recyclerSayur(dataItem);
 
         //Buah
-        adapterItemBuah = new AdapterShopItem(getContext(), dataItem, ShopFragment.this);
-        adapterItemBuah.getFilter().filter("Organic Fruits");
-        recyclerBest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerBest.setAdapter(adapterItemBuah);
-        adapterItemBuah.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
-            @Override
-            public void onItemCick(int position, JoinModel data) {
-                adapterItemBuah.detailItem(data);
-            }
-        });
+        recyclerBuah(dataItem);
 
         //all item
         recyclerAll.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -311,6 +293,51 @@ public class ShopFragment extends Fragment {
         cardBest.setVisibility(View.VISIBLE);
         cardNews.setVisibility(View.VISIBLE);
         cardAllItem.setVisibility(View.VISIBLE);
+    }
+
+    private void recyclerSayur(ArrayList<JoinModel> dataItem) {
+        ArrayList<JoinModel> dataSayur = new ArrayList<>();
+        int index = 0;
+        for (int i = 0; i < dataItem.size(); i++) {
+            if(dataItem.get(i).getKategori().equalsIgnoreCase("Organic Vegetable")){
+                dataSayur.add(index,dataItem.get(i));
+                index++;
+
+                Log.i("DataSayur", String.valueOf(i));
+            }
+        }
+
+        adapterItemSayur = new AdapterShopItemSayur(getContext(), dataSayur, ShopFragment.this);
+        recyclerNewest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerNewest.setAdapter(adapterItemSayur);
+        adapterItemSayur.setOnItemClickListener(new AdapterShopItemSayur.OnItemClickListener() {
+            @Override
+            public void onItemCick(int position, JoinModel data) {
+                adapterItemSayur.detailItem(data);
+            }
+        });
+    }
+
+    private void recyclerBuah(ArrayList<JoinModel> dataItem) {
+        ArrayList<JoinModel> dataBuah = new ArrayList<>();
+        int index = 0;
+        for (int i = 0; i < dataItem.size(); i++) {
+            if(dataItem.get(i).getKategori().equalsIgnoreCase("Organic Fruits")){
+                dataBuah.add(index,dataItem.get(i));
+                index++;
+
+                Log.i("DataSayur", String.valueOf(i));
+            }
+        }
+        adapterItemBuah = new AdapterShopItemBuah(getContext(), dataBuah, ShopFragment.this);
+        recyclerBest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerBest.setAdapter(adapterItemBuah);
+        adapterItemBuah.setOnItemClickListener(new AdapterShopItemBuah.OnItemClickListener() {
+            @Override
+            public void onItemCick(int position, JoinModel data) {
+                adapterItemBuah.detailItem(data);
+            }
+        });
     }
 
     public boolean checkIsiSqlShop() {
