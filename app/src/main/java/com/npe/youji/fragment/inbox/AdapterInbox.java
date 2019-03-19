@@ -13,21 +13,34 @@ import com.npe.youji.model.inbox.RootInboxModel;
 
 import java.util.List;
 
-public class AdapterInbox extends RecyclerView.Adapter<AdapterInbox.ViewHolder> {
+public class AdapterInbox extends RecyclerView.Adapter<AdapterInbox.ViewHolder>  {
 
     Context context;
     List<RootInboxModel> items;
+    OnRecyclerViewItemClick mListener;
+
+    public  interface OnRecyclerViewItemClick{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnRecyclerViewItemClick listener){
+        mListener = listener;
+    }
 
     public AdapterInbox(Context context, List<RootInboxModel> items) {
         this.context = context;
         this.items = items;
     }
 
+    public interface onRecyclerItemClick{
+        void onItemClick(int position, View view);
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_inbox, viewGroup, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, mListener);
     }
 
     @Override
@@ -46,13 +59,25 @@ public class AdapterInbox extends RecyclerView.Adapter<AdapterInbox.ViewHolder> 
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvJudul, tvDes, tvTanggal;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, final OnRecyclerViewItemClick listener) {
             super(itemView);
             tvJudul = itemView.findViewById(R.id.tvJudulInboxList);
             tvDes = itemView.findViewById(R.id.tvDeskripsiInboxList);
             tvTanggal = itemView.findViewById(R.id.tvTanggalInboxList);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

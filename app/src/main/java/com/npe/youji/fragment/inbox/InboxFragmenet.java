@@ -1,6 +1,7 @@
 package com.npe.youji.fragment.inbox;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.npe.youji.R;
+import com.npe.youji.activity.inbox.DetailInbox;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.inbox.RootInboxModel;
@@ -72,6 +74,18 @@ public class InboxFragmenet extends Fragment {
         rvInbox.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         adapterInbox = new AdapterInbox(getContext(), data);
         rvInbox.setAdapter(adapterInbox);
+        adapterInbox.setOnItemClickListener(new AdapterInbox.OnRecyclerViewItemClick() {
+            @Override
+            public void onItemClick(int position) {
+                toDetail();
+            }
+        });
+    }
+
+    private void toDetail() {
+        Intent intent = new Intent(getContext(), DetailInbox.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void initRetrofit() {
