@@ -140,7 +140,7 @@ public class CheckoutActivity extends AppCompatActivity {
         joinData();
 
         //retrofit
-        retrofit = NetworkClient.getRetrofitClient();
+        retrofit = NetworkClient.getRetrofitClientLocal();
         service = retrofit.create(ApiService.class);
 
         //get spin city and distrik

@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //retrofit
-        retrofit = NetworkClient.getRetrofitClient();
+        retrofit = NetworkClient.getRetrofitClientLocal();
         service = retrofit.create(ApiService.class);
         userOperations = new UserOperations(getApplicationContext());
 
