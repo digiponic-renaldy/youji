@@ -66,11 +66,7 @@ public class MainActivity extends AppCompatActivity {
                         loadFragment(fragment);
                         return true;
                     case R.id.menu_inbox:
-                        if (mUser != null) {
-                            fragment = new InboxFragmenet();
-                        } else {
-                            fragment = new LoginFirstFragment();
-                        }
+                        fragment = new InboxFragmenet();
                         loadFragment(fragment);
                         return true;
                     case R.id.menu_chat:

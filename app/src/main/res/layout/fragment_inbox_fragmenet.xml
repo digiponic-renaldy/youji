@@ -8,15 +8,21 @@
     android:gravity="center"
     tools:context=".fragment.inbox.InboxFragmenet">
 
-    <ImageView
-        android:src="@drawable/repair"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
-    <TextView
-        android:fontFamily="@font/lato_bold"
-        android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:text="Inbox is in development stage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<ImageView-->
+        <!--android:src="@drawable/repair"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp" />-->
+    <!--<TextView-->
+        <!--android:fontFamily="@font/lato_bold"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"-->
+        <!--android:text="Inbox is in development stage"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvInbox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>
