@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.npe.youji.R;
 import com.npe.youji.model.inbox.RootInboxModel;
 
@@ -18,9 +19,11 @@ public class AdapterInbox extends RecyclerView.Adapter<AdapterInbox.ViewHolder> 
     Context context;
     List<RootInboxModel> items;
     OnRecyclerViewItemClick mListener;
+    Gson gson = new Gson();
+    String dataGson;
 
     public  interface OnRecyclerViewItemClick{
-        void onItemClick(int position);
+        void onItemClick(int position, String data);
     }
 
     public void setOnItemClickListener(OnRecyclerViewItemClick listener){
@@ -30,10 +33,6 @@ public class AdapterInbox extends RecyclerView.Adapter<AdapterInbox.ViewHolder> 
     public AdapterInbox(Context context, List<RootInboxModel> items) {
         this.context = context;
         this.items = items;
-    }
-
-    public interface onRecyclerItemClick{
-        void onItemClick(int position, View view);
     }
 
     @NonNull
@@ -47,11 +46,13 @@ public class AdapterInbox extends RecyclerView.Adapter<AdapterInbox.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         RootInboxModel data = items.get(i);
 
-
         String[] spliTanggal = data.getCreated_at().split(" ");
         viewHolder.tvJudul.setText(data.getSubjek());
         viewHolder.tvDes.setText(data.getPesan());
         viewHolder.tvTanggal.setText(spliTanggal[0]);
+
+        dataGson = gson.toJson(data);
+
     }
 
     @Override
@@ -73,7 +74,7 @@ public class AdapterInbox extends RecyclerView.Adapter<AdapterInbox.ViewHolder> 
                     if(listener != null){
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
+                            listener.onItemClick(position, dataGson);
                         }
                     }
                 }

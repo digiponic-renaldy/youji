@@ -3,6 +3,7 @@ package com.npe.youji.fragment.inbox;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.inbox.RootInboxModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,6 +39,7 @@ public class InboxFragmenet extends Fragment {
     RecyclerView rvInbox;
     Retrofit retrofit;
     ApiService service;
+    List<RootInboxModel> data;
     AdapterInbox adapterInbox;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +60,7 @@ public class InboxFragmenet extends Fragment {
         service.getPesan().enqueue(new Callback<List<RootInboxModel>>() {
             @Override
             public void onResponse(Call<List<RootInboxModel>> call, Response<List<RootInboxModel>> response) {
-                List<RootInboxModel> data = response.body();
+                data = response.body();
                 if(data != null){
                     listInbox(data);
                 }
@@ -76,15 +79,18 @@ public class InboxFragmenet extends Fragment {
         rvInbox.setAdapter(adapterInbox);
         adapterInbox.setOnItemClickListener(new AdapterInbox.OnRecyclerViewItemClick() {
             @Override
-            public void onItemClick(int position) {
-                toDetail();
+            public void onItemClick(int position, String data) {
+                if(data != null){
+                    toDetail(data);
+                }
             }
         });
     }
 
-    private void toDetail() {
+    private void toDetail(String data) {
         Intent intent = new Intent(getContext(), DetailInbox.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("DataInbox", data);
         startActivity(intent);
     }
 
