@@ -3,6 +3,7 @@ package com.npe.youji.model.api;
 import com.google.gson.JsonObject;
 import com.npe.youji.model.city.RootCitiesModel;
 import com.npe.youji.model.city.RootDistrikModel;
+import com.npe.youji.model.inbox.RootInboxModel;
 import com.npe.youji.model.order.RootDetailTransaksiModel;
 import com.npe.youji.model.order.RootListTransaksiModel;
 import com.npe.youji.model.shop.RootProdukFilter;
@@ -28,7 +29,6 @@ public interface ApiService {
     @GET("districs")
     Call<RootDistrikModel> listDistrik(@Query("cities_id") int states_id);
 
-
     @GET("produk")
     Call<List<RootProdukModel>> listProduk();
 
@@ -49,4 +49,8 @@ public interface ApiService {
 
     @POST("pelanggan/perbarui")
     Call<RootPerbaruiUser> updateUser(@Body JsonObject jsonObject);
+
+    @GET("pesan")
+    Call<List<RootInboxModel>> getPesan();
+
 }
