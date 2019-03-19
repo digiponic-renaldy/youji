@@ -20,6 +20,7 @@ import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
+import com.npe.youji.model.shop.RootProdukFilter;
 import com.npe.youji.model.shop.RootProdukModel;
 
 import java.util.ArrayList;
@@ -54,17 +55,23 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         //shimmer
         shimmerBehavior();
         //retorgfit
-        retrofit_local = NetworkClient.getRetrofitClientLocal();
-        service_local = retrofit_local.create(ApiService.class);
+        initRetrofit();
 
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
             kategori = extra.getString("KATEGORI");
+
+            Log.i("Kategori", kategori);
+
             getSupportActionBar().setTitle(kategori);
             getDataFilter(kategori);
         }
 
-        Log.i("KategoriList", kategori);
+    }
+
+    private void initRetrofit() {
+        retrofit_local = NetworkClient.getRetrofitClientLocal();
+        service_local = retrofit_local.create(ApiService.class);
     }
 
     private void shimmerBehavior() {
@@ -78,10 +85,11 @@ public class ListKategoriShopActivity extends AppCompatActivity {
 
         JsonObject requet = new JsonObject();
         requet.addProperty("kategori", kategori);
-        service_local.listDetailFilterProduk(requet).enqueue(new Callback<List<RootProdukModel>>() {
+
+        service_local.listDetailFilterProduk(requet).enqueue(new Callback<List<RootProdukFilter>>() {
             @Override
-            public void onResponse(Call<List<RootProdukModel>> call, Response<List<RootProdukModel>> response) {
-                List<RootProdukModel> data = response.body();
+            public void onResponse(Call<List<RootProdukFilter>> call, Response<List<RootProdukFilter>> response) {
+                List<RootProdukFilter> data = response.body();
                 if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
                     insertAllDataShopLocal(data);
@@ -98,7 +106,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<RootProdukModel>> call, Throwable t) {
+            public void onFailure(Call<List<RootProdukFilter>> call, Throwable t) {
                 Log.i("ErrorGetFilterProduk", t.getMessage());
             }
         });
@@ -143,7 +151,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
+    private void insertAllDataShopLocal(List<RootProdukFilter> dataItem) {
         String imgUrl = "https://i.imgur.com/kTRJDky.png";
         for (int i = 0; i < dataItem.size(); i++) {
             if (dataItem.get(i).getGambar() == null) {
@@ -178,24 +186,13 @@ public class ListKategoriShopActivity extends AppCompatActivity {
             }
         }
     }
-
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                toMain();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void toMain() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        truncateShop();
+    public boolean onSupportNavigateUp() {
         adapterItem.clear();
-        startActivity(intent);
+        truncateShop();
+
+        onBackPressed();
+        return true;
     }
 
     private void truncateShop() {

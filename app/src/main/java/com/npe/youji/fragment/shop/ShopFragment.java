@@ -22,7 +22,6 @@ import android.widget.RelativeLayout;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.npe.youji.R;
 import com.npe.youji.activity.shop.ListKategoriShopActivity;
-import com.npe.youji.activity.shop.ShopAllItem;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.CartOperations;
@@ -161,7 +160,7 @@ public class ShopFragment extends Fragment {
     }
 
     private void toAllItem() {
-        Intent intent = new Intent(getContext(), ShopAllItem.class);
+        Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

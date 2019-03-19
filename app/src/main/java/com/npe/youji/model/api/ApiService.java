@@ -5,6 +5,7 @@ import com.npe.youji.model.city.RootCitiesModel;
 import com.npe.youji.model.city.RootDistrikModel;
 import com.npe.youji.model.order.RootDetailTransaksiModel;
 import com.npe.youji.model.order.RootListTransaksiModel;
+import com.npe.youji.model.shop.RootProdukFilter;
 import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.menu.RootDetailProdukModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
@@ -38,7 +39,7 @@ public interface ApiService {
     Call<List<RootTipeKategoriModel>> listCategory();
 
     @POST("produk/filter")
-    Call<List<RootProdukModel>> listDetailFilterProduk(@Body JsonObject jsonObject);
+    Call<List<RootProdukFilter>> listDetailFilterProduk(@Body JsonObject jsonObject);
 
     @POST("transaksi/data")
     Call<List<RootListTransaksiModel>> listTransaksiUser(@Body JsonObject jsonObject);
