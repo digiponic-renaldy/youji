@@ -190,8 +190,8 @@ public class ListKategoriShopActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         adapterItem.clear();
         truncateShop();
-
         onBackPressed();
+        adapterItem.notifyDataSetChanged();
         return true;
     }
 
