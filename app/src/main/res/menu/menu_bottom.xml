@@ -20,12 +20,12 @@
         android:checkable="true"
         android:icon="@drawable/icon_inbox"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/menu_chat"
-        android:title="@string/chat"
-        android:checkable="true"
-        android:icon="@drawable/icon_chat"
-        app:showAsAction="always"/>
+    <!--<item-->
+        <!--android:id="@+id/menu_chat"-->
+        <!--android:title="@string/chat"-->
+        <!--android:checkable="true"-->
+        <!--android:icon="@drawable/icon_chat"-->
+        <!--app:showAsAction="always"/>-->
     <item
         android:id="@+id/menu_login"
         android:title="@string/login"
