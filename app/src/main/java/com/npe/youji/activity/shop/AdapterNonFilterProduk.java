@@ -73,6 +73,7 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
         viewHolder.nama.setText(data.getKeterangan());
         viewHolder.harga.setText(String.valueOf(data.getHarga()));
         viewHolder.label.setText(String.valueOf(data.getKategori()));
+        viewHolder.des.setText(String.valueOf(data.getDeskripsi()));
         //check quantity
         if (checkQuantity(i) > 0) {
             Log.i("QuantityBarang", "LebihDari0");
@@ -235,7 +236,7 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView nama, harga, textQuantity, textStokNull, label;
+        TextView nama, harga, textQuantity, textStokNull, label, des;
         Button beli;
         CardView lihat;
         RelativeLayout layoutCart;
@@ -254,6 +255,7 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
             textQuantity = itemView.findViewById(R.id.tv_jumlahBarang_adapter_ListDetailNonFilter);
             textStokNull = itemView.findViewById(R.id.tvStokNullListDetailNonFilter);
             label = itemView.findViewById(R.id.labelListItemListDetailNonFilter);
+            des = itemView.findViewById(R.id.tvDesListItemNonFilter);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
