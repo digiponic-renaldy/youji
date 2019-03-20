@@ -36,7 +36,8 @@
         <activity android:name=".fragment.order.DetailOrder" />
         <activity android:name=".activity.shop.ShopAllItem" />
         <activity android:name=".activity.auth.EditProfile" />
-        <activity android:name=".activity.inbox.DetailInbox"></activity>
+        <activity android:name=".activity.inbox.DetailInbox" />
+        <activity android:name=".activity.shop.ListNonKategoryShopActivity"></activity>
     </application>
 
 </manifest>

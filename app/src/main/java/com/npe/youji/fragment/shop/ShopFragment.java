@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.npe.youji.R;
 import com.npe.youji.activity.shop.ListKategoriShopActivity;
+import com.npe.youji.activity.shop.ListNonKategoryShopActivity;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.CartOperations;
@@ -60,7 +61,7 @@ public class ShopFragment extends Fragment {
     private RelativeLayout layoutShop;
 
     private CardView cardRekom, cardNews, cardBest, cardAllItem;
-    Button btnLihatSemua, btnLihatSayuran, btnLihatBuah;
+    Button btnLihatSemua, btnLihatSayuran, btnLihatBuah, btnLihatAllItem;
     BottomSheetBehavior botomSheet;
     RelativeLayout layoutBottomSheet;
     CircleButton btnFloatCheckout;
@@ -94,7 +95,7 @@ public class ShopFragment extends Fragment {
         btnLihatSemua = v.findViewById(R.id.lihatSemuaData);
         btnLihatSayuran = v.findViewById(R.id.btnLihatSayuran);
         btnLihatBuah = v.findViewById(R.id.btnLihatBuah);
-
+        btnLihatAllItem = v.findViewById(R.id.btnLihatAllItem);
         //shimmer
         shimmerBehavior();
 
@@ -123,10 +124,16 @@ public class ShopFragment extends Fragment {
         btnLihatSemua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toAllItem();
+                toAllItem("Recommendation");
             }
         });
 
+        btnLihatAllItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toAllItem("All Items");
+            }
+        });
         btnLihatSayuran.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,9 +177,10 @@ public class ShopFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void toAllItem() {
-        Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
+    private void toAllItem(String title) {
+        Intent intent = new Intent(getContext(), ListNonKategoryShopActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("TITLE", title);
         startActivity(intent);
     }
 

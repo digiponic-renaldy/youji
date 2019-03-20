@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    tools:context=".activity.shop.ListNonKategoryShopActivity">
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        android:id="@+id/shimmer_shopFilterNonKategori"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        app:shimmer_demo_layout="@layout/layout_shimmer_shopitem"
+        app:shimmer_demo_layout_manager_type="grid"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvListNonKategori"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:id="@+id/tvNonKetegoriNull"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/lato_bold"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

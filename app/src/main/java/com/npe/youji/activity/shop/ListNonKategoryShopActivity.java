@@ -10,14 +10,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.google.gson.JsonObject;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
-import com.npe.youji.model.shop.RootProdukFilter;
+import com.npe.youji.model.shop.RootProdukModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,83 +26,63 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ListKategoriShopActivity extends AppCompatActivity {
-    RecyclerView rvListFilter;
-    String kategori;
+public class ListNonKategoryShopActivity extends AppCompatActivity {
+    RecyclerView rvListAll;
     Retrofit retrofit_local;
     ApiService service_local;
     ShopOperations shopOperations;
-    AdapterFilterProduk adapterItem;
-    ShimmerRecyclerView shimmerRecyclerShopFilter;
-    TextView tvKategoriNull;
+    AdapterNonFilterProduk adapter;
+    ShimmerRecyclerView shimmerRecyclerView;
+    TextView tvNull;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_kategori_shop);
+        setContentView(R.layout.activity_list_non_kategory_shop);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //inisialisasi
-        rvListFilter = findViewById(R.id.rvListKategori);
-        tvKategoriNull = findViewById(R.id.tvKetegoriNull);
-        shimmerRecyclerShopFilter = findViewById(R.id.shimmer_shopFilter);
-        shopOperations = new ShopOperations(getApplicationContext());
 
+        //inisialisasi
+        rvListAll = findViewById(R.id.rvListNonKategori);
+        tvNull = findViewById(R.id.tvStokNullListDetailNonFilter);
+        shimmerRecyclerView = findViewById(R.id.shimmer_shopFilterNonKategori);
+        shopOperations = new ShopOperations(getApplicationContext());
         //shimmer
         shimmerBehavior();
-        //retorgfit
+        //retrofit
         initRetrofit();
-
         Bundle extra = getIntent().getExtras();
-        if (extra != null) {
-            kategori = extra.getString("KATEGORI");
-
-            Log.i("Kategori", kategori);
-
-            getSupportActionBar().setTitle(kategori);
-            getDataFilter(kategori);
+        if(extra != null){
+            title = extra.getString("TITLE");
+            getSupportActionBar().setTitle(title);
+            getDataProduk();
         }
-
     }
 
-    private void initRetrofit() {
-        retrofit_local = NetworkClient.getRetrofitClientLocal();
-        service_local = retrofit_local.create(ApiService.class);
-    }
+    private void getDataProduk() {
+        shimmerRecyclerView.showShimmerAdapter();
 
-    private void shimmerBehavior() {
-        shimmerRecyclerShopFilter.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-        shimmerRecyclerShopFilter.setAdapter(adapterItem);
-        shimmerRecyclerShopFilter.showShimmerAdapter();
-    }
-
-    private void getDataFilter(final String kategori) {
-        shimmerRecyclerShopFilter.showShimmerAdapter();
-
-        JsonObject requet = new JsonObject();
-        requet.addProperty("kategori", kategori);
-
-        service_local.listDetailFilterProduk(requet).enqueue(new Callback<List<RootProdukFilter>>() {
+        service_local.listProduk().enqueue(new Callback<List<RootProdukModel>>() {
             @Override
-            public void onResponse(Call<List<RootProdukFilter>> call, Response<List<RootProdukFilter>> response) {
-                List<RootProdukFilter> data = response.body();
+            public void onResponse(Call<List<RootProdukModel>> call, Response<List<RootProdukModel>> response) {
+                List<RootProdukModel> data = response.body();
                 if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
                     insertAllDataShopLocal(data);
                     if (checkIsiSqlShop()) {
                         joinData();
-                        shimmerRecyclerShopFilter.hideShimmerAdapter();
+                        shimmerRecyclerView.hideShimmerAdapter();
                     }
                 }
                 if (data.isEmpty()) {
-                    Log.i("DataNullKategori", kategori);
-                    tvKategoriNull.setVisibility(View.VISIBLE);
-                    tvKategoriNull.setText("Barang dengan Kategori " + kategori + " \n tidak tersedia");
+                    tvNull.setVisibility(View.VISIBLE);
+                    tvNull.setText("Barang tidak tersedia");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<RootProdukFilter>> call, Throwable t) {
-                Log.i("ErrorGetFilterProduk", t.getMessage());
+            public void onFailure(Call<List<RootProdukModel>> call, Throwable t) {
+                Log.i("ErrorGetDataProduk", t.getMessage());
             }
         });
     }
@@ -123,14 +102,13 @@ public class ListKategoriShopActivity extends AppCompatActivity {
 
     private void listItemShop(ArrayList<JoinModel> dataItem) {
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
-        rvListFilter.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-        adapterItem = new AdapterFilterProduk(getApplicationContext(), dataItem);
-        rvListFilter.setAdapter(adapterItem);
-        adapterItem.setOnItemClickListener(new AdapterFilterProduk.OnItemClickListener() {
-
+        rvListAll.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        adapter = new AdapterNonFilterProduk(getApplicationContext(), dataItem);
+        rvListAll.setAdapter(adapter);
+        adapter.setOnClickListener(new AdapterNonFilterProduk.OnItemClickListener() {
             @Override
-            public void onItemCickFilter(int position, JoinModel data) {
-                adapterItem.detailItem(data);
+            public void onItemClick(int position, JoinModel data) {
+                adapter.detailItem(data);
             }
         });
     }
@@ -147,7 +125,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void insertAllDataShopLocal(List<RootProdukFilter> dataItem) {
+    private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
         String imgUrl = "https://i.imgur.com/kTRJDky.png";
         for (int i = 0; i < dataItem.size(); i++) {
             if (dataItem.get(i).getGambar() == null) {
@@ -183,12 +161,23 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         }
     }
 
+    private void initRetrofit() {
+        retrofit_local = NetworkClient.getRetrofitClientLocal();
+        service_local = retrofit_local.create(ApiService.class);
+    }
+
+    private void shimmerBehavior() {
+        shimmerRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        shimmerRecyclerView.setAdapter(adapter);
+        shimmerRecyclerView.showShimmerAdapter();
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
-        adapterItem.clear();
+        adapter.clear();
         truncateShop();
         onBackPressed();
-        adapterItem.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
         return true;
     }
 
