@@ -212,6 +212,7 @@ public class ShopFragment extends Fragment {
                 List<RootProdukModel> data = response.body();
                 if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
+                    Log.i("Deskripsi", data.get(0).getDeskripsi());
                     insertAllDataShopLocal(data);
                     if (checkIsiSqlShop()) {
                         new Handler().postDelayed(new Runnable() {
@@ -302,8 +303,8 @@ public class ShopFragment extends Fragment {
         recyclerBuah(dataItem);
 
         //all item
-        recyclerAll.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerAll.setAdapter(adapterItem);
+        recyclerAllItem();
+
 
         //hide shimmer and show card
         shimmerRecyclerShopMenu.hideShimmerAdapter();
@@ -312,6 +313,17 @@ public class ShopFragment extends Fragment {
         cardBest.setVisibility(View.VISIBLE);
         cardNews.setVisibility(View.VISIBLE);
         cardAllItem.setVisibility(View.VISIBLE);
+    }
+
+    private void recyclerAllItem() {
+        recyclerAll.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerAll.setAdapter(adapterItem);
+        adapterItem.setOnItemClickListener(new AdapterShopItem.OnItemClickListener() {
+            @Override
+            public void onItemCick(int position, JoinModel data) {
+                adapterItem.detailItem(data);
+            }
+        });
     }
 
     private void recyclerSayur(ArrayList<JoinModel> dataItem) {
@@ -438,14 +450,20 @@ public class ShopFragment extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();
-
-        //shimmerBehavior();
         initRetrofit();
-
+        truncate();
         getCategory();
         getItemProduk_local();
+        super.onResume();
+        //shimmerBehavior();
     }
 
-
+    @Override
+    public void onStart() {
+        initRetrofit();
+        truncate();
+        getCategory();
+        getItemProduk_local();
+        super.onStart();
+    }
 }

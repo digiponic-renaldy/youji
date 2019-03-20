@@ -174,9 +174,12 @@ public class ShopOperations {
     public ArrayList<JoinModel> joinData() {
         String query = "SELECT S." + DatabaseHelper.COLUMN_IDPRODUCTSHOP + ",S." + DatabaseHelper.COLUMN_CABANGPRODUCT +
                 ", S."+ DatabaseHelper.COLUMN_KODEPRODUCT + " , S."+ DatabaseHelper.COLUMN_KETERANGANPRODUCT + ", S."+DatabaseHelper.COLUMN_KATEGORIPRODUCT 
-                + " ,S."+DatabaseHelper.COLUMN_JENISPRODUCT+" ,S."+DatabaseHelper.COLUMN_SATUANPRODUCT + " ,S."+DatabaseHelper.COLUMN_STOKPRODUCT+
-                ",S." + DatabaseHelper.COLUMN_HARGAPRODUCT + ",S." + DatabaseHelper.COLUMN_GAMBARPRODUCT + ",S." + DatabaseHelper.COLUMN_DESKRIPSIPRODUCT + " ,S."+
-                DatabaseHelper.COLUMN_CREATEDPRODUCT + " ,S."+DatabaseHelper.COLUMN_UPDATEDPRODUCT + " ,S."+DatabaseHelper.COLUMN_DELETEDPRODUCT +
+                + " ,S."+DatabaseHelper.COLUMN_JENISPRODUCT+" ,S."+DatabaseHelper.COLUMN_SATUANPRODUCT +
+                " ,S."+DatabaseHelper.COLUMN_STOKPRODUCT+
+                ",S." + DatabaseHelper.COLUMN_HARGAPRODUCT + ",S." + DatabaseHelper.COLUMN_GAMBARPRODUCT +
+                ",S." + DatabaseHelper.COLUMN_DESKRIPSIPRODUCT + " ,S."+
+                DatabaseHelper.COLUMN_CREATEDPRODUCT + " ,S."+DatabaseHelper.COLUMN_UPDATEDPRODUCT +
+                " ,S."+DatabaseHelper.COLUMN_DELETEDPRODUCT +
                 ",C." + DatabaseHelper.COLUMN_QUANTITY +
                 " FROM " + DatabaseHelper.TABLE_SHOP + " as S LEFT OUTER JOIN " + DatabaseHelper.TABLE_CART + " as C ON S." +
                 DatabaseHelper.COLUMN_IDPRODUCTSHOP +

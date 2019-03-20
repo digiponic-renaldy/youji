@@ -48,25 +48,25 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_marginTop="20dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--app:cardCornerRadius="4dp"-->
+        <!--app:cardElevation="4dp"-->
+        <!--app:cardUseCompatPadding="true"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-        <Button
-            android:id="@+id/btnVoucher"
-            android:drawableRight="@drawable/ic_arrow_kanan"
-            android:padding="10dp"
-            android:textAlignment="viewStart"
-            android:textAllCaps="true"
-            android:text="voucher"
-            android:background="@color/colorWhite"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-    </android.support.v7.widget.CardView>
+        <!--<Button-->
+            <!--android:id="@+id/btnVoucher"-->
+            <!--android:drawableRight="@drawable/ic_arrow_kanan"-->
+            <!--android:padding="10dp"-->
+            <!--android:textAlignment="viewStart"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:text="voucher"-->
+            <!--android:background="@color/colorWhite"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp" />-->
+    <!--</android.support.v7.widget.CardView>-->
 
     <android.support.v7.widget.CardView
         android:layout_marginTop="20dp"
@@ -89,26 +89,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
 
-            <Button
-                android:id="@+id/btnPrivacy"
-                android:drawableRight="@drawable/ic_arrow_kanan"
-                android:padding="10dp"
-                android:textAlignment="viewStart"
-                android:background="@color/colorWhite"
-                android:textAllCaps="true"
-                android:text="privacy and policy"
-                android:layout_width="match_parent"
-                android:layout_height="50dp" />
-            <Button
-                android:id="@+id/btnHelp"
-                android:drawableRight="@drawable/ic_arrow_kanan"
-                android:padding="10dp"
-                android:textAlignment="viewStart"
-                android:background="@color/colorWhite"
-                android:textAllCaps="true"
-                android:text="help"
-                android:layout_width="match_parent"
-                android:layout_height="50dp" />
+            <!--<Button-->
+                <!--android:id="@+id/btnPrivacy"-->
+                <!--android:drawableRight="@drawable/ic_arrow_kanan"-->
+                <!--android:padding="10dp"-->
+                <!--android:textAlignment="viewStart"-->
+                <!--android:background="@color/colorWhite"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:text="privacy and policy"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp" />-->
+            <!--<Button-->
+                <!--android:id="@+id/btnHelp"-->
+                <!--android:drawableRight="@drawable/ic_arrow_kanan"-->
+                <!--android:padding="10dp"-->
+                <!--android:textAlignment="viewStart"-->
+                <!--android:background="@color/colorWhite"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:text="help"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp" />-->
             <Button
                 android:id="@+id/btnLogout"
                 android:textColor="@color/colorRed"
@@ -117,7 +117,7 @@
                 android:textAlignment="viewStart"
                 android:background="@color/colorWhite"
                 android:textAllCaps="true"
-                android:text="logout"
+                android:text="Keluar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
 
