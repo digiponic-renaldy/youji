@@ -173,6 +173,7 @@ public class ShopFragment extends Fragment {
     private void toAllSayuran() {
         Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        truncate();
         intent.putExtra("KATEGORI", "Organic Vegetable");
         startActivity(intent);
     }
