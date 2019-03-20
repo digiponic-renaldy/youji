@@ -1,8 +1,10 @@
 package com.npe.youji.fragment.inbox;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +43,7 @@ public class InboxFragmenet extends Fragment {
     ApiService service;
     List<RootInboxModel> data;
     AdapterInbox adapterInbox;
+    ProgressDialog dialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,11 +52,33 @@ public class InboxFragmenet extends Fragment {
         //inisialisasi
         rvInbox = v.findViewById(R.id.rvInbox);
 
+        //dialog
+        dialogWait();
         //retrofit
         initRetrofit();
 
-        getDataInbox();
         return v;
+    }
+
+    private void dialogWait() {
+        dialog = new ProgressDialog(getContext(), R.style.full_screen_dialog){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.progress_dialog);
+                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        };
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getDataInbox();
+            }
+        }, 2000);
     }
 
     private void getDataInbox() {
@@ -85,6 +110,7 @@ public class InboxFragmenet extends Fragment {
                 }
             }
         });
+        dialog.dismiss();
     }
 
     private void toDetail(String data) {
