@@ -377,8 +377,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         for (int i = 0; i < dataItem.size(); i++) {
             if (dataItem.get(i).getQuantity() != 0) {
                 valid = true;
-            } else {
-                valid = false;
             }
             Log.i("CheckQuantity", String.valueOf(dataItem.get(i).getQuantity()));
         }

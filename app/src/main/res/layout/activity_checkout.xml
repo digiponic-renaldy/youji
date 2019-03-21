@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,14 +12,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="5dp"
+            android:orientation="vertical">
 
             <TextView
-                android:fontFamily="@font/lato_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:fontFamily="@font/lato_bold"
                 android:text="Detail Order"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorBlack" />
@@ -32,91 +31,85 @@
 
             </android.support.v7.widget.RecyclerView>
 
-            <android.support.v7.widget.CardView
-                android:layout_marginTop="0dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp"
-                app:cardUseCompatPadding="true">
 
-                <Button
-                    android:id="@+id/btnBelanjaLagi"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/colorWhite"
-                    android:text="Belanja Lagi"
-                    android:textColor="@color/colorGreenSoft"
-                    android:textStyle="bold" />
-            </android.support.v7.widget.CardView>
+            <Button
+                android:layout_marginTop="20dp"
+                android:id="@+id/btnBelanjaLagi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/border_full_green"
+                android:text="Belanja Lagi"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/colorGreenSoft"
+                android:textStyle="bold" />
 
             <TextView
-                android:fontFamily="@font/lato_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
                 android:text="Detail Customer"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
 
             <TextView
-                android:fontFamily="@font/lato_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_light"
                 android:text="Tanggal Pembelian"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
-                android:fontFamily="@font/lato_regular"
                 android:id="@+id/tvTanggalCheckout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:fontFamily="@font/lato_regular"
                 android:text="Tanggal"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorGreenSoft" />
 
             <TextView
-                android:fontFamily="@font/lato_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_light"
                 android:text="Nama Penerima"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
-                android:fontFamily="@font/lato_regular"
                 android:id="@+id/tvNamaUserCheckout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:fontFamily="@font/lato_regular"
                 android:text="Nama"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorGreenSoft" />
 
             <TextView
-                android:fontFamily="@font/lato_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_light"
                 android:text="Email"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
-                android:fontFamily="@font/lato_regular"
                 android:id="@+id/tvEmailUserCheckout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:fontFamily="@font/lato_regular"
                 android:text="Email"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorGreenSoft" />
 
             <TextView
-                android:fontFamily="@font/lato_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_light"
                 android:text="Area Pengiriman"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
@@ -128,10 +121,10 @@
                 android:spinnerMode="dropdown"></Spinner>
 
             <TextView
-                android:fontFamily="@font/lato_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_light"
                 android:text="Distrik Pengiriman"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
@@ -143,56 +136,56 @@
                 android:spinnerMode="dropdown"></Spinner>
 
             <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_marginTop="10dp">-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginTop="10dp">-->
 
-                <!--<EditText-->
-                    <!--android:id="@+id/etAlamatPenerima"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:hint="Alamat Penerima"-->
-                    <!--android:inputType="text"-->
-                    <!--android:textColorHint="@color/colorGreenSoft" />-->
+            <!--<EditText-->
+            <!--android:id="@+id/etAlamatPenerima"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:hint="Alamat Penerima"-->
+            <!--android:inputType="text"-->
+            <!--android:textColorHint="@color/colorGreenSoft" />-->
             <!--</android.support.design.widget.TextInputLayout>-->
 
             <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_marginTop="10dp">-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginTop="10dp">-->
 
-                <!--<EditText-->
-                    <!--android:id="@+id/etNotelpPenerima"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:hint="Notelp Penerima"-->
-                    <!--android:inputType="text"-->
-                    <!--android:textColorHint="@color/colorGreenSoft" />-->
+            <!--<EditText-->
+            <!--android:id="@+id/etNotelpPenerima"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:hint="Notelp Penerima"-->
+            <!--android:inputType="text"-->
+            <!--android:textColorHint="@color/colorGreenSoft" />-->
             <!--</android.support.design.widget.TextInputLayout>-->
 
             <TextView
 
-                android:fontFamily="@font/lato_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
                 android:text="Ringkasan Pembayaran"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
 
             <TextView
-                android:fontFamily="@font/lato_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_regular"
                 android:text="Subtotal"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
-                android:fontFamily="@font/lato_bold"
                 android:id="@+id/tvSubtotalCheckout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:fontFamily="@font/lato_bold"
                 android:text="100000"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
@@ -206,29 +199,29 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
-                android:fontFamily="@font/lato_bold"
                 android:id="@+id/tvDiskonCheckout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:fontFamily="@font/lato_bold"
                 android:text="0"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
 
             <TextView
-                android:fontFamily="@font/lato_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_light"
                 android:text="Total Harga"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <TextView
-                android:fontFamily="@font/lato_bold"
                 android:id="@+id/tvTotalCheckout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:fontFamily="@font/lato_bold"
                 android:text="100000"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
