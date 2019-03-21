@@ -465,7 +465,6 @@ public class ShopFragment extends Fragment {
         initRetrofit();
         truncate();
         //dialog
-        dialogWait();
         getCategory();
         getItemProduk_local();
         super.onStart();
