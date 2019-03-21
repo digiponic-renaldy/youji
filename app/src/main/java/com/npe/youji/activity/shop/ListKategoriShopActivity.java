@@ -110,6 +110,7 @@ public class ListKategoriShopActivity extends AppCompatActivity implements Swipe
             @Override
             public void onFailure(Call<List<RootProdukFilter>> call, Throwable t) {
                 Log.i("ErrorGetFilterProduk", t.getMessage());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
