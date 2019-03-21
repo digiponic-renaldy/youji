@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +47,7 @@ import retrofit2.Retrofit;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShopFragment extends Fragment {
+public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private RecyclerView recyclerItem, recyclerCategory, recyclerNewest, recyclerBest, recyclerAll;
     private AdapterShopItem adapterItem;
@@ -69,6 +70,8 @@ public class ShopFragment extends Fragment {
     ShimmerRecyclerView shimmerRecyclerShopItem, shimmerRecyclerShopMenu;
     //progress dialog
     ProgressDialog progressDialog;
+    //swipe
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public ShopFragment() {
         // Required empty public constructor
@@ -99,6 +102,21 @@ public class ShopFragment extends Fragment {
         btnLihatSayuran = v.findViewById(R.id.btnLihatSayuran);
         btnLihatBuah = v.findViewById(R.id.btnLihatBuah);
         btnLihatAllItem = v.findViewById(R.id.btnLihatAllItem);
+        swipeRefreshLayout = v.findViewById(R.id.swipeMainShop);
+
+        //swipe
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        initRetrofit();
+                                        truncate();
+                                        getCategory();
+                                        getItemProduk_local();
+                                    }
+                                }
+        );
         //shimmer
         shimmerBehavior();
 
@@ -232,6 +250,7 @@ public class ShopFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RootProdukModel>> call, Throwable t) {
                 Log.i("ResponseError", t.getMessage());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -307,8 +326,11 @@ public class ShopFragment extends Fragment {
         //hide shimmer and show card
         shimmerRecyclerShopMenu.hideShimmerAdapter();
         shimmerRecyclerShopItem.hideShimmerAdapter();
+        //hide dialog
         progressDialog.dismiss();
-
+        //hide swipe
+        swipeRefreshLayout.setRefreshing(false);
+        //visible card
         cardRekom.setVisibility(View.VISIBLE);
         cardBest.setVisibility(View.VISIBLE);
         cardNews.setVisibility(View.VISIBLE);
@@ -385,6 +407,8 @@ public class ShopFragment extends Fragment {
     }
 
     private void getCategory() {
+        swipeRefreshLayout.setRefreshing(true);
+
         service_local.listCategory().enqueue(new Callback<List<RootTipeKategoriModel>>() {
             @Override
             public void onResponse(Call<List<RootTipeKategoriModel>> call, Response<List<RootTipeKategoriModel>> response) {
@@ -397,6 +421,7 @@ public class ShopFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RootTipeKategoriModel>> call, Throwable t) {
                 Log.i("ErrorListKategori", t.getMessage());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -482,5 +507,13 @@ public class ShopFragment extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+    }
+
+    @Override
+    public void onRefresh() {
+        initRetrofit();
+        truncate();
+        getCategory();
+        getItemProduk_local();
     }
 }
