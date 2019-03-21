@@ -66,19 +66,6 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         //swipe
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                initRetrofit();
-                if (checkUser()) {
-                    //get data user
-                    getDataUser();
-                    //get data Transaksi
-                    getDataTransaksi();
-                }
-            }
-        });
 
         //progress dialog
         dialogWait();
@@ -168,6 +155,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Override
     public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
         initRetrofit();
         if (checkUser()) {
             //get data user

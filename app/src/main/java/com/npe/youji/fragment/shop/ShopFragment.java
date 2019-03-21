@@ -32,7 +32,6 @@ import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
 import com.npe.youji.model.shop.RootProdukModel;
-import com.npe.youji.model.shop.menu.DataCategory;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ import retrofit2.Retrofit;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerItem, recyclerCategory, recyclerNewest, recyclerBest, recyclerAll;
     private AdapterShopItem adapterItem;
@@ -106,17 +105,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         //swipe
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        swipeRefreshLayout.setRefreshing(true);
-                                        initRetrofit();
-                                        truncate();
-                                        getCategory();
-                                        getItemProduk_local();
-                                    }
-                                }
-        );
+
         //shimmer
         shimmerBehavior();
 
@@ -352,8 +341,8 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         ArrayList<JoinModel> dataSayur = new ArrayList<>();
         int index = 0;
         for (int i = 0; i < dataItem.size(); i++) {
-            if(dataItem.get(i).getKategori().equalsIgnoreCase("Organic Vegetable")){
-                dataSayur.add(index,dataItem.get(i));
+            if (dataItem.get(i).getKategori().equalsIgnoreCase("Organic Vegetable")) {
+                dataSayur.add(index, dataItem.get(i));
                 index++;
 
                 Log.i("DataSayur", String.valueOf(i));
@@ -375,8 +364,8 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         ArrayList<JoinModel> dataBuah = new ArrayList<>();
         int index = 0;
         for (int i = 0; i < dataItem.size(); i++) {
-            if(dataItem.get(i).getKategori().equalsIgnoreCase("Organic Fruits")){
-                dataBuah.add(index,dataItem.get(i));
+            if (dataItem.get(i).getKategori().equalsIgnoreCase("Organic Fruits")) {
+                dataBuah.add(index, dataItem.get(i));
                 index++;
 
                 Log.i("DataSayur", String.valueOf(i));
@@ -496,7 +485,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void dialogWait() {
-        progressDialog = new ProgressDialog(getContext(), R.style.full_screen_dialog){
+        progressDialog = new ProgressDialog(getContext(), R.style.full_screen_dialog) {
             @Override
             protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -511,9 +500,15 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        initRetrofit();
-        truncate();
-        getCategory();
-        getItemProduk_local();
+        swipeRefreshLayout.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initRetrofit();
+                truncate();
+                getCategory();
+                getItemProduk_local();
+            }
+        }, 2000);
     }
 }

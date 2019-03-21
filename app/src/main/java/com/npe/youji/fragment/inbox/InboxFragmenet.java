@@ -5,8 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,7 +20,6 @@ import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.inbox.RootInboxModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -31,9 +30,7 @@ import retrofit2.Retrofit;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InboxFragmenet extends Fragment {
-
-
+public class InboxFragmenet extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public InboxFragmenet() {
         // Required empty public constructor
     }
@@ -44,6 +41,8 @@ public class InboxFragmenet extends Fragment {
     List<RootInboxModel> data;
     AdapterInbox adapterInbox;
     ProgressDialog dialog;
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,7 +50,10 @@ public class InboxFragmenet extends Fragment {
         View v = inflater.inflate(R.layout.fragment_inbox_fragmenet, container, false);
         //inisialisasi
         rvInbox = v.findViewById(R.id.rvInbox);
+        swipeRefreshLayout = v.findViewById(R.id.swipeMainInbox);
 
+        //swipe
+        swipeRefreshLayout.setOnRefreshListener(this);
         //dialog
         dialogWait();
         //retrofit
@@ -61,7 +63,7 @@ public class InboxFragmenet extends Fragment {
     }
 
     private void dialogWait() {
-        dialog = new ProgressDialog(getContext(), R.style.full_screen_dialog){
+        dialog = new ProgressDialog(getContext(), R.style.full_screen_dialog) {
             @Override
             protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -86,7 +88,7 @@ public class InboxFragmenet extends Fragment {
             @Override
             public void onResponse(Call<List<RootInboxModel>> call, Response<List<RootInboxModel>> response) {
                 data = response.body();
-                if(data != null){
+                if (data != null) {
                     listInbox(data);
                 }
             }
@@ -94,6 +96,7 @@ public class InboxFragmenet extends Fragment {
             @Override
             public void onFailure(Call<List<RootInboxModel>> call, Throwable t) {
                 Log.i("ErrorGetInbox", t.getMessage());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -105,12 +108,15 @@ public class InboxFragmenet extends Fragment {
         adapterInbox.setOnItemClickListener(new AdapterInbox.OnRecyclerViewItemClick() {
             @Override
             public void onItemClick(int position, String data) {
-                if(data != null){
+                if (data != null) {
                     toDetail(data);
                 }
             }
         });
+        //dialog hide
         dialog.dismiss();
+        //swipe hide
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void toDetail(String data) {
@@ -125,4 +131,15 @@ public class InboxFragmenet extends Fragment {
         service = retrofit.create(ApiService.class);
     }
 
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initRetrofit();
+                getDataInbox();
+            }
+        }, 2000);
+    }
 }
