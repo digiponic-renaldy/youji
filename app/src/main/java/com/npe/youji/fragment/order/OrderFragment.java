@@ -1,6 +1,7 @@
 package com.npe.youji.fragment.order;
 
 
+import android.app.ProgressDialog;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,7 @@ public class OrderFragment extends Fragment {
     List<UserModel> userModel;
     int idUser;
     AdapterTransaksi adapterTransaksi;
+    ProgressDialog progressDialog;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -59,6 +61,8 @@ public class OrderFragment extends Fragment {
         retrofit_local = NetworkClient.getRetrofitClientLocal();
         service_local = retrofit_local.create(ApiService.class);
 
+        //progress dialog
+        dialogWait();
 
         if (checkUser()) {
             //get data user
@@ -67,6 +71,20 @@ public class OrderFragment extends Fragment {
             getDataTransaksi();
         }
         return v;
+    }
+
+    private void dialogWait() {
+        progressDialog = new ProgressDialog(getContext(), R.style.full_screen_dialog){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.progress_dialog);
+                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        };
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
 
     private void getDataTransaksi() {
@@ -92,6 +110,8 @@ public class OrderFragment extends Fragment {
     private void listTransaksi(List<RootListTransaksiModel> data) {
         rvTransaksi.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         adapterTransaksi = new AdapterTransaksi(getContext(), data);
+        //dismiss dialog
+        progressDialog.dismiss();
         rvTransaksi.setAdapter(adapterTransaksi);
     }
 
