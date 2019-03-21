@@ -25,7 +25,10 @@ import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.JoinModel;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 public class AdapterFilterProduk extends RecyclerView.Adapter<AdapterFilterProduk.ViewHolder> {
     private Context context;
@@ -69,9 +72,11 @@ public class AdapterFilterProduk extends RecyclerView.Adapter<AdapterFilterProdu
                 .apply(myOptions)
                 .into(viewHolder.imageView);
         viewHolder.nama.setText(data.getKeterangan());
-        viewHolder.harga.setText(String.valueOf(data.getHarga()));
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        viewHolder.harga.setText("Rp "+String.valueOf(decimalFormat.format(data.getHarga())));
         viewHolder.label.setText(String.valueOf(data.getKategori()));
         viewHolder.des.setText(String.valueOf(data.getDeskripsi()));
+        viewHolder.satuan.setText( " / "+String.valueOf(data.getSatuan()));
         //check quantity
         if (checkQuantity(i) > 0) {
             Log.i("QuantityBarang", "LebihDari0");
@@ -243,7 +248,7 @@ public class AdapterFilterProduk extends RecyclerView.Adapter<AdapterFilterProdu
 
     class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
-        TextView nama, harga, textQuantity, textStokNull, label, des;
+        TextView nama, harga, textQuantity, textStokNull, label, des, satuan;
         Button beli;
         CardView lihat;
         RelativeLayout layoutCart;
@@ -262,6 +267,7 @@ public class AdapterFilterProduk extends RecyclerView.Adapter<AdapterFilterProdu
             textStokNull = itemView.findViewById(R.id.tvStokNullListDetail);
             label = itemView.findViewById(R.id.labelListItemListDetail);
             des = itemView.findViewById(R.id.tvDesListItemListDetail);
+            satuan = itemView.findViewById(R.id.tvSatuanListItemListDetail);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

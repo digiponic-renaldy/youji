@@ -25,7 +25,10 @@ import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.JoinModel;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilterProduk.ViewHolder> {
     Context context;
@@ -71,9 +74,11 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
                 .apply(myOptions)
                 .into(viewHolder.imageView);
         viewHolder.nama.setText(data.getKeterangan());
-        viewHolder.harga.setText(String.valueOf(data.getHarga()));
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        viewHolder.harga.setText("Rp " + String.valueOf(decimalFormat.format(data.getHarga())));
         viewHolder.label.setText(String.valueOf(data.getKategori()));
         viewHolder.des.setText(String.valueOf(data.getDeskripsi()));
+        viewHolder.satuan.setText(" / " + String.valueOf(data.getSatuan()));
         //check quantity
         if (checkQuantity(i) > 0) {
             Log.i("QuantityBarang", "LebihDari0");
@@ -236,7 +241,7 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView nama, harga, textQuantity, textStokNull, label, des;
+        TextView nama, harga, textQuantity, textStokNull, label, des, satuan;
         Button beli;
         CardView lihat;
         RelativeLayout layoutCart;
@@ -256,6 +261,7 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
             textStokNull = itemView.findViewById(R.id.tvStokNullListDetailNonFilter);
             label = itemView.findViewById(R.id.labelListItemListDetailNonFilter);
             des = itemView.findViewById(R.id.tvDesListItemNonFilter);
+            satuan = itemView.findViewById(R.id.tvSatuanListItemListDetailNonFilter);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

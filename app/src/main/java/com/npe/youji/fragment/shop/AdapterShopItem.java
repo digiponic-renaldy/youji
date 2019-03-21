@@ -41,7 +41,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private Gson gson;
     private OnItemClickListener mListener;
     private Fragment fragment;
-    int limit = 2;
 
 
     public interface OnItemClickListener {

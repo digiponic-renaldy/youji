@@ -1,6 +1,7 @@
 package com.npe.youji.fragment.shop;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
@@ -66,6 +67,8 @@ public class ShopFragment extends Fragment {
     RelativeLayout layoutBottomSheet;
     CircleButton btnFloatCheckout;
     ShimmerRecyclerView shimmerRecyclerShopItem, shimmerRecyclerShopMenu;
+    //progress dialog
+    ProgressDialog progressDialog;
 
     public ShopFragment() {
         // Required empty public constructor
@@ -294,21 +297,18 @@ public class ShopFragment extends Fragment {
                 adapterItem.detailItem(data);
             }
         });
-
-
         //Sayur
         recyclerSayur(dataItem);
-
         //Buah
         recyclerBuah(dataItem);
-
         //all item
         recyclerAllItem();
-
 
         //hide shimmer and show card
         shimmerRecyclerShopMenu.hideShimmerAdapter();
         shimmerRecyclerShopItem.hideShimmerAdapter();
+        progressDialog.dismiss();
+
         cardRekom.setVisibility(View.VISIBLE);
         cardBest.setVisibility(View.VISIBLE);
         cardNews.setVisibility(View.VISIBLE);
@@ -452,6 +452,8 @@ public class ShopFragment extends Fragment {
     public void onResume() {
         initRetrofit();
         truncate();
+        //dialog
+        dialogWait();
         getCategory();
         getItemProduk_local();
         super.onResume();
@@ -462,8 +464,24 @@ public class ShopFragment extends Fragment {
     public void onStart() {
         initRetrofit();
         truncate();
+        //dialog
+        dialogWait();
         getCategory();
         getItemProduk_local();
         super.onStart();
+    }
+
+    private void dialogWait() {
+        progressDialog = new ProgressDialog(getContext(), R.style.full_screen_dialog){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.progress_dialog);
+                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        };
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 }
