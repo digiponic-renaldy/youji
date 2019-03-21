@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,7 +32,7 @@ import retrofit2.Retrofit;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderFragment extends Fragment {
+public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     RecyclerView rvTransaksi;
     Retrofit retrofit_local;
@@ -41,6 +42,7 @@ public class OrderFragment extends Fragment {
     int idUser;
     AdapterTransaksi adapterTransaksi;
     ProgressDialog progressDialog;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -56,10 +58,27 @@ public class OrderFragment extends Fragment {
         //inisialisasi
         rvTransaksi = v.findViewById(R.id.rvListTransaksi);
         userOperations = new UserOperations(getContext());
+        swipeRefreshLayout = v.findViewById(R.id.swipeMainOrder);
 
         //retrofit
-        retrofit_local = NetworkClient.getRetrofitClientLocal();
-        service_local = retrofit_local.create(ApiService.class);
+        initRetrofit();
+
+
+        //swipe
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                initRetrofit();
+                if (checkUser()) {
+                    //get data user
+                    getDataUser();
+                    //get data Transaksi
+                    getDataTransaksi();
+                }
+            }
+        });
 
         //progress dialog
         dialogWait();
@@ -71,6 +90,11 @@ public class OrderFragment extends Fragment {
             getDataTransaksi();
         }
         return v;
+    }
+
+    private void initRetrofit() {
+        retrofit_local = NetworkClient.getRetrofitClientLocal();
+        service_local = retrofit_local.create(ApiService.class);
     }
 
     private void dialogWait() {
@@ -103,6 +127,7 @@ public class OrderFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RootListTransaksiModel>> call, Throwable t) {
                 Log.i("ErrorGetDataTransaksi", t.getMessage());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -112,6 +137,8 @@ public class OrderFragment extends Fragment {
         adapterTransaksi = new AdapterTransaksi(getContext(), data);
         //dismiss dialog
         progressDialog.dismiss();
+        //dismiss swipe
+        swipeRefreshLayout.setRefreshing(false);
         rvTransaksi.setAdapter(adapterTransaksi);
     }
 
@@ -139,4 +166,14 @@ public class OrderFragment extends Fragment {
     }
 
 
+    @Override
+    public void onRefresh() {
+        initRetrofit();
+        if (checkUser()) {
+            //get data user
+            getDataUser();
+            //get data Transaksi
+            getDataTransaksi();
+        }
+    }
 }
