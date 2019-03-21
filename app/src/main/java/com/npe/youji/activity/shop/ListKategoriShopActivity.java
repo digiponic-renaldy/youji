@@ -101,6 +101,7 @@ public class ListKategoriShopActivity extends AppCompatActivity implements Swipe
                 }
                 if (data.isEmpty()) {
                     Log.i("DataNullKategori", kategori);
+                    shimmerRecyclerShopFilter.hideShimmerAdapter();
                     tvKategoriNull.setVisibility(View.VISIBLE);
                     tvKategoriNull.setText("Barang dengan Kategori " + kategori + " \n tidak tersedia");
                     swipeRefreshLayout.setRefreshing(false);
@@ -194,10 +195,15 @@ public class ListKategoriShopActivity extends AppCompatActivity implements Swipe
 
     @Override
     public boolean onSupportNavigateUp() {
-        adapterItem.clear();
-        truncateShop();
-        onBackPressed();
-        adapterItem.notifyDataSetChanged();
+        if (adapterItem != null) {
+            adapterItem.clear();
+            truncateShop();
+            onBackPressed();
+            adapterItem.notifyDataSetChanged();
+        } else {
+            truncateShop();
+            onBackPressed();
+        }
         return true;
     }
 

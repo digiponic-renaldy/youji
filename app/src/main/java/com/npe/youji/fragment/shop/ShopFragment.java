@@ -109,11 +109,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //shimmer
         shimmerBehavior();
 
-
-        //bottom sheet
-        botomSheet = BottomSheetBehavior.from(layoutBottomSheet);
-        //botomSheet.setHideable(false);
-        botomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
         btnFloatCheckout = v.findViewById(R.id.floatBtn_checkout);
 
 
@@ -127,7 +122,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expandSheetCollapse();
             }
         });
         //bottom sheet
@@ -157,7 +151,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 toAllBuah();
             }
         });
-        bottomSheetBehavior();
 
         return v;
     }
@@ -420,47 +413,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         adapterCategory = new AdapterCategory(getContext(), dataCategories);
         recyclerCategory.setAdapter(adapterCategory);
     }
-
-    private void bottomSheetBehavior() {
-        botomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View view, int i) {
-                switch (i) {
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        btnFloatCheckout.setVisibility(View.VISIBLE);
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        btnFloatCheckout.setVisibility(View.GONE);
-                        break;
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        btnFloatCheckout.setVisibility(View.GONE);
-                        break;
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        btnFloatCheckout.setVisibility(View.GONE);
-                        break;
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        btnFloatCheckout.setVisibility(View.GONE);
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View view, float v) {
-
-            }
-        });
-
-    }
-
-    private void expandSheetCollapse() {
-        if (botomSheet.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-            botomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
-        } else {
-            botomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
-        }
-    }
-
 
     @Override
     public void onResume() {
