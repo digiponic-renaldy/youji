@@ -43,7 +43,7 @@ public class AdapterShopItemBuah extends RecyclerView.Adapter<AdapterShopItemBua
     private Gson gson;
     private OnItemClickListener mListener;
     private Fragment fragment;
-    int limit = 2;
+    int limit = 10;
 
 
     public interface OnItemClickListener {
@@ -257,11 +257,11 @@ public class AdapterShopItemBuah extends RecyclerView.Adapter<AdapterShopItemBua
 
     @Override
     public int getItemCount() {
-//        if (items.size() > limit) {
-//            return limit;
-//        } else {
+        if (items.size() > limit) {
+            return limit;
+        } else {
         return items.size();
-//        }
+        }
     }
 
 

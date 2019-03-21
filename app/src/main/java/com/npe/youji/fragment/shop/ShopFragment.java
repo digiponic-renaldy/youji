@@ -118,13 +118,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         getCategory();
         getItemProduk_local();
 
-        //float sheet
-        btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        //bottom sheet
+
         btnLihatSemua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +149,13 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return v;
     }
 
+    public void showCheckOut(){
+        btnFloatCheckout.setVisibility(View.VISIBLE);
+    }
+
+    public void hideCheckOut(){
+        btnFloatCheckout.setVisibility(View.GONE);
+    }
     private void toAllBuah() {
         Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

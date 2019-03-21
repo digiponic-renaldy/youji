@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,7 +39,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private List<JoinModel> itemsFilter;
     private Gson gson;
     private OnItemClickListener mListener;
-    private Fragment fragment;
+    private ShopFragment fragment;
+    int limit = 10;
 
 
     public interface OnItemClickListener {
@@ -116,6 +116,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private void showLayoutCart(final ViewHolder viewHolder, final JoinModel data, final int position) {
         viewHolder.layoutCart.setVisibility(View.VISIBLE);
         viewHolder.beli.setVisibility(View.GONE);
+
+
         //insert data to cart
         if (checkQuantity(position) == 0) {
             //Toast.makeText(context, "Check", Toast.LENGTH_SHORT).show();
@@ -135,6 +137,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 minusCart(viewHolder, data, position);
             }
         });
+        //show checkout
+        fragment.showCheckOut();
     }
 
     private void addCart(ViewHolder viewHolder, JoinModel data, int position) {
@@ -207,7 +211,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         } catch (SQLException e) {
             Log.d("ERROR JOIN", e.getMessage());
         }
-        return false;
+        return join;
     }
 
     private int checkQuantity(int position) {
@@ -254,11 +258,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
 
     @Override
     public int getItemCount() {
-//        if (items.size() > limit) {
-//            return limit;
-//        } else {
+        if (items.size() > limit) {
+            return limit;
+        } else {
         return items.size();
-//        }
+        }
     }
 
 

@@ -257,21 +257,22 @@
 
                 </android.support.v7.widget.CardView>
 
-                <at.markushi.ui.CircleButton
-                    android:id="@+id/floatBtn_checkout"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginRight="35dp"
-                    android:layout_marginBottom="42dp"
-                    android:src="@drawable/ic_shopping_cart"
-                    android:tint="@color/colorWhite"
-                    android:visibility="gone"
-                    app:cb_color="@color/colorGreenSoft"
-                    app:cb_pressedRingWidth="5dp" />
-
             </RelativeLayout>
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <at.markushi.ui.CircleButton
+        android:visibility="gone"
+        android:id="@+id/floatBtn_checkout"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="35dp"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/ic_shopping_cart"
+        android:tint="@color/colorWhite"
+        app:cb_color="@color/colorGreenSoft"
+        app:cb_pressedRingWidth="5dp" />
+
 </RelativeLayout>

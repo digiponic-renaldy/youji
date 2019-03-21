@@ -43,7 +43,7 @@ public class AdapterShopItemSayur extends RecyclerView.Adapter<AdapterShopItemSa
     private Gson gson;
     private OnItemClickListener mListener;
     private Fragment fragment;
-    int limit = 2;
+    int limit = 10;
 
 
     public interface OnItemClickListener {
@@ -208,7 +208,7 @@ public class AdapterShopItemSayur extends RecyclerView.Adapter<AdapterShopItemSa
         } catch (SQLException e) {
             Log.d("ERROR JOIN", e.getMessage());
         }
-        return false;
+        return join;
     }
 
     private int checkQuantity(int position) {
@@ -255,11 +255,11 @@ public class AdapterShopItemSayur extends RecyclerView.Adapter<AdapterShopItemSa
 
     @Override
     public int getItemCount() {
-//        if (items.size() > limit) {
-//            return limit;
-//        } else {
+        if (items.size() > limit) {
+            return limit;
+        } else {
         return items.size();
-//        }
+        }
     }
 
 
