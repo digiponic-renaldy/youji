@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder>{
+public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHolder> {
 
     private Context context;
     private List<JoinModel> items;
@@ -193,8 +191,10 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     public void refreshView(int position) {
-        notifyItemChanged(position);
-        fragment.onResume();
+        if (joinData()) {
+            notifyItemChanged(position);
+            fragment.onResume();
+        }
     }
 
     private Boolean joinData() {
@@ -261,7 +261,6 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         return items.size();
 //        }
     }
-
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
