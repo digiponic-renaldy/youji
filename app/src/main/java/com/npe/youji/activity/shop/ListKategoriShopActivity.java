@@ -2,6 +2,8 @@ package com.npe.youji.activity.shop;
 
 import android.database.SQLException;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ListKategoriShopActivity extends AppCompatActivity {
+public class ListKategoriShopActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     RecyclerView rvListFilter;
     String kategori;
     Retrofit retrofit_local;
@@ -36,6 +38,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
     AdapterFilterProduk adapterItem;
     ShimmerRecyclerView shimmerRecyclerShopFilter;
     TextView tvKategoriNull;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,9 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         tvKategoriNull = findViewById(R.id.tvKetegoriNull);
         shimmerRecyclerShopFilter = findViewById(R.id.shimmer_shopFilter);
         shopOperations = new ShopOperations(getApplicationContext());
-
+        swipeRefreshLayout = findViewById(R.id.swipeMainListKategori);
+        //swipe
+        swipeRefreshLayout.setOnRefreshListener(this);
         //shimmer
         shimmerBehavior();
         //retorgfit
@@ -98,6 +103,7 @@ public class ListKategoriShopActivity extends AppCompatActivity {
                     Log.i("DataNullKategori", kategori);
                     tvKategoriNull.setVisibility(View.VISIBLE);
                     tvKategoriNull.setText("Barang dengan Kategori " + kategori + " \n tidak tersedia");
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
@@ -133,6 +139,8 @@ public class ListKategoriShopActivity extends AppCompatActivity {
                 adapterItem.detailItem(data);
             }
         });
+        //hide swipe
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private boolean checkIsiSqlShop() {
@@ -200,5 +208,25 @@ public class ListKategoriShopActivity extends AppCompatActivity {
         } catch (SQLException e) {
             Log.i("ErrorTruncateFilter", e.getMessage());
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initRetrofit();
+                Bundle extra = getIntent().getExtras();
+                if (extra != null) {
+                    kategori = extra.getString("KATEGORI");
+
+                    Log.i("Kategori", kategori);
+
+                    getSupportActionBar().setTitle(kategori);
+                    getDataFilter(kategori);
+                }
+            }
+        }, 2000);
     }
 }
