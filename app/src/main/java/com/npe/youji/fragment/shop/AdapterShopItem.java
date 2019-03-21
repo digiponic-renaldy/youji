@@ -218,8 +218,12 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         int quantity = 0;
         try {
             shopOperations.openDb();
-            quantity = shopOperations.joinData().get(position).getQuantity();
-            Log.i("DataShop", String.valueOf(shopOperations.joinData().get(position).getQuantity()));
+            try {
+                quantity = shopOperations.joinData().get(position).getQuantity();
+            } catch (IndexOutOfBoundsException e) {
+                Log.i("NPEAdapterShopItem",e.getMessage());
+            }
+//            Log.i("DataShop", String.valueOf(shopOperations.joinData().get(position).getQuantity()));
             shopOperations.closeDb();
         } catch (SQLException e) {
             Log.i("SqlException", e.getMessage());
@@ -261,7 +265,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         if (items.size() > limit) {
             return limit;
         } else {
-        return items.size();
+            return items.size();
         }
     }
 

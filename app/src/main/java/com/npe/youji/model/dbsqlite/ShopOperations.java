@@ -218,6 +218,8 @@ public class ShopOperations {
         return shop;
     }
 
+    //check quantity join
+
     //alter data
     public void alterColumn() {
         String query = "ALTER TABLE " + DatabaseHelper.TABLE_SHOP + " ADD " + DatabaseHelper.COLUMN_QUANTITY + " INTEGER DEFAULT 0";

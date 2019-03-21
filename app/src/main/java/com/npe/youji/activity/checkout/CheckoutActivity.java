@@ -20,9 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonIOException;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
+import com.npe.youji.activity.auth.LoginActivity;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.city.DataCitiesModel;
@@ -92,13 +95,15 @@ public class CheckoutActivity extends AppCompatActivity {
     int subTotal;
     int discount;
     int totalHarga;
-
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
     ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //inisialisasi
         shopOperations = new ShopOperations(getApplicationContext());
         userOperations = new UserOperations(getApplicationContext());
@@ -110,6 +115,10 @@ public class CheckoutActivity extends AppCompatActivity {
         tvSubtotal = findViewById(R.id.tvSubtotalCheckout);
         tvDiskon = findViewById(R.id.tvDiskonCheckout);
         tvTotal = findViewById(R.id.tvTotalCheckout);
+
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
 //        etAlamat = findViewById(R.id.etAlamatPenerima);
 //        etNotelp = findViewById(R.id.etNotelpPenerima);
         spinCity = findViewById(R.id.spinCity);
@@ -118,33 +127,24 @@ public class CheckoutActivity extends AppCompatActivity {
         btnBeliLagi = findViewById(R.id.btnBelanjaLagi);
 
         //progress dialog
-        progressDialog = new ProgressDialog(this,  R.style.full_screen_dialog){
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                setContentView(R.layout.progress_dialog);
-                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-            }
-        };
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
+        dialogWait();
 
         //data user
         if (checkUser()) {
             getDataUser();
+            setCurrentDate();
+            //date and time
+            tvTanggal.setText(getCurrentDate());
+            //receycler data
+            joinData();
+            //retrofit
+            retrofit = NetworkClient.getRetrofitClientLocal();
+            service = retrofit.create(ApiService.class);
+            //get spin city and distrik
+            getApiCity();
+        } else {
+            toLogin();
         }
-        setCurrentDate();
-        //date and time
-        tvTanggal.setText(getCurrentDate());
-        //receycler data
-        joinData();
-
-        //retrofit
-        retrofit = NetworkClient.getRetrofitClientLocal();
-        service = retrofit.create(ApiService.class);
-
-        //get spin city and distrik
-        getApiCity();
 
 
         //btn pembayaran
@@ -163,6 +163,25 @@ public class CheckoutActivity extends AppCompatActivity {
                 toMain();
             }
         });
+    }
+
+    private void dialogWait() {
+        progressDialog = new ProgressDialog(this, R.style.full_screen_dialog) {
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.progress_dialog);
+                getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        };
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+    }
+
+    private void toLogin() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void toMain() {
@@ -261,18 +280,18 @@ public class CheckoutActivity extends AppCompatActivity {
             cartOperations.dropCart();
             Log.i("DropTableCart", "Success");
             cartOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("ErrorResetCart", e.getMessage());
         }
     }
 
     private void dropTableShop() {
-        try{
+        try {
             shopOperations.openDb();
             shopOperations.dropTable();
-            Log.i("DropTableShop","Success");
+            Log.i("DropTableShop", "Success");
             shopOperations.closeDb();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.i("ErrorResetShop", e.getMessage());
         }
     }
@@ -435,9 +454,9 @@ public class CheckoutActivity extends AppCompatActivity {
         }
     }
 
-    private void setDataTotal(){
+    private void setDataTotal() {
         tvSubtotal.setText(String.valueOf(getSubTotal()));
-        int total= getSubTotal() - 0;
+        int total = getSubTotal() - 0;
         tvTotal.setText(String.valueOf(total));
     }
 
@@ -463,13 +482,16 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private boolean checkUser() {
         boolean cek = false;
-        try {
-            userOperations.openDb();
-            cek = userOperations.checkRecordUser();
-            userOperations.closeDb();
-            Log.i("CheckUser", "Masuk");
-        } catch (SQLException e) {
-            Log.i("ErrorCheckUserCheckout", e.getMessage());
+//        try {
+//            userOperations.openDb();
+//            cek = userOperations.checkRecordUser();
+//            userOperations.closeDb();
+//            Log.i("CheckUser", "Masuk");
+//        } catch (SQLException e) {
+//            Log.i("ErrorCheckUserCheckout", e.getMessage());
+//        }
+        if(mUser != null){
+            cek = true;
         }
         return cek;
     }
@@ -535,5 +557,32 @@ public class CheckoutActivity extends AppCompatActivity {
         return this.subTotal;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //progress dialog
+        dialogWait();
 
+        //data user
+        if (checkUser()) {
+            getDataUser();
+            setCurrentDate();
+            //date and time
+            tvTanggal.setText(getCurrentDate());
+            //receycler data
+            joinData();
+            //retrofit
+            retrofit = NetworkClient.getRetrofitClientLocal();
+            service = retrofit.create(ApiService.class);
+            //get spin city and distrik
+            getApiCity();
+        } else {
+            toLogin();
+        }
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
