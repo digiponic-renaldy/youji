@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,7 +21,10 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.npe.youji.R;
+import com.npe.youji.activity.auth.LoginActivity;
 import com.npe.youji.activity.checkout.CheckoutActivity;
 import com.npe.youji.activity.shop.ListKategoriShopActivity;
 import com.npe.youji.activity.shop.ListNonKategoryShopActivity;
@@ -72,6 +74,9 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     ProgressDialog progressDialog;
     //swipe
     SwipeRefreshLayout swipeRefreshLayout;
+    ArrayList<JoinModel> mDataItem = new ArrayList<>();
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
     public ShopFragment() {
         // Required empty public constructor
@@ -103,6 +108,8 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         btnLihatBuah = v.findViewById(R.id.btnLihatBuah);
         btnLihatAllItem = v.findViewById(R.id.btnLihatAllItem);
         swipeRefreshLayout = v.findViewById(R.id.swipeMainShop);
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
 
         //swipe
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -150,11 +157,31 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toCheckOut();
+                if (checkUser()) {
+                    if (checkQuantityData(mDataItem)) {
+                        toCheckOut();
+                    }
+                } else {
+                    toLogin();
+                }
             }
         });
 
         return v;
+    }
+
+    private void toLogin() {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private boolean checkUser() {
+        boolean valid = false;
+        if (mUser != null) {
+            valid = true;
+        }
+        return valid;
     }
 
     private void toCheckOut() {
@@ -163,13 +190,14 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         startActivity(intent);
     }
 
-    public void showCheckOut(){
+    public void showCheckOut() {
         btnFloatCheckout.setVisibility(View.VISIBLE);
     }
 
-    public void hideCheckOut(){
+    public void hideCheckOut() {
         btnFloatCheckout.setVisibility(View.GONE);
     }
+
     private void toAllBuah() {
         Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -232,6 +260,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     Log.i("ResponSucc", "Berhasil");
                     Log.i("Deskripsi", data.get(0).getDeskripsi());
                     insertAllDataShopLocal(data);
+
                     if (checkIsiSqlShop()) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -302,7 +331,9 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void listItemShop(ArrayList<JoinModel> dataItem) {
         //check quantity
-        if(checkQuantityData(dataItem)){
+        //inisialisasi
+        this.mDataItem = dataItem;
+        if (checkQuantityData(dataItem)) {
             showCheckOut();
         } else {
             hideCheckOut();
@@ -343,9 +374,11 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private boolean checkQuantityData(ArrayList<JoinModel> dataItem) {
         boolean valid = false;
-        for (int i = 0; i < dataItem.size() ; i++) {
-            if(dataItem.get(i).getQuantity() != 0){
+        for (int i = 0; i < dataItem.size(); i++) {
+            if (dataItem.get(i).getQuantity() != 0) {
                 valid = true;
+            } else {
+                valid = false;
             }
             Log.i("CheckQuantity", String.valueOf(dataItem.get(i).getQuantity()));
         }

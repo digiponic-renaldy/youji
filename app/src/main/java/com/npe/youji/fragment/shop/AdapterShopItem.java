@@ -194,24 +194,20 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     }
 
     public void refreshView(int position) {
-        if (joinData()) {
-            notifyItemChanged(position);
-            fragment.onResume();
-        }
+        joinData();
+        notifyItemChanged(position);
+        fragment.onResume();
     }
 
-    private Boolean joinData() {
-        boolean join = false;
+    private void joinData() {
         try {
             shopOperations.openDb();
             shopOperations.joinData();
             //insert to adapter
-            join = true;
             shopOperations.closeDb();
         } catch (SQLException e) {
             Log.d("ERROR JOIN", e.getMessage());
         }
-        return join;
     }
 
     private int checkQuantity(int position) {
@@ -221,7 +217,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             try {
                 quantity = shopOperations.joinData().get(position).getQuantity();
             } catch (IndexOutOfBoundsException e) {
-                Log.i("NPEAdapterShopItem",e.getMessage());
+                Log.i("NPEAdapterShopItem", e.getMessage());
             }
 //            Log.i("DataShop", String.valueOf(shopOperations.joinData().get(position).getQuantity()));
             shopOperations.closeDb();
