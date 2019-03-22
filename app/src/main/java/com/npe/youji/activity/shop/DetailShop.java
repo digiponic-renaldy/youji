@@ -156,10 +156,22 @@ public class DetailShop extends AppCompatActivity {
         int quantity = Integer.parseInt(strQuantity);
         quantity = quantity - 1;
         if (quantity <= 0) {
+            deleteRowCart();
             layoutCart.setVisibility(View.GONE);
             btnAddtoCart.setVisibility(View.VISIBLE);
         } else {
             displayText(quantity);
+        }
+    }
+
+    private void deleteRowCart() {
+        try {
+            cartOperations.openDb();
+            cartOperations.deleteRow(String.valueOf(dataItem.getIdproduk()));
+            Log.i("DeleteRow", "Masuk");
+            cartOperations.closeDb();
+        } catch (SQLException e) {
+            Log.i("DeleteRowError", e.getMessage());
         }
     }
 
