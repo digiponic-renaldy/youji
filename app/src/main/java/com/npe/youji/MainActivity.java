@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         if (mUser != null) {
             if (checkQuantityData()) {
                 CheckOut();
+            } else {
+                Toast.makeText(getApplicationContext(), "Tidak terdapat barang yang dibeli", Toast.LENGTH_SHORT).show();
             }
         } else {
             toLogin();
