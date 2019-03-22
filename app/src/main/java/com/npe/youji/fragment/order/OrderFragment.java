@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
@@ -43,6 +45,8 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     AdapterTransaksi adapterTransaksi;
     ProgressDialog progressDialog;
     SwipeRefreshLayout swipeRefreshLayout;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -59,6 +63,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         rvTransaksi = v.findViewById(R.id.rvListTransaksi);
         userOperations = new UserOperations(getContext());
         swipeRefreshLayout = v.findViewById(R.id.swipeMainOrder);
+        mAuth = FirebaseAuth.getInstance();
 
         //retrofit
         initRetrofit();
@@ -100,6 +105,7 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     private void getDataTransaksi() {
         JsonObject request = new JsonObject();
+        Log.i("customer_id", String.valueOf(idUser));
         request.addProperty("customer_id", idUser);
         service_local.listTransaksiUser(request).enqueue(new Callback<List<RootListTransaksiModel>>() {
             @Override
@@ -131,12 +137,9 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     private boolean checkUser() {
         boolean cek = false;
-        try {
-            userOperations.openDb();
-            cek = userOperations.checkRecordUser();
-            userOperations.closeDb();
-        } catch (SQLException e) {
-            Log.i("ErrorCheckUserOrder", e.getMessage());
+        mUser = mAuth.getCurrentUser();
+        if(mUser != null){
+            cek = true;
         }
         return cek;
     }

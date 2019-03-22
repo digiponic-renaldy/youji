@@ -257,7 +257,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 List<RootProdukModel> data = response.body();
                 if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
-                    Log.i("Deskripsi", data.get(0).getDeskripsi());
+//                    Log.i("Deskripsi", data.get(0).getDeskripsi());
                     insertAllDataShopLocal(data);
 
                     if (checkIsiSqlShop()) {

@@ -549,7 +549,7 @@ public class CheckoutActivity extends AppCompatActivity {
         setDataTotal();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
-        adapter = new AdapterCheckout(getApplicationContext(), dataitem);
+        adapter = new AdapterCheckout(CheckoutActivity.this, dataitem);
         recyclerView.setAdapter(adapter);
     }
 
@@ -562,7 +562,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         //progress dialog
         dialogWait();
@@ -614,4 +614,5 @@ public class CheckoutActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
 }

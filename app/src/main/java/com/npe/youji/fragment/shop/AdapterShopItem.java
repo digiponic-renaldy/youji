@@ -41,7 +41,8 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     private OnItemClickListener mListener;
     private ShopFragment fragment;
     int limit = 10;
-
+    CartOperations cartOperations;
+    ShopOperations shopOperations;
 
     public interface OnItemClickListener {
         void onItemCick(int position, JoinModel data);
@@ -51,8 +52,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
         mListener = listener;
     }
 
-    CartOperations cartOperations;
-    ShopOperations shopOperations;
+
 
     public AdapterShopItem(Context context, List<JoinModel> items, ShopFragment fragment) {
         this.context = context;
