@@ -119,7 +119,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         btnFloatCheckout = v.findViewById(R.id.floatBtn_checkout);
 
-
         //retrofit
         initRetrofit();
 
@@ -154,18 +153,18 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkUser()) {
-                    if (checkQuantityData(mDataItem)) {
-                        toCheckOut();
-                    }
-                } else {
-                    toLogin();
-                }
-            }
-        });
+//        btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (checkUser()) {
+//                    if (checkQuantityData(mDataItem)) {
+//                        toCheckOut();
+//                    }
+//                } else {
+//                    toLogin();
+//                }
+//            }
+//        });
 
         return v;
     }
@@ -333,11 +332,11 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //check quantity
         //inisialisasi
         this.mDataItem = dataItem;
-        if (checkQuantityData(dataItem)) {
-            showCheckOut();
-        } else {
-            hideCheckOut();
-        }
+//        if (checkQuantityData(dataItem)) {
+//            showCheckOut();
+//        } else {
+//            hideCheckOut();
+//        }
 
 
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
@@ -372,16 +371,16 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         cardAllItem.setVisibility(View.VISIBLE);
     }
 
-    private boolean checkQuantityData(ArrayList<JoinModel> dataItem) {
-        boolean valid = false;
-        for (int i = 0; i < dataItem.size(); i++) {
-            if (dataItem.get(i).getQuantity() != 0) {
-                valid = true;
-            }
-            Log.i("CheckQuantity", String.valueOf(dataItem.get(i).getQuantity()));
-        }
-        return valid;
-    }
+//    private boolean checkQuantityData(ArrayList<JoinModel> dataItem) {
+//        boolean valid = false;
+//        for (int i = 0; i < dataItem.size(); i++) {
+//            if (dataItem.get(i).getQuantity() != 0) {
+//                valid = true;
+//            }
+//            Log.i("CheckQuantity", String.valueOf(dataItem.get(i).getQuantity()));
+//        }
+//        return valid;
+//    }
 
     private void recyclerAllItem() {
         recyclerAll.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -453,7 +452,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void getCategory() {
-        swipeRefreshLayout.setRefreshing(true);
+//        swipeRefreshLayout.setRefreshing(true);
 
         service_local.listCategory().enqueue(new Callback<List<RootTipeKategoriModel>>() {
             @Override

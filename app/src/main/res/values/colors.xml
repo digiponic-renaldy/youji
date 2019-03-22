@@ -11,5 +11,6 @@
     <color name="colorGreenSoft">#009432</color>
     <color name="colorGreenSoftText">#A3CB38</color>
     <color name="colorDarkGrey">#807d7d</color>
+    <color name="colorDarkWhite">#a0ffffff</color>
     <color name="demo_dark_transparent">#24000000</color>
 </resources>

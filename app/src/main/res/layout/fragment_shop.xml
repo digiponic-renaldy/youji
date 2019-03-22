@@ -58,10 +58,12 @@
                     app:shimmer_demo_layout_manager_type="grid" />
 
                 <android.support.v7.widget.CardView
+                    app:cardUseCompatPadding="true"
                     android:id="@+id/layoutRekomendasi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/card_recyclerMenu_shop"
+                    android:elevation="6dp"
                     app:cardElevation="4dp">
 
                     <RelativeLayout
@@ -108,6 +110,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:cardUseCompatPadding="true"
                     android:id="@+id/layoutNewsitem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -158,6 +161,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:cardUseCompatPadding="true"
                     android:id="@+id/layoutBestSaller"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -208,6 +212,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:cardUseCompatPadding="true"
                     android:id="@+id/layoutAllItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -268,8 +273,8 @@
         android:layout_height="64dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="35dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp"
         android:src="@drawable/ic_shopping_cart"
         android:tint="@color/colorWhite"
         app:cb_color="@color/colorGreenSoft"

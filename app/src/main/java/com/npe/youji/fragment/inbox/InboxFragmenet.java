@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.npe.youji.R;
 import com.npe.youji.activity.inbox.DetailInbox;
+import com.npe.youji.fragment.OnBackPressFragment;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
 import com.npe.youji.model.inbox.RootInboxModel;
@@ -30,7 +31,7 @@ import retrofit2.Retrofit;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InboxFragmenet extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class InboxFragmenet extends Fragment implements SwipeRefreshLayout.OnRefreshListener,OnBackPressFragment {
     public InboxFragmenet() {
         // Required empty public constructor
     }
@@ -141,5 +142,11 @@ public class InboxFragmenet extends Fragment implements SwipeRefreshLayout.OnRef
                 getDataInbox();
             }
         }, 2000);
+    }
+
+
+    @Override
+    public void onBackPress() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

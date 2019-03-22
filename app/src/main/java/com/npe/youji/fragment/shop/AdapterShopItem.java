@@ -138,7 +138,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
             }
         });
         //show checkout
-        fragment.showCheckOut();
+//        fragment.showCheckOut();
     }
 
     private void addCart(ViewHolder viewHolder, JoinModel data, int position) {

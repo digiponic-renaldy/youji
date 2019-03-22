@@ -49,10 +49,13 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -455,9 +458,10 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void setDataTotal() {
-        tvSubtotal.setText(String.valueOf(getSubTotal()));
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        tvSubtotal.setText("Rp "+String.valueOf(decimalFormat.format(getSubTotal())));
         int total = getSubTotal() - 0;
-        tvTotal.setText(String.valueOf(total));
+        tvTotal.setText("Rp "+String.valueOf(decimalFormat.format(total)));
     }
 
     private void setUser(List<UserModel> userModels) {

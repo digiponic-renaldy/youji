@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/lato_bold"
-                android:text="Detail Order"
+                android:text="Detail Pesanan"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorBlack" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_bold"
-                android:text="Detail Customer"
+                android:text="Detail Pelanggan"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
 
@@ -164,13 +164,35 @@
             <!--</android.support.design.widget.TextInputLayout>-->
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_bold"
                 android:text="Ringkasan Pembayaran"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
+
+            <RadioGroup
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <RadioButton
+                    android:textColor="@color/colorGreenSoft"
+                    android:text="Di Tempat"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:layout_height="match_parent" />
+
+                <RadioButton
+                    android:fontFamily="@font/lato_regular"
+                    android:textColor="@color/colorGreenSoft"
+                    android:text="Transfer"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -233,7 +255,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/rounded_button_green"
-                android:text="Pembayaran"
+                android:text="Buat Pesanan"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 

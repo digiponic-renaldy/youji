@@ -23,6 +23,10 @@ import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.JoinModel;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 
 public class DetailShop extends AppCompatActivity {
     private CartOperations cartOperations;
@@ -216,7 +220,8 @@ public class DetailShop extends AppCompatActivity {
     private void initData(JoinModel dataItem) {
         if (dataItem != null) {
             namaBarang.setText(String.valueOf(dataItem.getKeterangan()));
-            hargaBarang.setText("Rp " + String.valueOf(dataItem.getHarga()));
+            DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            hargaBarang.setText("Rp " + String.valueOf(decimalFormat.format(dataItem.getHarga())));
             satuan.setText("/"+String.valueOf(dataItem.getSatuan()));
             kategori.setText(String.valueOf(dataItem.getKategori()));
             descBarang.setText(String.valueOf(dataItem.getDeskripsi()));

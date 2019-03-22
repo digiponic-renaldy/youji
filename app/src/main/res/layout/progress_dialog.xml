@@ -7,14 +7,14 @@
 
     <RelativeLayout
         android:alpha="0.5"
-        android:background="@color/colorDarkGrey"
+        android:background="@color/colorDarkWhite"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </RelativeLayout>
     <com.github.ybq.android.spinkit.SpinKitView
         android:layout_centerInParent="true"
         android:id="@+id/spin_kit_progress"
-        style="@style/SpinKitView.Large.Wave"
+        style="@style/SpinKitView.Large.FadingCircle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

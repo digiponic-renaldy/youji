@@ -1,24 +1,29 @@
 package com.npe.youji;
 
+import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.npe.youji.activity.auth.LoginActivity;
+import com.npe.youji.activity.checkout.CheckoutActivity;
 import com.npe.youji.fragment.auth.AccountFragment;
 import com.npe.youji.fragment.auth.LoginFirstFragment;
 import com.npe.youji.fragment.auth.LoginFragment;
-import com.npe.youji.fragment.chat.ChatFragment;
 import com.npe.youji.fragment.inbox.InboxFragmenet;
 import com.npe.youji.fragment.order.OrderFragment;
 import com.npe.youji.fragment.shop.ShopFragment;
+import com.npe.youji.model.dbsqlite.CartOperations;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseUser mUser;
     private boolean doubleBackToExitPressedOnce = false;
+    CartOperations cartOperations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         //insialisasi
         bottomNavigation = findViewById(R.id.bottom_navigation);
         auth = FirebaseAuth.getInstance();
-
+        cartOperations = new CartOperations(getApplicationContext());
         //shop
         Fragment fragment = new ShopFragment();
         loadFragment(fragment);
@@ -90,6 +96,57 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_appbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_checkoutApp:
+                toCheckOut();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void toCheckOut() {
+        mUser = auth.getCurrentUser();
+        if (mUser != null) {
+            if (checkQuantityData()) {
+                CheckOut();
+            }
+        } else {
+            toLogin();
+        }
+    }
+
+    private void CheckOut() {
+        Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private boolean checkQuantityData() {
+        boolean valid = false;
+        try{
+            cartOperations.openDb();
+            valid = cartOperations.checkRecordCart();
+            cartOperations.closeDb();
+        }catch (SQLException e){
+            Log.i("ErrorCheckDataCart", e.getMessage());
+        }
+        return valid;
+    }
+
+    private void toLogin() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         checkLogin();
@@ -110,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Press twice to exit", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Tekan tombol kembali lagi untuk keluar", Toast.LENGTH_SHORT).show();
     }
 
     private void checkLogin() {

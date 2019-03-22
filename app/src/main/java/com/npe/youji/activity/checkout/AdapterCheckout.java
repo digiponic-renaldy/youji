@@ -21,7 +21,10 @@ import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.shop.JoinModel;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 public class AdapterCheckout extends RecyclerView.Adapter<AdapterCheckout.ViewHolder> {
     private Context context;
@@ -56,7 +59,8 @@ public class AdapterCheckout extends RecyclerView.Adapter<AdapterCheckout.ViewHo
                     .load(data.getGambar())
                     .into(viewHolder.imgCheckout);
             viewHolder.tvNamaBarang.setText(String.valueOf(data.getKeterangan()));
-            viewHolder.tvHargaBarang.setText(String.valueOf(data.getHarga()));
+            DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            viewHolder.tvHargaBarang.setText("Rp "+String.valueOf(decimalFormat.format(data.getHarga())));
             viewHolder.tvJumlahBarang.setText(String.valueOf(checkQuantity(i)));
         }
 
