@@ -253,7 +253,7 @@ public class CheckoutActivity extends AppCompatActivity {
             // 5. return response message
             Log.i("Kembalian", conn.getResponseMessage());
             progressDialog.dismiss();
-            resetDbSQl();
+            truncateDataShop();
             toMain();
             return conn.getResponseMessage() + "";
         }
@@ -269,16 +269,15 @@ public class CheckoutActivity extends AppCompatActivity {
         }
     }
 
-    private void resetDbSQl() {
-        //dropTableShop();
-        //dropTableCart();
+    private void truncateDataShop() {
+        dropTableShop();
+        dropTableCart();
     }
 
     private void dropTableCart() {
         try {
             cartOperations.openDb();
-            cartOperations.dropCart();
-            Log.i("DropTableCart", "Success");
+            cartOperations.deleteRecord();
             cartOperations.closeDb();
         } catch (SQLException e) {
             Log.i("ErrorResetCart", e.getMessage());
@@ -288,8 +287,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void dropTableShop() {
         try {
             shopOperations.openDb();
-            shopOperations.dropTable();
-            Log.i("DropTableShop", "Success");
+            shopOperations.deleteRecord();
             shopOperations.closeDb();
         } catch (SQLException e) {
             Log.i("ErrorResetShop", e.getMessage());

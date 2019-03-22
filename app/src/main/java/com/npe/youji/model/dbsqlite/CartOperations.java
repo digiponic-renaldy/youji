@@ -131,4 +131,7 @@ public class CartOperations {
     public void dropCart(){
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DatabaseHelper.TABLE_CART);
     }
+    public void deleteRecord(){
+        sqLiteDatabase.execSQL("DELETE FROM " + DatabaseHelper.TABLE_SHOP);
+    }
 }

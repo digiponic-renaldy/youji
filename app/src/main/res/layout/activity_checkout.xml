@@ -179,7 +179,7 @@
 
                 <RadioButton
                     android:textColor="@color/colorGreenSoft"
-                    android:text="Di Tempat"
+                    android:text="Bayar di tempat"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:checked="true"
