@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/icons"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:screenOrientation="portrait"
         android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -34,7 +35,6 @@
         </activity>
         <activity android:name=".activity.shop.ListKategoriShopActivity" />
         <activity android:name=".fragment.order.DetailOrder" />
-        <activity android:name=".activity.shop.ShopAllItem" />
         <activity android:name=".activity.auth.EditProfile" />
         <activity android:name=".activity.inbox.DetailInbox" />
         <activity android:name=".activity.shop.ListNonKategoryShopActivity"></activity>

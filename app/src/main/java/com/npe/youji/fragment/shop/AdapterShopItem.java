@@ -28,6 +28,7 @@ import com.npe.youji.model.shop.JoinModel;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +44,7 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
     int limit = 10;
     CartOperations cartOperations;
     ShopOperations shopOperations;
+    Locale locale;
 
     public interface OnItemClickListener {
         void onItemCick(int position, JoinModel data);
@@ -85,8 +87,11 @@ public class AdapterShopItem extends RecyclerView.Adapter<AdapterShopItem.ViewHo
                 .into(viewHolder.imageView);
         viewHolder.nama.setText(data.getKeterangan());
         viewHolder.nama.setSelected(true);
-        DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        viewHolder.harga.setText("Rp " + String.valueOf(decimalFormat.format(data.getHarga())));
+        //format number
+        locale = new Locale("in", "ID");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        numberFormat.setMaximumFractionDigits(3);
+        viewHolder.harga.setText(String.valueOf(numberFormat.format(data.getHarga())));
         viewHolder.label.setText(String.valueOf(data.getKategori()));
         viewHolder.satuan.setText("/ " + String.valueOf(data.getSatuan()));
         viewHolder.des.setText(String.valueOf(data.getDeskripsi()));

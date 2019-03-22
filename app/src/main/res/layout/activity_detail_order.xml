@@ -8,4 +8,162 @@
     android:layout_height="match_parent"
     tools:context=".fragment.order.DetailOrder">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeDetailOrder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.v7.widget.CardView
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:padding="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textColor="@color/colorBlack"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Pembeli"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/colorGreenSoft"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Nama Pembeli"
+                                android:id="@+id/tvNamaPembeliDetailTransaksi"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textColor="@color/colorBlack"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Kode Transaksi"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/colorGreenSoft"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Nama Transaksi"
+                                android:id="@+id/tvNomorTransaksiDetailTransaksi"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textColor="@color/colorBlack"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Status"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/colorGreenSoft"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Status"
+                                android:id="@+id/tvStatusDetailTransaksi"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textColor="@color/colorBlack"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Harga Total Belanja"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/colorGreenSoft"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Status"
+                                android:id="@+id/tvHargaDetailTransaksi"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textColor="@color/colorBlack"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Metode Pembayaran"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/colorGreenSoft"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:text="Status"
+                                android:id="@+id/tvMetodeDetailTransaksi"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <TextView
+                    android:padding="5dp"
+                    android:text="Barang"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <android.support.v7.widget.CardView
+                    android:layout_marginTop="10dp"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvDetailTransaksi"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    </android.support.v7.widget.RecyclerView>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>

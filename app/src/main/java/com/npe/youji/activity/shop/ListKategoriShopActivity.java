@@ -1,5 +1,6 @@
 package com.npe.youji.activity.shop;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
@@ -39,7 +41,7 @@ public class ListKategoriShopActivity extends AppCompatActivity implements Swipe
     ShimmerRecyclerView shimmerRecyclerShopFilter;
     TextView tvKategoriNull;
     SwipeRefreshLayout swipeRefreshLayout;
-
+    Gson gson;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,11 +140,18 @@ public class ListKategoriShopActivity extends AppCompatActivity implements Swipe
 
             @Override
             public void onItemCickFilter(int position, JoinModel data) {
-                adapterItem.detailItem(data);
+               detailItem(data);
             }
         });
         //hide swipe
         swipeRefreshLayout.setRefreshing(false);
+    }
+    public void detailItem(JoinModel data) {
+        gson = new Gson();
+        String json = gson.toJson(data);
+        Intent intent = new Intent(getApplicationContext(), DetailShop.class);
+        intent.putExtra("DATA", json);
+        startActivity(intent);
     }
 
     private boolean checkIsiSqlShop() {

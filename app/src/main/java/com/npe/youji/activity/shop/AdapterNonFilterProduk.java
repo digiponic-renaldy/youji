@@ -27,6 +27,7 @@ import com.npe.youji.model.shop.JoinModel;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +38,7 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
     ShopOperations shopOperations;
     Gson gson;
     OnItemClickListener mListener;
+    Locale locale;
 
     public AdapterNonFilterProduk(Context context, List<JoinModel> items) {
         this.context = context;
@@ -74,8 +76,11 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
                 .apply(myOptions)
                 .into(viewHolder.imageView);
         viewHolder.nama.setText(data.getKeterangan());
-        DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        viewHolder.harga.setText("Rp " + String.valueOf(decimalFormat.format(data.getHarga())));
+        //format
+        locale = new Locale("in", "ID");
+        NumberFormat numberFormat= NumberFormat.getCurrencyInstance(locale);
+        numberFormat.setMaximumFractionDigits(3);
+        viewHolder.harga.setText(String.valueOf(numberFormat.format(data.getHarga())));
         viewHolder.label.setText(String.valueOf(data.getKategori()));
         viewHolder.des.setText(String.valueOf(data.getDeskripsi()));
         viewHolder.satuan.setText(" / " + String.valueOf(data.getSatuan()));
@@ -225,13 +230,6 @@ public class AdapterNonFilterProduk extends RecyclerView.Adapter<AdapterNonFilte
         } catch (SQLException e) {
             Log.i("ErrorSqlUpdate", e.getMessage());
         }
-    }
-    public void detailItem(JoinModel data) {
-        gson = new Gson();
-        String json = gson.toJson(data);
-        Intent intent = new Intent(context, DetailShop.class);
-        intent.putExtra("DATA", json);
-        context.startActivity(intent);
     }
 
     public void clear(){

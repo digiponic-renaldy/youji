@@ -25,6 +25,7 @@ import com.npe.youji.model.shop.JoinModel;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Locale;
 
 
@@ -220,8 +221,10 @@ public class DetailShop extends AppCompatActivity {
     private void initData(JoinModel dataItem) {
         if (dataItem != null) {
             namaBarang.setText(String.valueOf(dataItem.getKeterangan()));
-            DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-            hargaBarang.setText("Rp " + String.valueOf(decimalFormat.format(dataItem.getHarga())));
+            Locale locale = new Locale("in", "ID");
+            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+            numberFormat.setMaximumFractionDigits(3);
+            hargaBarang.setText(String.valueOf(numberFormat.format(dataItem.getHarga())));
             satuan.setText("/"+String.valueOf(dataItem.getSatuan()));
             kategori.setText(String.valueOf(dataItem.getKategori()));
             descBarang.setText(String.valueOf(dataItem.getDeskripsi()));

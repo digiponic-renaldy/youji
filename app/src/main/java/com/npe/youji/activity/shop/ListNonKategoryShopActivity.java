@@ -1,5 +1,6 @@
 package com.npe.youji.activity.shop;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.gson.Gson;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
@@ -38,7 +40,7 @@ public class ListNonKategoryShopActivity extends AppCompatActivity implements Sw
     TextView tvNull;
     String title;
     SwipeRefreshLayout swipeRefreshLayout;
-
+    Gson gson;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +119,7 @@ public class ListNonKategoryShopActivity extends AppCompatActivity implements Sw
         adapter.setOnClickListener(new AdapterNonFilterProduk.OnItemClickListener() {
             @Override
             public void onItemClick(int position, JoinModel data) {
-                adapter.detailItem(data);
+                detailItem(data);
             }
         });
 
@@ -125,6 +127,13 @@ public class ListNonKategoryShopActivity extends AppCompatActivity implements Sw
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    public void detailItem(JoinModel data) {
+        gson = new Gson();
+        String json = gson.toJson(data);
+        Intent intent = new Intent(getApplicationContext(), DetailShop.class);
+        intent.putExtra("DATA", json);
+        startActivity(intent);
+    }
     private boolean checkIsiSqlShop() {
         boolean valid = false;
         try {

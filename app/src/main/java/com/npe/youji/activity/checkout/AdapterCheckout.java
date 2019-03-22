@@ -21,8 +21,7 @@ import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.shop.CartModel;
 import com.npe.youji.model.shop.JoinModel;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,6 +31,7 @@ public class AdapterCheckout extends RecyclerView.Adapter<AdapterCheckout.ViewHo
     private ShopOperations shopOperations;
     private UserOperations userOperations;
     private CartOperations cartOperations;
+    Locale locale;
 
     public AdapterCheckout(Context context, List<JoinModel> items) {
         this.context = context;
@@ -59,8 +59,11 @@ public class AdapterCheckout extends RecyclerView.Adapter<AdapterCheckout.ViewHo
                     .load(data.getGambar())
                     .into(viewHolder.imgCheckout);
             viewHolder.tvNamaBarang.setText(String.valueOf(data.getKeterangan()));
-            DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-            viewHolder.tvHargaBarang.setText("Rp " + String.valueOf(decimalFormat.format(data.getHarga())));
+            //format
+            locale = new Locale("in", "ID");
+            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+            numberFormat.setMaximumFractionDigits(3);
+            viewHolder.tvHargaBarang.setText(String.valueOf(numberFormat.format(data.getHarga())));
             viewHolder.tvJumlahBarang.setText(String.valueOf(checkQuantity(i)));
             //show layout
 
