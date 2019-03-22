@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.npe.youji.R;
 import com.npe.youji.model.dbsqlite.UserOperations;
 import com.npe.youji.model.order.RootListTransaksiModel;
@@ -41,6 +44,9 @@ public class AdapterTransaksi extends RecyclerView.Adapter<AdapterTransaksi.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         RootListTransaksiModel data = items.get(i);
+        RequestOptions myOptions = new RequestOptions()
+                .fitCenter() // or centerCrop
+                .override(100, 100);
 
         if(chekUserData()){
             getDataUser();
@@ -49,6 +55,10 @@ public class AdapterTransaksi extends RecyclerView.Adapter<AdapterTransaksi.View
             viewHolder.tvStatus.setText(data.getStatus());
             viewHolder.tvTanggal.setText(data.getTanggal());
             viewHolder.tvKode.setText(data.getKode());
+            Glide.with(context)
+                    .load(data.getStatus_gambar())
+                    .apply(myOptions)
+                    .into(viewHolder.imgTransaksi);
         }
     }
 
@@ -82,12 +92,14 @@ public class AdapterTransaksi extends RecyclerView.Adapter<AdapterTransaksi.View
 
     class ViewHolder extends RecyclerView.ViewHolder{
         TextView tvNama, tvKode, tvTanggal, tvStatus;
+        ImageView imgTransaksi;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNama = itemView.findViewById(R.id.tvNamaListTransaksi);
             tvKode = itemView.findViewById(R.id.tvKodeListTransaksi);
             tvTanggal = itemView.findViewById(R.id.tvTanggalListTransaksi);
             tvStatus = itemView.findViewById(R.id.tvStatusListTransaksi);
+            imgTransaksi = itemView.findViewById(R.id.imgTransaksiList);
         }
     }
 }

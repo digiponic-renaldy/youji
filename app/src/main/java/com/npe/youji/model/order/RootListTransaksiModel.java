@@ -33,11 +33,19 @@ public class RootListTransaksiModel{
     int customers_id;
     @SerializedName("status")
     String status;
+    @SerializedName("metode_pembayaran")
+    String metode_pembayaran;
+    @SerializedName("id_cabang")
+    String id_cabang;
+    @SerializedName("platfrom")
+    String platfrom;
+    @SerializedName("status_gambar")
+    String status_gambar;
 
     public RootListTransaksiModel() {
     }
 
-    public RootListTransaksiModel(int id, String kode, String keterangan, String tanggal, int subtotal, int pajak, String diskon_tipe, int diskon, int grand_total, String created_at, String updated_at, String deleted_at, String users_id, int customers_id, String status) {
+    public RootListTransaksiModel(int id, String kode, String keterangan, String tanggal, int subtotal, int pajak, String diskon_tipe, int diskon, int grand_total, String created_at, String updated_at, String deleted_at, String users_id, int customers_id, String status, String metode_pembayaran, String id_cabang, String platfrom, String status_gambar) {
         this.id = id;
         this.kode = kode;
         this.keterangan = keterangan;
@@ -53,6 +61,42 @@ public class RootListTransaksiModel{
         this.users_id = users_id;
         this.customers_id = customers_id;
         this.status = status;
+        this.metode_pembayaran = metode_pembayaran;
+        this.id_cabang = id_cabang;
+        this.platfrom = platfrom;
+        this.status_gambar = status_gambar;
+    }
+
+    public String getMetode_pembayaran() {
+        return metode_pembayaran;
+    }
+
+    public void setMetode_pembayaran(String metode_pembayaran) {
+        this.metode_pembayaran = metode_pembayaran;
+    }
+
+    public String getId_cabang() {
+        return id_cabang;
+    }
+
+    public void setId_cabang(String id_cabang) {
+        this.id_cabang = id_cabang;
+    }
+
+    public String getPlatfrom() {
+        return platfrom;
+    }
+
+    public void setPlatfrom(String platfrom) {
+        this.platfrom = platfrom;
+    }
+
+    public String getStatus_gambar() {
+        return status_gambar;
+    }
+
+    public void setStatus_gambar(String status_gambar) {
+        this.status_gambar = status_gambar;
     }
 
     public int getId() {
