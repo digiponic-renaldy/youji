@@ -2,6 +2,7 @@ package com.npe.youji.fragment.order;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.npe.youji.R;
 
@@ -11,5 +12,18 @@ public class DetailOrder extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_order);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Order Detail");
+        //get kode
+        Bundle extra = getIntent().getExtras();
+        if(extra!= null){
+            Toast.makeText(getApplicationContext(), extra.getString("KODE"), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }

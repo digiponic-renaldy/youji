@@ -27,6 +27,16 @@ public class AdapterTransaksi extends RecyclerView.Adapter<AdapterTransaksi.View
     UserOperations userOperations;
     List<UserModel> userModels;
     String namaUser;
+    String kodeTransaksi;
+    OnOrderViewItemClick mlistener;
+
+    public interface OnOrderViewItemClick{
+        void onItemClick(String kode);
+    }
+
+    public void setOnItemClickListener(OnOrderViewItemClick listener){
+        this.mlistener = listener;
+    }
 
     public AdapterTransaksi(Context context, List<RootListTransaksiModel> items) {
         this.context = context;
@@ -38,7 +48,7 @@ public class AdapterTransaksi extends RecyclerView.Adapter<AdapterTransaksi.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_transaksi, viewGroup, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, mlistener);
     }
 
     @Override
@@ -59,6 +69,8 @@ public class AdapterTransaksi extends RecyclerView.Adapter<AdapterTransaksi.View
                     .load(data.getStatus_gambar())
                     .apply(myOptions)
                     .into(viewHolder.imgTransaksi);
+            //kode
+            this.kodeTransaksi = data.getKode();
         }
     }
 
@@ -93,13 +105,25 @@ public class AdapterTransaksi extends RecyclerView.Adapter<AdapterTransaksi.View
     class ViewHolder extends RecyclerView.ViewHolder{
         TextView tvNama, tvKode, tvTanggal, tvStatus;
         ImageView imgTransaksi;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, final OnOrderViewItemClick listener) {
             super(itemView);
             tvNama = itemView.findViewById(R.id.tvNamaListTransaksi);
             tvKode = itemView.findViewById(R.id.tvKodeListTransaksi);
             tvTanggal = itemView.findViewById(R.id.tvTanggalListTransaksi);
             tvStatus = itemView.findViewById(R.id.tvStatusListTransaksi);
             imgTransaksi = itemView.findViewById(R.id.imgTransaksiList);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(kodeTransaksi);
+                        }
+                    }
+                }
+            });
         }
     }
 }

@@ -2,6 +2,7 @@ package com.npe.youji.fragment.order;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -133,6 +134,21 @@ public class OrderFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         //dismiss swipe
         swipeRefreshLayout.setRefreshing(false);
         rvTransaksi.setAdapter(adapterTransaksi);
+
+        //adapter click
+        adapterTransaksi.setOnItemClickListener(new AdapterTransaksi.OnOrderViewItemClick() {
+            @Override
+            public void onItemClick(String kode) {
+                toDetail(kode);
+            }
+        });
+    }
+
+    private void toDetail(String kode) {
+        Intent intent = new Intent(getContext(), DetailOrder.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("KODE", kode);
+        startActivity(intent);
     }
 
     private boolean checkUser() {
