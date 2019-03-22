@@ -2,33 +2,25 @@ package com.npe.youji.model.order;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class RootDetailTransaksiModel {
     @SerializedName("id")
     int id;
-    @SerializedName("id_penjualan")
-    int id_penjualan;
-    @SerializedName("kode_penjualan")
-    String kode_penjualan;
-    @SerializedName("id_produk")
-    int id_produk;
-    @SerializedName("kode_produk")
-    String kode_produk;
-    @SerializedName("nama_produk")
-    String nama_produk;
-    @SerializedName("satuan")
-    String satuan;
-    @SerializedName("satuan_keterangan")
-    String satuan_keterangan;
-    @SerializedName("kuantitas")
-    int kuantitas;
-    @SerializedName("harga")
-    int harga;
-    @SerializedName("diskon")
-    int diskon;
-    @SerializedName("diskon_tipe")
-    String diskon_tipe;
+    @SerializedName("kode")
+    String kode;
+    @SerializedName("keterangan")
+    String keterangan;
+    @SerializedName("tanggal")
+    String tanggal;
     @SerializedName("subtotal")
     int subtotal;
+    @SerializedName("pajak")
+    int pajak;
+    @SerializedName("diskon_tipe")
+    String diskon_tipe;
+    @SerializedName("diskon")
+    int diskon;
     @SerializedName("grand_total")
     int grand_total;
     @SerializedName("created_at")
@@ -37,36 +29,47 @@ public class RootDetailTransaksiModel {
     String updated_at;
     @SerializedName("deleted_at")
     String deleted_at;
+    @SerializedName("users_id")
+    String users_id;
+    @SerializedName("customer_id")
+    int customer_id;
+    @SerializedName("status")
+    String status;
+    @SerializedName("metode_pembayaran")
+    String metode_pembayaran;
+    @SerializedName("id_cabang")
+    String id_cabang;
+    @SerializedName("platfrom")
+    String platfrom;
+    @SerializedName("customer")
+    String customer;
+    @SerializedName("penjualan_detil")
+    List<DataListDetailTransaksiModel> penjualan_detail;
 
     public RootDetailTransaksiModel() {
     }
 
-    public RootDetailTransaksiModel(int id, int id_penjualan, String kode_penjualan, int id_produk, String kode_produk, String nama_produk, String satuan, String satuan_keterangan, int kuantitas, int harga, int diskon, String diskon_tipe, int subtotal, int grand_total, String created_at, String updated_at, String deleted_at) {
+    public RootDetailTransaksiModel(int id, String kode, String keterangan, String tanggal, int subtotal, int pajak, String diskon_tipe, int diskon, int grand_total, String created_at, String updated_at, String deleted_at, String users_id, int customer_id, String status, String metode_pembayaran, String id_cabang, String platfrom, String customer, List<DataListDetailTransaksiModel> penjualan_detail) {
         this.id = id;
-        this.id_penjualan = id_penjualan;
-        this.kode_penjualan = kode_penjualan;
-        this.id_produk = id_produk;
-        this.kode_produk = kode_produk;
-        this.nama_produk = nama_produk;
-        this.satuan = satuan;
-        this.satuan_keterangan = satuan_keterangan;
-        this.kuantitas = kuantitas;
-        this.harga = harga;
-        this.diskon = diskon;
-        this.diskon_tipe = diskon_tipe;
+        this.kode = kode;
+        this.keterangan = keterangan;
+        this.tanggal = tanggal;
         this.subtotal = subtotal;
+        this.pajak = pajak;
+        this.diskon_tipe = diskon_tipe;
+        this.diskon = diskon;
         this.grand_total = grand_total;
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.deleted_at = deleted_at;
-    }
-
-    public String getSatuan_keterangan() {
-        return satuan_keterangan;
-    }
-
-    public void setSatuan_keterangan(String satuan_keterangan) {
-        this.satuan_keterangan = satuan_keterangan;
+        this.users_id = users_id;
+        this.customer_id = customer_id;
+        this.status = status;
+        this.metode_pembayaran = metode_pembayaran;
+        this.id_cabang = id_cabang;
+        this.platfrom = platfrom;
+        this.customer = customer;
+        this.penjualan_detail = penjualan_detail;
     }
 
     public int getId() {
@@ -77,76 +80,44 @@ public class RootDetailTransaksiModel {
         this.id = id;
     }
 
-    public int getId_penjualan() {
-        return id_penjualan;
+    public String getKode() {
+        return kode;
     }
 
-    public void setId_penjualan(int id_penjualan) {
-        this.id_penjualan = id_penjualan;
+    public void setKode(String kode) {
+        this.kode = kode;
     }
 
-    public String getKode_penjualan() {
-        return kode_penjualan;
+    public String getKeterangan() {
+        return keterangan;
     }
 
-    public void setKode_penjualan(String kode_penjualan) {
-        this.kode_penjualan = kode_penjualan;
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
-    public int getId_produk() {
-        return id_produk;
+    public String getTanggal() {
+        return tanggal;
     }
 
-    public void setId_produk(int id_produk) {
-        this.id_produk = id_produk;
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
     }
 
-    public String getKode_produk() {
-        return kode_produk;
+    public int getSubtotal() {
+        return subtotal;
     }
 
-    public void setKode_produk(String kode_produk) {
-        this.kode_produk = kode_produk;
+    public void setSubtotal(int subtotal) {
+        this.subtotal = subtotal;
     }
 
-    public String getNama_produk() {
-        return nama_produk;
+    public int getPajak() {
+        return pajak;
     }
 
-    public void setNama_produk(String nama_produk) {
-        this.nama_produk = nama_produk;
-    }
-
-    public String getSatuan() {
-        return satuan;
-    }
-
-    public void setSatuan(String satuan) {
-        this.satuan = satuan;
-    }
-
-    public int getKuantitas() {
-        return kuantitas;
-    }
-
-    public void setKuantitas(int kuantitas) {
-        this.kuantitas = kuantitas;
-    }
-
-    public int getHarga() {
-        return harga;
-    }
-
-    public void setHarga(int harga) {
-        this.harga = harga;
-    }
-
-    public int getDiskon() {
-        return diskon;
-    }
-
-    public void setDiskon(int diskon) {
-        this.diskon = diskon;
+    public void setPajak(int pajak) {
+        this.pajak = pajak;
     }
 
     public String getDiskon_tipe() {
@@ -157,12 +128,12 @@ public class RootDetailTransaksiModel {
         this.diskon_tipe = diskon_tipe;
     }
 
-    public int getSubtotal() {
-        return subtotal;
+    public int getDiskon() {
+        return diskon;
     }
 
-    public void setSubtotal(int subtotal) {
-        this.subtotal = subtotal;
+    public void setDiskon(int diskon) {
+        this.diskon = diskon;
     }
 
     public int getGrand_total() {
@@ -195,5 +166,69 @@ public class RootDetailTransaksiModel {
 
     public void setDeleted_at(String deleted_at) {
         this.deleted_at = deleted_at;
+    }
+
+    public String getUsers_id() {
+        return users_id;
+    }
+
+    public void setUsers_id(String users_id) {
+        this.users_id = users_id;
+    }
+
+    public int getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMetode_pembayaran() {
+        return metode_pembayaran;
+    }
+
+    public void setMetode_pembayaran(String metode_pembayaran) {
+        this.metode_pembayaran = metode_pembayaran;
+    }
+
+    public String getId_cabang() {
+        return id_cabang;
+    }
+
+    public void setId_cabang(String id_cabang) {
+        this.id_cabang = id_cabang;
+    }
+
+    public String getPlatfrom() {
+        return platfrom;
+    }
+
+    public void setPlatfrom(String platfrom) {
+        this.platfrom = platfrom;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
+
+    public List<DataListDetailTransaksiModel> getPenjualan_detail() {
+        return penjualan_detail;
+    }
+
+    public void setPenjualan_detail(List<DataListDetailTransaksiModel> penjualan_detail) {
+        this.penjualan_detail = penjualan_detail;
     }
 }
