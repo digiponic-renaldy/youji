@@ -253,7 +253,10 @@ public class CheckoutActivity extends AppCompatActivity {
             // 5. return response message
             Log.i("Kembalian", conn.getResponseMessage());
             progressDialog.dismiss();
+            //truncate
             truncateDataShop();
+            adapter.clear();
+
             toMain();
             return conn.getResponseMessage() + "";
         }

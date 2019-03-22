@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonObject;
 import com.npe.youji.R;
 import com.npe.youji.activity.auth.LoginActivity;
 import com.npe.youji.activity.checkout.CheckoutActivity;
@@ -34,6 +35,7 @@ import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
+import com.npe.youji.model.shop.RootProdukFilter;
 import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 
@@ -75,6 +77,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     //swipe
     SwipeRefreshLayout swipeRefreshLayout;
     ArrayList<JoinModel> mDataItem = new ArrayList<>();
+    ArrayList<JoinModel> mDataBuah = new ArrayList<>();
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
@@ -125,6 +128,8 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         getCategory();
         getItemProduk_local();
 
+//        getItemBuah();
+
 
         btnLihatSemua.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +173,73 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         return v;
     }
+
+//    private void getItemBuah() {
+//        //truncate join
+//        truncate();
+//        //get filter buah
+//        JsonObject jsonObject = new JsonObject();
+//        jsonObject.addProperty("kategori","Organic Fruits");
+//        service_local.listDetailFilterProduk(jsonObject).enqueue(new Callback<List<RootProdukFilter>>() {
+//            @Override
+//            public void onResponse(Call<List<RootProdukFilter>> call, Response<List<RootProdukFilter>> response) {
+//                List<RootProdukFilter> data = response.body();
+//                if(data != null){
+//                    inserDataBuahLocal(data);
+//                    if(checkIsiSqlShop()){
+//                        new Handler().postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                joinDataBuah();
+//                            }
+//                        }, 2000);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<RootProdukFilter>> call, Throwable t) {
+//                Log.i("ErrorGetDataBuah", t.getMessage());
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
+//    }
+
+//    private void inserDataBuahLocal(List<RootProdukFilter> dataItem) {
+//        String imgUrl = "https://i.imgur.com/kTRJDky.png";
+//        for (int i = 0; i < dataItem.size(); i++) {
+//            if (dataItem.get(i).getGambar() == null) {
+//                dataItem.get(i).setGambar(imgUrl);
+//            }
+//            Log.i("DataItemSize", String.valueOf(dataItem.size()));
+//
+//            Log.i("DataProduk", String.valueOf(dataItem.get(i).getStok()));
+//            DataShopModel data = new DataShopModel(
+//                    dataItem.get(i).getId(),
+//                    dataItem.get(i).getCabang(),
+//                    dataItem.get(i).getKode(),
+//                    dataItem.get(i).getKeterangan(),
+//                    dataItem.get(i).getKategori(),
+//                    dataItem.get(i).getJenis(),
+//                    dataItem.get(i).getSatuan(),
+//                    dataItem.get(i).getStok(),
+//                    dataItem.get(i).getHarga(),
+//                    dataItem.get(i).getGambar(),
+//                    dataItem.get(i).getDeskripsi(),
+//                    dataItem.get(i).getCreated_at(),
+//                    dataItem.get(i).getUpdated_at(),
+//                    dataItem.get(i).getDeleted_at());
+//            try {
+//                shopOperations.openDb();
+//                shopOperations.insertShop(data);
+//                Log.i("DataNamaProdukInsert", data.getKeterangan());
+//                shopOperations.closeDb();
+//                Log.i("INSERTSQL", "SUCCESS");
+//            } catch (SQLException e) {
+//                Log.i("ERRORINSERT", e.getMessage() + " ERROR");
+//            }
+//        }
+//    }
 
     private void toLogin() {
         Intent intent = new Intent(getContext(), LoginActivity.class);
@@ -259,7 +331,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     Log.i("ResponSucc", "Berhasil");
 //                    Log.i("Deskripsi", data.get(0).getDeskripsi());
                     insertAllDataShopLocal(data);
-
                     if (checkIsiSqlShop()) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -279,6 +350,23 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
     }
+
+//    private void joinDataBuah() {
+//        try {
+//            shopOperations.openDb();
+//            shopOperations.joinData();
+//            //insert to adapter
+//            listItemShopBuah(shopOperations.joinData());
+//            shopOperations.closeDb();
+//        } catch (SQLException e) {
+//            Log.d("ERROR JOIN", e.getMessage());
+//        }
+//    }
+
+//    private void listItemShopBuah(ArrayList<JoinModel> dataItem) {
+//        this.mDataBuah = dataItem;
+//        recyclerBuah(dataItem);
+//    }
 
     private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
         String imgUrl = "https://i.imgur.com/kTRJDky.png";
@@ -427,8 +515,8 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Log.i("DataSayur", String.valueOf(i));
             }
         }
-        adapterItemBuah = new AdapterShopItemBuah(getContext(), dataBuah, ShopFragment.this);
         recyclerBest.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        adapterItemBuah = new AdapterShopItemBuah(getContext(), dataBuah, ShopFragment.this);
         recyclerBest.setAdapter(adapterItemBuah);
         adapterItemBuah.setOnItemClickListener(new AdapterShopItemBuah.OnItemClickListener() {
             @Override
@@ -487,7 +575,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         getCategory();
         getItemProduk_local();
-
+//        getItemBuah();
 
     }
 
@@ -499,6 +587,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //dialog
         getCategory();
         getItemProduk_local();
+//        getItemBuah();
 
     }
 
@@ -526,6 +615,7 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 truncate();
                 getCategory();
                 getItemProduk_local();
+//                getItemBuah();
             }
         }, 2000);
     }

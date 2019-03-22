@@ -173,6 +173,9 @@ public class AdapterCheckout extends RecyclerView.Adapter<AdapterCheckout.ViewHo
             Log.d("ERROR JOIN", e.getMessage());
         }
     }
+    public void clear(){
+        items.clear();
+    }
 
     @Override
     public int getItemCount() {

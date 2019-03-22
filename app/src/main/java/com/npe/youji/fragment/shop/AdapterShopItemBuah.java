@@ -221,8 +221,11 @@ public class AdapterShopItemBuah extends RecyclerView.Adapter<AdapterShopItemBua
         int quantity = 0;
         try {
             shopOperations.openDb();
-            quantity = shopOperations.joinData().get(position).getQuantity();
-            Log.i("DataShop", String.valueOf(shopOperations.joinData().get(position).getQuantity()));
+            try {
+                quantity = shopOperations.joinData().get(position).getQuantity();
+            } catch (IndexOutOfBoundsException e) {
+                Log.i("NPEAdapterShopItem", e.getMessage());
+            }
             shopOperations.closeDb();
         } catch (SQLException e) {
             Log.i("SqlException", e.getMessage());
