@@ -33,7 +33,7 @@ public class DetailShop extends AppCompatActivity {
     private UserOperations userOperations;
     private CartModel cartModel;
     private Button btnAddtoCart;
-    private Button btnCheckout;
+//    private Button btnCheckout;
     private ImageButton btnAdd, btnMinus;
     private TextView textQuantity;
     private LinearLayout layoutCart;
@@ -57,7 +57,7 @@ public class DetailShop extends AppCompatActivity {
         //inisialisasi
         userOperations = new UserOperations(getApplicationContext());
         btnAddtoCart = findViewById(R.id.btn_addToCart_detailItem);
-        btnCheckout = findViewById(R.id.btn_checkout);
+//        btnCheckout = findViewById(R.id.btn_checkout);
         layoutCart = findViewById(R.id.layout_addToCart_detailItem);
         btnAdd = findViewById(R.id.btn_addCart_detailItem);
         btnMinus = findViewById(R.id.btn_minusCart_detailItem);
@@ -86,16 +86,16 @@ public class DetailShop extends AppCompatActivity {
             }
         });
 
-        btnCheckout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkUser()) {
-                    toCheckout();
-                } else {
-                    toLogin();
-                }
-            }
-        });
+//        btnCheckout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (checkUser()) {
+//                    toCheckout();
+//                } else {
+//                    toLogin();
+//                }
+//            }
+//        });
     }
 
     private void getDataBundle() {
@@ -117,7 +117,7 @@ public class DetailShop extends AppCompatActivity {
     private void showLayoutCart() {
         btnAddtoCart.setVisibility(View.GONE);
         layoutCart.setVisibility(View.VISIBLE);
-        btnCheckout.setVisibility(View.VISIBLE);
+//        btnCheckout.setVisibility(View.VISIBLE);
 
         if (dataItem.getQuantity() == 0) {
             insertFirst(1);

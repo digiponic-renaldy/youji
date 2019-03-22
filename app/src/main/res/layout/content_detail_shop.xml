@@ -51,7 +51,7 @@
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/add_to_cart"
+                android:text="Beli"
                 android:background="@drawable/rounded_button_green"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
@@ -68,19 +68,19 @@
                 android:text="Tidak Tersedia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <Button
-                android:visibility="gone"
-                android:id="@+id/btn_checkout"
-                android:textStyle="bold"
-                android:textColor="@color/colorWhite"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="@string/checkout"
-                android:background="@color/colorGreenSoft"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="20dp"
-                android:layout_alignBottom="@id/tv_category_detailBarang"
-                android:layout_alignParentEnd="true"/>
+            <!--<Button-->
+                <!--android:visibility="gone"-->
+                <!--android:id="@+id/btn_checkout"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="@color/colorWhite"-->
+                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"-->
+                <!--android:text="@string/checkout"-->
+                <!--android:background="@color/colorGreenSoft"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:layout_alignBottom="@id/tv_category_detailBarang"-->
+                <!--android:layout_alignParentEnd="true"/>-->
 
             <LinearLayout
                 android:visibility="gone"
