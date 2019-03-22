@@ -17,6 +17,8 @@ public class RootDetailTransaksiModel {
     String nama_produk;
     @SerializedName("satuan")
     String satuan;
+    @SerializedName("satuan_keterangan")
+    String satuan_keterangan;
     @SerializedName("kuantitas")
     int kuantitas;
     @SerializedName("harga")
@@ -39,7 +41,7 @@ public class RootDetailTransaksiModel {
     public RootDetailTransaksiModel() {
     }
 
-    public RootDetailTransaksiModel(int id, int id_penjualan, String kode_penjualan, int id_produk, String kode_produk, String nama_produk, String satuan, int kuantitas, int harga, int diskon, String diskon_tipe, int subtotal, int grand_total, String created_at, String updated_at, String deleted_at) {
+    public RootDetailTransaksiModel(int id, int id_penjualan, String kode_penjualan, int id_produk, String kode_produk, String nama_produk, String satuan, String satuan_keterangan, int kuantitas, int harga, int diskon, String diskon_tipe, int subtotal, int grand_total, String created_at, String updated_at, String deleted_at) {
         this.id = id;
         this.id_penjualan = id_penjualan;
         this.kode_penjualan = kode_penjualan;
@@ -47,6 +49,7 @@ public class RootDetailTransaksiModel {
         this.kode_produk = kode_produk;
         this.nama_produk = nama_produk;
         this.satuan = satuan;
+        this.satuan_keterangan = satuan_keterangan;
         this.kuantitas = kuantitas;
         this.harga = harga;
         this.diskon = diskon;
@@ -56,6 +59,14 @@ public class RootDetailTransaksiModel {
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.deleted_at = deleted_at;
+    }
+
+    public String getSatuan_keterangan() {
+        return satuan_keterangan;
+    }
+
+    public void setSatuan_keterangan(String satuan_keterangan) {
+        this.satuan_keterangan = satuan_keterangan;
     }
 
     public int getId() {

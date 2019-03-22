@@ -573,36 +573,11 @@ public class CheckoutActivity extends AppCompatActivity {
             //retrofit
             retrofit = NetworkClient.getRetrofitClientLocal();
             service = retrofit.create(ApiService.class);
-            //get spin city and distrik
-            getApiCity();
         } else {
             toLogin();
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //progress dialog
-        dialogWait();
-
-        //data user
-        if (checkUser()) {
-            getDataUser();
-            setCurrentDate();
-            //date and time
-            tvTanggal.setText(getCurrentDate());
-            //receycler data
-            joinData();
-            //retrofit
-            retrofit = NetworkClient.getRetrofitClientLocal();
-            service = retrofit.create(ApiService.class);
-            //get spin city and distrik
-            getApiCity();
-        } else {
-            toLogin();
-        }
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
