@@ -1,14 +1,13 @@
 package com.npe.youji.model.api;
 
 import com.google.gson.JsonObject;
-import com.npe.youji.model.city.RootCitiesModel;
+import com.npe.youji.model.city.RootCityModel;
 import com.npe.youji.model.city.RootDistrikModel;
 import com.npe.youji.model.inbox.RootInboxModel;
 import com.npe.youji.model.order.RootDetailTransaksiModel;
 import com.npe.youji.model.order.RootListTransaksiModel;
 import com.npe.youji.model.shop.RootProdukFilter;
 import com.npe.youji.model.shop.RootProdukModel;
-import com.npe.youji.model.shop.menu.RootDetailProdukModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 import com.npe.youji.model.user.RootPelangganModel;
 import com.npe.youji.model.user.RootPerbaruiUser;
@@ -19,15 +18,14 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @GET("cities")
-    Call<RootCitiesModel> listCity();
+    @POST("area")
+    Call<List<RootCityModel>> listCity(@Body JsonObject jsonObject);
 
-    @GET("districs")
-    Call<RootDistrikModel> listDistrik(@Query("cities_id") int states_id);
+    @POST("area")
+    Call<List<RootDistrikModel>> listDistrik(@Body JsonObject jsonObject);
 
     @GET("produk")
     Call<List<RootProdukModel>> listProduk();

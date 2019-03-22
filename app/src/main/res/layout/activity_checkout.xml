@@ -187,14 +187,14 @@
                     android:fontFamily="@font/lato_regular"
                     android:layout_height="match_parent" />
 
-                <RadioButton
-                    android:fontFamily="@font/lato_regular"
-                    android:textColor="@color/colorGreenSoft"
-                    android:text="Transfer"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent" />
+                <!--<RadioButton-->
+                    <!--android:fontFamily="@font/lato_regular"-->
+                    <!--android:textColor="@color/colorGreenSoft"-->
+                    <!--android:text="Transfer"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:clickable="false"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent" />-->
             </RadioGroup>
 
             <TextView

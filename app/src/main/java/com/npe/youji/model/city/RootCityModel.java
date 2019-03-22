@@ -2,11 +2,11 @@ package com.npe.youji.model.city;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RootDistrikModel {
+public class RootCityModel {
     @SerializedName("id")
     int id;
-    @SerializedName("kode_kota")
-    int kode_kota;
+    @SerializedName("kode_provinsi")
+    String kode_provinsi;
     @SerializedName("kode")
     String kode;
     @SerializedName("keterangan")
@@ -18,12 +18,12 @@ public class RootDistrikModel {
     @SerializedName("deleted_at")
     String deleted_at;
 
-    public RootDistrikModel() {
+    public RootCityModel() {
     }
 
-    public RootDistrikModel(int id, int kode_kota, String kode, String keterangan, String created_at, String updated_at, String deleted_at) {
+    public RootCityModel(int id, String kode_provinsi, String kode, String keterangan, String created_at, String updated_at, String deleted_at) {
         this.id = id;
-        this.kode_kota = kode_kota;
+        this.kode_provinsi = kode_provinsi;
         this.kode = kode;
         this.keterangan = keterangan;
         this.created_at = created_at;
@@ -39,12 +39,12 @@ public class RootDistrikModel {
         this.id = id;
     }
 
-    public int getKode_kota() {
-        return kode_kota;
+    public String getKode_provinsi() {
+        return kode_provinsi;
     }
 
-    public void setKode_kota(int kode_kota) {
-        this.kode_kota = kode_kota;
+    public void setKode_provinsi(String kode_provinsi) {
+        this.kode_provinsi = kode_provinsi;
     }
 
     public String getKode() {

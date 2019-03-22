@@ -23,14 +23,13 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.activity.auth.LoginActivity;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
-import com.npe.youji.model.city.DataCitiesModel;
-import com.npe.youji.model.city.DataDistrikModel;
-import com.npe.youji.model.city.RootCitiesModel;
+import com.npe.youji.model.city.RootCityModel;
 import com.npe.youji.model.city.RootDistrikModel;
 import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
@@ -83,10 +82,8 @@ public class CheckoutActivity extends AppCompatActivity {
     //retrofit
     private Retrofit retrofit;
     private ApiService service;
-    List<DataCitiesModel> listCity;
     ArrayList<String> listNamaCity = new ArrayList<String>();
-    ArrayList<Integer> listStateIdCity = new ArrayList<Integer>();
-    List<DataDistrikModel> listDistrik;
+    ArrayList<String> listStateIdCity = new ArrayList<String>();
     ArrayList<String> listNamaDistrik = new ArrayList<String>();
     ArrayList<Integer> listIdDistrik = new ArrayList<Integer>();
 
@@ -331,30 +328,29 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
     private void getApiCity() {
-        service.listCity().enqueue(new Callback<RootCitiesModel>() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("kode", "AREA/001");
+        service.listCity(jsonObject).enqueue(new Callback<List<RootCityModel>>() {
             @Override
-            public void onResponse(Call<RootCitiesModel> call, Response<RootCitiesModel> response) {
-                RootCitiesModel data = response.body();
+            public void onResponse(Call<List<RootCityModel>> call, Response<List<RootCityModel>> response) {
+                List<RootCityModel> data = response.body();
                 if (data != null) {
-                    if (data.getApi_message().equalsIgnoreCase("success")) {
-                        listCity = data.getData();
-                        getCity(listCity);
-                    }
+                    getCity(data);
                 }
             }
 
             @Override
-            public void onFailure(Call<RootCitiesModel> call, Throwable t) {
-                Log.i("ErrorGetListCity", t.getMessage());
+            public void onFailure(Call<List<RootCityModel>> call, Throwable t) {
+                Log.i("ErrorGetCity", t.getMessage());
             }
         });
     }
 
-    private void getCity(List<DataCitiesModel> listCity) {
+    private void getCity(List<RootCityModel> listCity) {
         for (int i = 0; i < listCity.size(); i++) {
-            Log.i("DataNamaCity", listCity.get(i).getName());
-            listNamaCity.add(i, listCity.get(i).getName());
-            listStateIdCity.add(i, listCity.get(i).getStates_id());
+            Log.i("DataNamaCity", listCity.get(i).getKeterangan());
+            listNamaCity.add(i, listCity.get(i).getKeterangan());
+            listStateIdCity.add(i, listCity.get(i).getKode());
         }
         spinNamaCity(listNamaCity);
     }
@@ -366,7 +362,7 @@ public class CheckoutActivity extends AppCompatActivity {
         spinCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int states_id = listStateIdCity.get(position);
+                String states_id = listStateIdCity.get(position);
                 getApiDistrik(states_id);
             }
 
@@ -378,29 +374,28 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
 
-    private void getApiDistrik(int states_id) {
-        service.listDistrik(states_id).enqueue(new Callback<RootDistrikModel>() {
+    private void getApiDistrik(String states_id) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("kode", states_id);
+        service.listDistrik(jsonObject).enqueue(new Callback<List<RootDistrikModel>>() {
             @Override
-            public void onResponse(Call<RootDistrikModel> call, Response<RootDistrikModel> response) {
-                RootDistrikModel data = response.body();
+            public void onResponse(Call<List<RootDistrikModel>> call, Response<List<RootDistrikModel>> response) {
+                List<RootDistrikModel> data = response.body();
                 if (data != null) {
-                    if (data.getApi_message().equalsIgnoreCase("success")) {
-                        listDistrik = data.getData();
-                        getDistrik(listDistrik);
-                    }
+                    getDistrik(data);
                 }
             }
 
             @Override
-            public void onFailure(Call<RootDistrikModel> call, Throwable t) {
+            public void onFailure(Call<List<RootDistrikModel>> call, Throwable t) {
                 Log.i("ErrorGetListDistrik", t.getMessage());
             }
         });
     }
 
-    private void getDistrik(List<DataDistrikModel> listDistrik) {
+    private void getDistrik(List<RootDistrikModel> listDistrik) {
         for (int i = 0; i < listDistrik.size(); i++) {
-            listNamaDistrik.add(i, listDistrik.get(i).getName());
+            listNamaDistrik.add(i, listDistrik.get(i).getKeterangan());
             listIdDistrik.add(i, listDistrik.get(i).getId());
         }
         spinNamaDistrik(listNamaDistrik);
@@ -459,9 +454,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void setDataTotal() {
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        tvSubtotal.setText("Rp "+String.valueOf(decimalFormat.format(getSubTotal())));
+        tvSubtotal.setText("Rp " + String.valueOf(decimalFormat.format(getSubTotal())));
         int total = getSubTotal() - 0;
-        tvTotal.setText("Rp "+String.valueOf(decimalFormat.format(total)));
+        tvTotal.setText("Rp " + String.valueOf(decimalFormat.format(total)));
     }
 
     private void setUser(List<UserModel> userModels) {
@@ -494,7 +489,7 @@ public class CheckoutActivity extends AppCompatActivity {
 //        } catch (SQLException e) {
 //            Log.i("ErrorCheckUserCheckout", e.getMessage());
 //        }
-        if(mUser != null){
+        if (mUser != null) {
             cek = true;
         }
         return cek;
