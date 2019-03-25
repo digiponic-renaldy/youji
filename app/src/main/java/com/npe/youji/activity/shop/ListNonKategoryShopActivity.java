@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.Gson;
+import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
@@ -197,9 +198,16 @@ public class ListNonKategoryShopActivity extends AppCompatActivity implements Sw
     public boolean onSupportNavigateUp() {
         adapter.clear();
         truncateShop();
-        onBackPressed();
+        toMain();
         adapter.notifyDataSetChanged();
         return true;
+    }
+
+    private void toMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void truncateShop() {

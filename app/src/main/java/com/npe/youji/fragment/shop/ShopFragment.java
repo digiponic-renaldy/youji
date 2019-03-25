@@ -23,10 +23,7 @@ import android.widget.RelativeLayout;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.JsonObject;
 import com.npe.youji.R;
-import com.npe.youji.activity.auth.LoginActivity;
-import com.npe.youji.activity.checkout.CheckoutActivity;
 import com.npe.youji.activity.shop.ListKategoriShopActivity;
 import com.npe.youji.activity.shop.ListNonKategoryShopActivity;
 import com.npe.youji.model.api.ApiService;
@@ -35,7 +32,6 @@ import com.npe.youji.model.dbsqlite.CartOperations;
 import com.npe.youji.model.dbsqlite.ShopOperations;
 import com.npe.youji.model.shop.DataShopModel;
 import com.npe.youji.model.shop.JoinModel;
-import com.npe.youji.model.shop.RootProdukFilter;
 import com.npe.youji.model.shop.RootProdukModel;
 import com.npe.youji.model.shop.menu.RootTipeKategoriModel;
 
@@ -77,7 +73,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     //swipe
     SwipeRefreshLayout swipeRefreshLayout;
     ArrayList<JoinModel> mDataItem = new ArrayList<>();
-    ArrayList<JoinModel> mDataBuah = new ArrayList<>();
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
@@ -128,8 +123,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         getCategory();
         getItemProduk_local();
 
-//        getItemBuah();
-
 
         btnLihatSemua.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,116 +151,9 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-//        btnFloatCheckout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (checkUser()) {
-//                    if (checkQuantityData(mDataItem)) {
-//                        toCheckOut();
-//                    }
-//                } else {
-//                    toLogin();
-//                }
-//            }
-//        });
-
         return v;
     }
 
-//    private void getItemBuah() {
-//        //truncate join
-//        truncate();
-//        //get filter buah
-//        JsonObject jsonObject = new JsonObject();
-//        jsonObject.addProperty("kategori","Organic Fruits");
-//        service_local.listDetailFilterProduk(jsonObject).enqueue(new Callback<List<RootProdukFilter>>() {
-//            @Override
-//            public void onResponse(Call<List<RootProdukFilter>> call, Response<List<RootProdukFilter>> response) {
-//                List<RootProdukFilter> data = response.body();
-//                if(data != null){
-//                    inserDataBuahLocal(data);
-//                    if(checkIsiSqlShop()){
-//                        new Handler().postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                joinDataBuah();
-//                            }
-//                        }, 2000);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<RootProdukFilter>> call, Throwable t) {
-//                Log.i("ErrorGetDataBuah", t.getMessage());
-//                swipeRefreshLayout.setRefreshing(false);
-//            }
-//        });
-//    }
-
-//    private void inserDataBuahLocal(List<RootProdukFilter> dataItem) {
-//        String imgUrl = "https://i.imgur.com/kTRJDky.png";
-//        for (int i = 0; i < dataItem.size(); i++) {
-//            if (dataItem.get(i).getGambar() == null) {
-//                dataItem.get(i).setGambar(imgUrl);
-//            }
-//            Log.i("DataItemSize", String.valueOf(dataItem.size()));
-//
-//            Log.i("DataProduk", String.valueOf(dataItem.get(i).getStok()));
-//            DataShopModel data = new DataShopModel(
-//                    dataItem.get(i).getId(),
-//                    dataItem.get(i).getCabang(),
-//                    dataItem.get(i).getKode(),
-//                    dataItem.get(i).getKeterangan(),
-//                    dataItem.get(i).getKategori(),
-//                    dataItem.get(i).getJenis(),
-//                    dataItem.get(i).getSatuan(),
-//                    dataItem.get(i).getStok(),
-//                    dataItem.get(i).getHarga(),
-//                    dataItem.get(i).getGambar(),
-//                    dataItem.get(i).getDeskripsi(),
-//                    dataItem.get(i).getCreated_at(),
-//                    dataItem.get(i).getUpdated_at(),
-//                    dataItem.get(i).getDeleted_at());
-//            try {
-//                shopOperations.openDb();
-//                shopOperations.insertShop(data);
-//                Log.i("DataNamaProdukInsert", data.getKeterangan());
-//                shopOperations.closeDb();
-//                Log.i("INSERTSQL", "SUCCESS");
-//            } catch (SQLException e) {
-//                Log.i("ERRORINSERT", e.getMessage() + " ERROR");
-//            }
-//        }
-//    }
-
-    private void toLogin() {
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
-
-    private boolean checkUser() {
-        boolean valid = false;
-        if (mUser != null) {
-            valid = true;
-        }
-        return valid;
-    }
-
-    private void toCheckOut() {
-        Intent intent = new Intent(getContext(), CheckoutActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
-
-    public void showCheckOut() {
-        btnFloatCheckout.setVisibility(View.VISIBLE);
-    }
-
-    public void hideCheckOut() {
-        btnFloatCheckout.setVisibility(View.GONE);
-    }
 
     private void toAllBuah() {
         Intent intent = new Intent(getContext(), ListKategoriShopActivity.class);
@@ -330,7 +216,9 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (data != null) {
                     Log.i("ResponSucc", "Berhasil");
 //                    Log.i("Deskripsi", data.get(0).getDeskripsi());
-                    insertAllDataShopLocal(data);
+                    if (getDataShop(data)) {
+                        insertAllDataShopLocal(data);
+                    }
                     if (checkIsiSqlShop()) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -339,7 +227,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             }
                         }, 1000);
                     }
-
                 }
             }
 
@@ -351,22 +238,23 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
     }
 
-//    private void joinDataBuah() {
-//        try {
-//            shopOperations.openDb();
-//            shopOperations.joinData();
-//            //insert to adapter
-//            listItemShopBuah(shopOperations.joinData());
-//            shopOperations.closeDb();
-//        } catch (SQLException e) {
-//            Log.d("ERROR JOIN", e.getMessage());
-//        }
-//    }
+    private boolean getDataShop(List<RootProdukModel> data) {
+        boolean valid = true;
+        List<DataShopModel> dataSql = new ArrayList<>();
+        try {
+            shopOperations.openDb();
+            dataSql = shopOperations.getAllShop();
+            shopOperations.closeDb();
+        } catch (SQLException e) {
+            Log.i("ErrorGetAllData", e.getMessage());
+        }
 
-//    private void listItemShopBuah(ArrayList<JoinModel> dataItem) {
-//        this.mDataBuah = dataItem;
-//        recyclerBuah(dataItem);
-//    }
+        if (data.size() == dataSql.size()) {
+            valid = false;
+        }
+        return valid;
+    }
+
 
     private void insertAllDataShopLocal(List<RootProdukModel> dataItem) {
         String imgUrl = "https://i.imgur.com/kTRJDky.png";
@@ -417,15 +305,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void listItemShop(ArrayList<JoinModel> dataItem) {
-        //check quantity
-        //inisialisasi
-        this.mDataItem = dataItem;
-//        if (checkQuantityData(dataItem)) {
-//            showCheckOut();
-//        } else {
-//            hideCheckOut();
-//        }
-
 
         Log.d("LIST_DATA_PRODUCT", dataItem.toString());
         recyclerItem.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -448,10 +327,15 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //hide shimmer and show card
         shimmerRecyclerShopMenu.hideShimmerAdapter();
         shimmerRecyclerShopItem.hideShimmerAdapter();
-        //hide dialog
-        progressDialog.dismiss();
-        //hide swipe
-        swipeRefreshLayout.setRefreshing(false);
+        try{
+            //hide dialog
+            progressDialog.dismiss();
+            //hide swipe
+            swipeRefreshLayout.setRefreshing(false);
+        }catch (IllegalArgumentException e){
+            Log.i("ErrorIAE", e.getMessage());
+        }
+
         //visible card
         cardRekom.setVisibility(View.VISIBLE);
         cardBest.setVisibility(View.VISIBLE);
@@ -459,16 +343,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         cardAllItem.setVisibility(View.VISIBLE);
     }
 
-//    private boolean checkQuantityData(ArrayList<JoinModel> dataItem) {
-//        boolean valid = false;
-//        for (int i = 0; i < dataItem.size(); i++) {
-//            if (dataItem.get(i).getQuantity() != 0) {
-//                valid = true;
-//            }
-//            Log.i("CheckQuantity", String.valueOf(dataItem.get(i).getQuantity()));
-//        }
-//        return valid;
-//    }
 
     private void recyclerAllItem() {
         recyclerAll.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -575,7 +449,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         getCategory();
         getItemProduk_local();
-//        getItemBuah();
 
     }
 
@@ -587,7 +460,6 @@ public class ShopFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         //dialog
         getCategory();
         getItemProduk_local();
-//        getItemBuah();
 
     }
 

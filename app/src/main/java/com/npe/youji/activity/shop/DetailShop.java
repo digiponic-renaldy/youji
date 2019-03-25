@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.activity.auth.LoginActivity;
 import com.npe.youji.activity.checkout.CheckoutActivity;
@@ -266,9 +267,16 @@ public class DetailShop extends AppCompatActivity {
 
 
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+    public void onBackPressed() {
+        super.onBackPressed();
+        toMain();
+    }
+
+    private void toMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

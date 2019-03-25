@@ -31,7 +31,7 @@ import retrofit2.Retrofit;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InboxFragmenet extends Fragment implements SwipeRefreshLayout.OnRefreshListener,OnBackPressFragment {
+public class InboxFragmenet extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public InboxFragmenet() {
         // Required empty public constructor
     }
@@ -145,8 +145,5 @@ public class InboxFragmenet extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
 
-    @Override
-    public void onBackPress() {
-        getActivity().getSupportFragmentManager().popBackStack();
-    }
+
 }

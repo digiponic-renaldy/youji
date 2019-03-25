@@ -187,6 +187,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void toMain() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
@@ -582,8 +583,10 @@ public class CheckoutActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        toMain();
         return true;
     }
+
+
 
 }

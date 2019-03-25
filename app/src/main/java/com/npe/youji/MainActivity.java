@@ -3,6 +3,7 @@ package com.npe.youji;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -159,17 +160,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkLogin();
-        this.doubleBackToExitPressedOnce = false;
     }
 
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
+            finish();
             return;
         }
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Tekan tombol kembali lagi untuk keluar", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 3000);
     }
 
     private void checkLogin() {

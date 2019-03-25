@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.npe.youji.MainActivity;
 import com.npe.youji.R;
 import com.npe.youji.model.api.ApiService;
 import com.npe.youji.model.api.NetworkClient;
@@ -207,13 +208,20 @@ public class ListKategoriShopActivity extends AppCompatActivity implements Swipe
         if (adapterItem != null) {
             adapterItem.clear();
             truncateShop();
-            onBackPressed();
+            toMain();
             adapterItem.notifyDataSetChanged();
         } else {
             truncateShop();
             onBackPressed();
         }
         return true;
+    }
+
+    private void toMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void truncateShop() {
